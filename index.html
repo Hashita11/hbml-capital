@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>HBML CAPITAL LOGIN</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
 }
 
 body{
@@ -19,49 +20,56 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
+    padding:20px;
 }
 
 .container{
-    width:95%;
+    width:100%;
     max-width:420px;
-    background:white;
-    border-radius:20px;
+    background:#fff;
+    border-radius:25px;
     padding:30px;
     box-shadow:0 10px 30px rgba(0,0,0,0.1);
     text-align:center;
 }
 
 .logo{
-    width:140px;
+    width:120px;
+    height:120px;
+    object-fit:contain;
     margin-bottom:15px;
 }
 
 h1{
     color:#0d2b6b;
     margin-bottom:5px;
+    font-size:42px;
 }
 
 .sub{
-    color:gray;
+    color:#777;
     margin-bottom:25px;
-    font-size:14px;
+    font-size:16px;
 }
 
 .tabs{
     display:flex;
     justify-content:space-between;
-    margin-bottom:20px;
+    gap:10px;
+    margin-bottom:25px;
 }
 
 .tabs button{
-    width:32%;
-    padding:12px;
+    flex:1;
+    padding:14px;
     border:none;
-    border-radius:10px;
-    background:#eaeaea;
+    border-radius:12px;
+    background:#ececec;
     cursor:pointer;
+    font-size:16px;
     font-weight:bold;
+    transition:0.3s;
 }
 
 .tabs button.active{
@@ -71,22 +79,28 @@ h1{
 
 input{
     width:100%;
-    padding:14px;
-    margin-bottom:15px;
+    padding:16px;
+    margin-bottom:18px;
     border:1px solid #ccc;
-    border-radius:10px;
-    font-size:15px;
+    border-radius:12px;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#0d2b6b;
 }
 
 .login-btn{
     width:100%;
-    padding:14px;
+    padding:16px;
     background:#0d2b6b;
     color:white;
     border:none;
-    border-radius:10px;
-    font-size:16px;
+    border-radius:12px;
+    font-size:18px;
     cursor:pointer;
+    transition:0.3s;
 }
 
 .login-btn:hover{
@@ -96,8 +110,9 @@ input{
 .message{
     margin-top:15px;
     color:green;
-    font-size:14px;
+    font-size:15px;
 }
+
 </style>
 </head>
 
@@ -105,125 +120,194 @@ input{
 
 <div class="container">
 
-    <!-- YOUR LOGO -->
+    <!-- LOGO -->
     <img src="logo.png" class="logo">
 
     <h1>HBML CAPITAL</h1>
-    <div class="sub">Trusted Financial Solutions</div>
 
-    <!-- LOGIN TYPES -->
+    <div class="sub">
+        Trusted Financial Solutions
+    </div>
+
+    <!-- ROLE BUTTONS -->
     <div class="tabs">
-        <button class="active" onclick="setRole('Admin',this)">Admin</button>
-        <button onclick="setRole('Employee',this)">Employee</button>
-        <button onclick="setRole('Customer',this)">Customer</button>
+
+        <button class="active"
+        onclick="setRole('Admin',this)">
+        Admin
+        </button>
+
+        <button
+        onclick="setRole('Employee',this)">
+        Employee
+        </button>
+
+        <button
+        onclick="setRole('Customer',this)">
+        Customer
+        </button>
+
     </div>
 
     <!-- FORM -->
-    <input type="text" id="name" placeholder="Enter Name">
 
-    <input type="email" id="email" placeholder="Enter Email">
+    <input
+    type="text"
+    id="name"
+    placeholder="Enter Name">
 
-    <input type="password" id="password" placeholder="Enter Password">
+    <input
+    type="email"
+    id="email"
+    placeholder="Enter Email">
 
-    <button class="login-btn" onclick="loginUser()">LOGIN</button>
+    <input
+    type="password"
+    id="password"
+    placeholder="Enter Password">
+
+    <button class="login-btn"
+    onclick="loginUser()">
+    LOGIN
+    </button>
 
     <div class="message" id="message"></div>
 
 </div>
 
 <!-- FIREBASE -->
+
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+/* FIREBASE IMPORTS */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getFirestore,
 collection,
 addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
-/* =========================
-   FIREBASE CONFIG
-========================= */
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
+
   apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+
   authDomain: "hbml-capital.firebaseapp.com",
+
   projectId: "hbml-capital",
+
   storageBucket: "hbml-capital.firebasestorage.app",
+
   messagingSenderId: "893969951538",
+
   appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+
 };
 
+/* INITIALIZE */
+
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
 
-/* =========================
-   ROLE
-========================= */
+/* ROLE */
 
 let role = "Admin";
+
+/* ROLE BUTTON FUNCTION */
 
 window.setRole = function(selectedRole,btn){
 
     role = selectedRole;
 
-    document.querySelectorAll(".tabs button")
-    .forEach(b=>b.classList.remove("active"));
+    document
+    .querySelectorAll(".tabs button")
+    .forEach(b => b.classList.remove("active"));
 
     btn.classList.add("active");
 }
 
-/* =========================
-   LOGIN STORE
-========================= */
+/* LOGIN FUNCTION */
 
 window.loginUser = async function(){
 
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    let name =
+    document.getElementById("name").value;
+
+    let email =
+    document.getElementById("email").value;
+
+    let password =
+    document.getElementById("password").value;
+
+    /* VALIDATION */
 
     if(name==="" || email==="" || password===""){
+
         alert("Please fill all fields");
+
         return;
     }
 
     try{
 
-        // SAVE LOGIN DATA
-        await addDoc(collection(db,"hbml_logins"),{
-            name:name,
-            email:email,
-            password:password,
-            role:role,
-            loginTime:new Date()
-        });
+        /* SAVE TO FIREBASE */
 
-        // SUCCESS MESSAGE
-        alert(role + " Login Success");
+        await addDoc(
+            collection(db,"hbml_logins"),
+            {
+                name:name,
+                email:email,
+                password:password,
+                role:role,
+                loginTime:new Date()
+            }
+        );
 
-        // REDIRECT PAGES
+        /* SUCCESS */
+
+        document.getElementById("message")
+        .innerHTML =
+        role + " Login Successful";
+
+        /* REDIRECT */
+
         if(role==="Admin"){
-            window.location.href="admin.html";
+
+            window.location.href =
+            "admin.html";
+
         }
 
         else if(role==="Employee"){
-            window.location.href="employee.html";
+
+            window.location.href =
+            "employee.html";
+
         }
 
         else{
-            window.location.href="customer.html";
+
+            window.location.href =
+            "customer.html";
+
         }
 
-    }catch(error){
+    }
+
+    catch(error){
 
         alert(error);
 
     }
 
 }
+
 </script>
 
 </body>
