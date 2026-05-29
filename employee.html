@@ -1,54 +1,277 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>HBML Employee Dashboard</title>
 
 <style>
 
-body{
-    font-family:Arial;
-    background:#f2f4f8;
-    padding:30px;
-    text-align:center;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
 }
 
-.box{
+body{
+    background:#f2f4f8;
+    padding:20px;
+}
+
+/* HEADER */
+
+.header{
     background:white;
-    padding:30px;
     border-radius:20px;
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     box-shadow:0 5px 20px rgba(0,0,0,0.1);
-    max-width:400px;
-    margin:auto;
+    margin-bottom:20px;
+}
+
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
 .logo{
-    width:120px;
-    height:120px;
+    width:70px;
+    height:70px;
     object-fit:contain;
-    margin-bottom:15px;
 }
 
-h1{
+.title h1{
+    color:#0d2b6b;
+    font-size:24px;
+}
+
+.title p{
+    color:gray;
+    font-size:14px;
+}
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card h2{
+    color:#0d2b6b;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:#555;
+    font-size:15px;
+}
+
+/* BUTTONS */
+
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.btn{
+    padding:16px;
+    border:none;
+    border-radius:15px;
+    background:#0d2b6b;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#163c91;
+}
+
+/* TABLE */
+
+.table-box{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+    overflow:auto;
+}
+
+.table-box h2{
+    margin-bottom:15px;
     color:#0d2b6b;
 }
 
-</style>
+table{
+    width:100%;
+    border-collapse:collapse;
+}
 
+table th{
+    background:#0d2b6b;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .header{
+        flex-direction:column;
+        gap:15px;
+        text-align:center;
+    }
+
+    .buttons{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="box">
+<!-- HEADER -->
 
-<img src="logo.png" class="logo">
+<div class="header">
 
-<h1>HBML EMPLOYEE PANEL</h1>
+    <div class="logo-box">
 
-<h2>Welcome Employee</h2>
+        <img src="logo.png" class="logo">
 
-<p>HBML Capital Staff Dashboard</p>
+        <div class="title">
+            <h1>HBML CAPITAL</h1>
+            <p>Employee Dashboard</p>
+        </div>
+
+    </div>
+
+    <h3>Welcome Employee</h3>
 
 </div>
+
+<!-- CARDS -->
+
+<div class="cards">
+
+    <div class="card">
+        <h2>150</h2>
+        <p>Total Customers</p>
+    </div>
+
+    <div class="card">
+        <h2>₹2,45,000</h2>
+        <p>Monthly EMI</p>
+    </div>
+
+    <div class="card">
+        <h2>₹18,500</h2>
+        <p>Today's Collection</p>
+    </div>
+
+    <div class="card">
+        <h2>25</h2>
+        <p>Pending Customers</p>
+    </div>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="buttons">
+
+    <button class="btn"
+    onclick="markAttendance()">
+    Mark Attendance
+    </button>
+
+    <button class="btn"
+    onclick="collectEMI()">
+    Collect EMI
+    </button>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-box">
+
+    <h2>Customer EMI Details</h2>
+
+    <table>
+
+        <tr>
+            <th>Customer</th>
+            <th>Loan</th>
+            <th>Status</th>
+        </tr>
+
+        <tr>
+            <td>Ramesh</td>
+            <td>₹50,000</td>
+            <td>Paid</td>
+        </tr>
+
+        <tr>
+            <td>Suresh</td>
+            <td>₹80,000</td>
+            <td>Pending</td>
+        </tr>
+
+        <tr>
+            <td>Kumar</td>
+            <td>₹1,20,000</td>
+            <td>Paid</td>
+        </tr>
+
+    </table>
+
+</div>
+
+<script>
+
+function markAttendance(){
+
+    alert("Attendance Marked Successfully");
+
+}
+
+function collectEMI(){
+
+    alert("EMI Collection Opened");
+
+}
+
+</script>
 
 </body>
 </html>
