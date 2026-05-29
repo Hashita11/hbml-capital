@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>HBML CAPITAL LOGIN</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:95%;
+    max-width:420px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    text-align:center;
+}
+
+.logo{
+    width:140px;
+    margin-bottom:15px;
+}
+
+h1{
+    color:#0d2b6b;
+    margin-bottom:5px;
+}
+
+.sub{
+    color:gray;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+.tabs{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.tabs button{
+    width:32%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#eaeaea;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.tabs button.active{
+    background:#0d2b6b;
+    color:white;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:15px;
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+    background:#0d2b6b;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.login-btn:hover{
+    background:#163c91;
+}
+
+.message{
+    margin-top:15px;
+    color:green;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- YOUR LOGO -->
+    <img src="174723.png" class="logo">
+
+    <h1>HBML CAPITAL</h1>
+    <div class="sub">Trusted Financial Solutions</div>
+
+    <!-- LOGIN TYPES -->
+    <div class="tabs">
+        <button class="active" onclick="setRole('Admin',this)">Admin</button>
+        <button onclick="setRole('Employee',this)">Employee</button>
+        <button onclick="setRole('Customer',this)">Customer</button>
+    </div>
+
+    <!-- FORM -->
+    <input type="text" id="name" placeholder="Enter Name">
+
+    <input type="email" id="email" placeholder="Enter Email">
+
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button class="login-btn" onclick="loginUser()">LOGIN</button>
+
+    <div class="message" id="message"></div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+  authDomain: "hbml-capital.firebaseapp.com",
+  projectId: "hbml-capital",
+  storageBucket: "hbml-capital.firebasestorage.app",
+  messagingSenderId: "893969951538",
+  appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* =========================
+   ROLE
+========================= */
+
+let role = "Admin";
+
+window.setRole = function(selectedRole,btn){
+
+    role = selectedRole;
+
+    document.querySelectorAll(".tabs button")
+    .forEach(b=>b.classList.remove("active"));
+
+    btn.classList.add("active");
+}
+
+/* =========================
+   LOGIN STORE
+========================= */
+
+window.loginUser = async function(){
+
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if(name==="" || email==="" || password===""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    try{
+
+        await addDoc(collection(db,"hbml_logins"),{
+            name:name,
+            email:email,
+            password:password,
+            role:role,
+            loginTime:new Date()
+        });
+
+        document.getElementById("message").innerHTML =
+        role + " Login Saved Successfully";
+
+        document.getElementById("name").value="";
+        document.getElementById("email").value="";
+        document.getElementById("password").value="";
+
+    }catch(error){
+
+        alert(error);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
