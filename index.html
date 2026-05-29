@@ -192,6 +192,7 @@ window.loginUser = async function(){
 
     try{
 
+        // SAVE LOGIN DATA
         await addDoc(collection(db,"hbml_logins"),{
             name:name,
             email:email,
@@ -200,12 +201,21 @@ window.loginUser = async function(){
             loginTime:new Date()
         });
 
-        document.getElementById("message").innerHTML =
-        role + " Login Saved Successfully";
+        // SUCCESS MESSAGE
+        alert(role + " Login Success");
 
-        document.getElementById("name").value="";
-        document.getElementById("email").value="";
-        document.getElementById("password").value="";
+        // REDIRECT PAGES
+        if(role==="Admin"){
+            window.location.href="admin.html";
+        }
+
+        else if(role==="Employee"){
+            window.location.href="employee.html";
+        }
+
+        else{
+            window.location.href="customer.html";
+        }
 
     }catch(error){
 
@@ -214,7 +224,6 @@ window.loginUser = async function(){
     }
 
 }
-
 </script>
 
 </body>
