@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Customer</title>
 
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:15px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>Add Customer</h1>
+
+<input type="text" placeholder="Customer Name">
+
+<input type="text" placeholder="Phone Number">
+
+<input type="text" placeholder="Address">
+
+<input type="number" placeholder="Loan Amount">
+
+<input type="number" placeholder="Monthly EMI">
+
+<button onclick="saveCustomer()">
+Save Customer
+</button>
+
+</div>
+
+<script>
+
+function saveCustomer(){
+
+alert("Customer Saved Successfully");
+
+}
+
+</script>
+
+</body>
+</html>
