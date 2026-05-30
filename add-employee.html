@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Add Employee</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+input,select{
+width:100%;
+padding:15px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#163c91;
+}
+
+.table-box{
+margin-top:25px;
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+table th{
+background:#0d2b6b;
+color:white;
+padding:12px;
+}
+
+table td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>Add Employee</h1>
+
+<input type="text"
+id="name"
+placeholder="Employee Name">
+
+<input type="text"
+id="phone"
+placeholder="Phone Number">
+
+<input type="email"
+id="email"
+placeholder="Email">
+
+<select id="role">
+
+<option>Collection Staff</option>
+
+<option>Manager</option>
+
+<option>Field Officer</option>
+
+<option>Office Staff</option>
+
+</select>
+
+<button onclick="saveEmployee()">
+
+Save Employee
+
+</button>
+
+<div class="table-box">
+
+<table id="employeeTable">
+
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Role</th>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+function saveEmployee(){
+
+let name =
+document.getElementById("name").value;
+
+let phone =
+document.getElementById("phone").value;
+
+let role =
+document.getElementById("role").value;
+
+if(name==="" || phone===""){
+
+alert("Fill all fields");
+
+return;
+
+}
+
+let table =
+document.getElementById("employeeTable");
+
+let row =
+table.insertRow();
+
+row.insertCell(0).innerHTML = name;
+
+row.insertCell(1).innerHTML = phone;
+
+row.insertCell(2).innerHTML = role;
+
+alert("Employee Added Successfully");
+
+document.getElementById("name").value="";
+document.getElementById("phone").value="";
+document.getElementById("email").value="";
+
+}
+
+</script>
+
+</body>
+</html>
