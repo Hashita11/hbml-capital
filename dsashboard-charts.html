@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<title>Dashboard Charts</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+max-width:1000px;
+margin:auto;
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:25px;
+}
+
+.chart-box{
+margin-top:30px;
+}
+
+canvas{
+background:white;
+border-radius:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>HBML Analytics Charts</h1>
+
+<div class="chart-box">
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+</div>
+
+<script>
+
+const ctx =
+document.getElementById('myChart');
+
+new Chart(ctx, {
+
+type: 'bar',
+
+data: {
+
+labels: [
+
+'Jan',
+'Feb',
+'Mar',
+'Apr',
+'May',
+'Jun'
+
+],
+
+datasets: [{
+
+label: 'Monthly EMI Collection',
+
+data: [
+
+50000,
+80000,
+65000,
+90000,
+120000,
+150000
+
+],
+
+borderWidth:1
+
+}]
+
+},
+
+options: {
+
+responsive:true,
+
+scales: {
+
+y: {
+
+beginAtZero:true
+
+}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
