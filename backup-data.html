@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Backup Data</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:600px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+margin-bottom:15px;
+}
+
+h1{
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+button{
+padding:15px 25px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+margin:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>HBML Backup System</h1>
+
+<button onclick="backupData()">
+
+Backup Customer Data
+
+</button>
+
+<button onclick="exportData()">
+
+Export Reports
+
+</button>
+
+</div>
+
+<script>
+
+function backupData(){
+
+alert("Firebase Backup Completed");
+
+}
+
+function exportData(){
+
+alert("Finance Report Exported");
+
+}
+
+</script>
+
+</body>
+</html>
