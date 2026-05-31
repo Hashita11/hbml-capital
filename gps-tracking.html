@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>GPS Tracking</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+background:white;
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+margin-bottom:15px;
+}
+
+h1{
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+.location{
+margin-top:20px;
+font-size:18px;
+color:#333;
+}
+
+button{
+padding:15px 25px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>Employee GPS Tracking</h1>
+
+<button onclick="getLocation()">
+
+Track Location
+
+</button>
+
+<div class="location" id="location">
+
+Waiting for location...
+
+</div>
+
+</div>
+
+<script>
+
+function getLocation(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+document.getElementById("location")
+.innerHTML =
+
+"Latitude: " +
+
+position.coords.latitude +
+
+"<br><br>Longitude: " +
+
+position.coords.longitude;
+
+}
+
+);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
