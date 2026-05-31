@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>HBML Firebase Auth</title>
+
+<title>HBML Secure Login</title>
 
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <style>
 
-body{
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial;
+}
+
+body{
 background:#f2f4f8;
 display:flex;
 justify-content:center;
@@ -18,12 +26,12 @@ height:100vh;
 }
 
 .box{
+width:90%;
+max-width:420px;
 background:white;
 padding:30px;
 border-radius:20px;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
-width:90%;
-max-width:400px;
 }
 
 .logo{
@@ -36,7 +44,7 @@ margin-bottom:15px;
 h1{
 text-align:center;
 color:#0d2b6b;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 input{
@@ -45,20 +53,33 @@ padding:15px;
 margin-bottom:15px;
 border:1px solid #ccc;
 border-radius:10px;
+font-size:16px;
 }
 
 button{
 width:100%;
 padding:15px;
-background:#0d2b6b;
-color:white;
 border:none;
 border-radius:10px;
+background:#0d2b6b;
+color:white;
 font-size:16px;
 cursor:pointer;
+margin-bottom:10px;
+}
+
+button:hover{
+background:#163c91;
+}
+
+.msg{
+text-align:center;
+margin-top:10px;
+font-size:14px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -67,15 +88,21 @@ cursor:pointer;
 
 <img src="logo.png" class="logo">
 
-<h1>Secure Login</h1>
+<h1>HBML CAPITAL</h1>
 
 <input type="email"
 id="email"
-placeholder="Email">
+placeholder="Enter Email">
 
 <input type="password"
 id="password"
-placeholder="Password">
+placeholder="Enter Password">
+
+<button onclick="register()">
+
+Create Account
+
+</button>
 
 <button onclick="login()">
 
@@ -83,15 +110,119 @@ Login
 
 </button>
 
+<div class="msg" id="msg"></div>
+
 </div>
 
-<script>
+<script type="module">
 
-function login(){
+/* FIREBASE */
 
-alert("Firebase Authentication Connected");
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* CONFIG */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+
+authDomain: "hbml-capital.firebaseapp.com",
+
+projectId: "hbml-capital",
+
+storageBucket: "hbml-capital.firebasestorage.app",
+
+messagingSenderId: "893969951538",
+
+appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+
+};
+
+/* INIT */
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+/* REGISTER */
+
+window.register = function(){
+
+let email =
+document.getElementById("email").value;
+
+let password =
+document.getElementById("password").value;
+
+createUserWithEmailAndPassword(
+auth,
+email,
+password
+)
+
+.then((userCredential)=>{
+
+document.getElementById("msg")
+.innerHTML =
+"Account Created Successfully";
+
+})
+
+.catch((error)=>{
+
+document.getElementById("msg")
+.innerHTML =
+error.message;
+
+});
+
+}
+
+/* LOGIN */
+
+window.login = function(){
+
+let email =
+document.getElementById("email").value;
+
+let password =
+document.getElementById("password").value;
+
+signInWithEmailAndPassword(
+auth,
+email,
+password
+)
+
+.then((userCredential)=>{
+
+document.getElementById("msg")
+.innerHTML =
+"Login Success";
 
 window.location.href="admin.html";
+
+})
+
+.catch((error)=>{
+
+document.getElementById("msg")
+.innerHTML =
+error.message;
+
+});
 
 }
 
