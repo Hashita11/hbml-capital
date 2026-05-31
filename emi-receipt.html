@@ -1,1 +1,273 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<title>HBML EMI Receipt</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f2f4f8;
+padding:20px;
+}
+
+/* RECEIPT BOX */
+
+.receipt{
+max-width:700px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* HEADER */
+
+.header{
+text-align:center;
+margin-bottom:25px;
+}
+
+.logo{
+width:100px;
+margin-bottom:10px;
+}
+
+.header h1{
+color:#0d2b6b;
+margin-bottom:5px;
+}
+
+.header p{
+color:gray;
+}
+
+/* DETAILS */
+
+.details{
+margin-top:20px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid #ddd;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.label{
+font-weight:bold;
+color:#0d2b6b;
+}
+
+.value{
+color:#333;
+}
+
+/* AMOUNT */
+
+.amount-box{
+margin-top:25px;
+background:#0d2b6b;
+color:white;
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+.amount-box h2{
+font-size:35px;
+margin-top:10px;
+}
+
+/* BUTTONS */
+
+.buttons{
+margin-top:25px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.btn{
+padding:15px;
+border:none;
+border-radius:12px;
+background:#0d2b6b;
+color:white;
+font-size:16px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btn:hover{
+background:#163c91;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:30px;
+text-align:center;
+color:gray;
+font-size:14px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.buttons{
+grid-template-columns:1fr;
+}
+
+.row{
+flex-direction:column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="receipt">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<img src="logo.png" class="logo">
+
+<h1>HBML CAPITAL</h1>
+
+<p>EMI Payment Receipt</p>
+
+</div>
+
+<!-- DETAILS -->
+
+<div class="details">
+
+<div class="row">
+<div class="label">Receipt No</div>
+<div class="value">
+HBML2026001
+</div>
+</div>
+
+<div class="row">
+<div class="label">Customer Name</div>
+<div class="value">
+Ramesh
+</div>
+</div>
+
+<div class="row">
+<div class="label">Loan Amount</div>
+<div class="value">
+₹50,000
+</div>
+</div>
+
+<div class="row">
+<div class="label">Monthly EMI</div>
+<div class="value">
+₹5,000
+</div>
+</div>
+
+<div class="row">
+<div class="label">Payment Date</div>
+<div class="value" id="date">
+30-05-2026
+</div>
+</div>
+
+<div class="row">
+<div class="label">Collected By</div>
+<div class="value">
+HBML Employee
+</div>
+</div>
+
+</div>
+
+<!-- AMOUNT -->
+
+<div class="amount-box">
+
+<p>EMI Amount Paid</p>
+
+<h2>₹5,000</h2>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="buttons">
+
+<button class="btn"
+onclick="window.print()">
+
+Print Receipt
+
+</button>
+
+<button class="btn"
+onclick="goBack()">
+
+Back
+
+</button>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+Thank You For Choosing HBML CAPITAL
+
+</div>
+
+</div>
+
+<script>
+
+/* TODAY DATE */
+
+let today = new Date();
+
+document.getElementById("date")
+.innerHTML =
+today.toLocaleDateString();
+
+/* BACK */
+
+function goBack(){
+
+window.history.back();
+
+}
+
+</script>
+
+</body>
+</html>
