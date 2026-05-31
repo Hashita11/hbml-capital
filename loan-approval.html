@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Loan Approval</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#0d2b6b;
+color:white;
+padding:14px;
+}
+
+td{
+padding:14px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+
+.btn{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+color:white;
+font-weight:bold;
+}
+
+.approve{
+background:green;
+}
+
+.reject{
+background:red;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>Loan Approval Panel</h1>
+
+<table>
+
+<tr>
+<th>Customer</th>
+<th>Loan Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+<tr>
+<td>Ramesh</td>
+<td>₹50,000</td>
+<td id="status1">Pending</td>
+
+<td>
+
+<button class="btn approve"
+onclick="approveLoan('status1')">
+Approve
+</button>
+
+<button class="btn reject"
+onclick="rejectLoan('status1')">
+Reject
+</button>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function approveLoan(id){
+
+document.getElementById(id)
+.innerHTML="Approved";
+
+}
+
+function rejectLoan(id){
+
+document.getElementById(id)
+.innerHTML="Rejected";
+
+}
+
+</script>
+
+</body>
+</html>
