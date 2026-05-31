@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Dark Mode</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#121212;
+color:white;
+padding:20px;
+}
+
+.box{
+max-width:700px;
+margin:auto;
+background:#1e1e1e;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.card{
+background:#2c2c2c;
+padding:20px;
+border-radius:15px;
+margin-bottom:15px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>HBML Dark Mode</h1>
+
+<div class="card">
+Total EMI Collection : ₹8,50,000
+</div>
+
+<div class="card">
+Pending Loans : 18
+</div>
+
+<div class="card">
+Total Customers : 150
+</div>
+
+<button onclick="toggleMode()">
+
+Dark Mode Enabled
+
+</button>
+
+</div>
+
+<script>
+
+function toggleMode(){
+
+alert("Dark Mode Active");
+
+}
+
+</script>
+
+</body>
+</html>
