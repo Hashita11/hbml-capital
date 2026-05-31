@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>WhatsApp Reminder</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+textarea{
+width:100%;
+height:150px;
+padding:15px;
+border:1px solid #ccc;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>WhatsApp EMI Reminder</h1>
+
+<textarea>
+
+Dear Customer,
+
+Your EMI payment is due tomorrow.
+
+- HBML CAPITAL
+
+</textarea>
+
+<button onclick="sendReminder()">
+
+Send Reminder
+
+</button>
+
+</div>
+
+<script>
+
+function sendReminder(){
+
+alert("WhatsApp Reminder Sent");
+
+}
+
+</script>
+
+</body>
+</html>
