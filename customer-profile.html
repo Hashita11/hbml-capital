@@ -1,1 +1,153 @@
 
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Customer Profile</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f4f8;
+padding:20px;
+}
+
+.box{
+max-width:700px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo{
+width:100px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+}
+
+h1{
+text-align:center;
+color:#0d2b6b;
+margin-bottom:20px;
+}
+
+.profile{
+text-align:center;
+margin-bottom:25px;
+}
+
+.avatar{
+width:100px;
+height:100px;
+border-radius:50%;
+background:#0d2b6b;
+color:white;
+font-size:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+margin-bottom:10px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid #ddd;
+}
+
+.label{
+font-weight:bold;
+color:#0d2b6b;
+}
+
+.value{
+color:#333;
+}
+
+.btn{
+width:100%;
+padding:15px;
+margin-top:20px;
+background:#0d2b6b;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<img src="logo.png" class="logo">
+
+<h1>Customer Profile</h1>
+
+<div class="profile">
+
+<div class="avatar">
+R
+</div>
+
+<h2>Ramesh</h2>
+
+<p>HBML Customer</p>
+
+</div>
+
+<div class="row">
+<div class="label">Phone</div>
+<div class="value">9876543210</div>
+</div>
+
+<div class="row">
+<div class="label">Address</div>
+<div class="value">Hyderabad</div>
+</div>
+
+<div class="row">
+<div class="label">Loan Amount</div>
+<div class="value">₹50,000</div>
+</div>
+
+<div class="row">
+<div class="label">Monthly EMI</div>
+<div class="value">₹5,000</div>
+</div>
+
+<div class="row">
+<div class="label">Paid Amount</div>
+<div class="value">₹20,000</div>
+</div>
+
+<div class="row">
+<div class="label">Pending Balance</div>
+<div class="value">₹30,000</div>
+</div>
+
+<button class="btn"
+onclick="window.print()">
+
+Print Profile
+
+</button>
+
+</div>
+
+</body>
+</html>
