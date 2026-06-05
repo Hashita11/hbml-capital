@@ -116,10 +116,17 @@ Reject
 
 <script>
 
-function approveLoan(id){
+window.approveLoan = async function(customer){
 
-document.getElementById(id)
-.innerHTML="Approved";
+await addDoc(collection(db,"loan_approvals"),{
+
+customer:customer,
+status:"Approved",
+date:new Date()
+
+});
+
+alert("Loan Approved");
 
 }
 
