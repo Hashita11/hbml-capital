@@ -97,9 +97,20 @@ Update
 
 <script>
 
-function markAttendance(){
+window.markAttendance = async function(){
 
-alert("Attendance Updated");
+let employee =
+document.getElementById("employee").value;
+
+await addDoc(collection(db,"attendance"),{
+
+employee:employee,
+date:new Date(),
+status:"Present"
+
+});
+
+alert("Attendance Saved");
 
 }
 
