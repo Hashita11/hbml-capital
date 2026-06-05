@@ -82,9 +82,8 @@ cursor:pointer;
 <td>₹5,000</td>
 <td>Pending</td>
 <td>
-<button class="btn"
-onclick="collectEMI()">
-Collect
+<button onclick="collectEMI()">
+Collect EMI
 </button>
 </td>
 </tr>
@@ -95,7 +94,21 @@ Collect
 
 <script>
 
-function collectEMI(){
+window.collectEMI = async function(){
+
+let customer =
+document.getElementById("customer").value;
+
+let amount =
+document.getElementById("amount").value;
+
+await addDoc(collection(db,"emi_collections"),{
+
+customer:customer,
+amount:amount,
+date:new Date()
+
+});
 
 alert("EMI Collected");
 
