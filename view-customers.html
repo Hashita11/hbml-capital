@@ -50,7 +50,19 @@ text-align:center;
 color:#0d2b6b;
 margin-bottom:20px;
 }
+<div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px;justify-content:center;">
 
+<div style="background:#0d2b6b;color:white;padding:15px 25px;border-radius:10px;">
+Total Customers:
+<span id="totalCustomers">0</span>
+</div>
+
+<div style="background:green;color:white;padding:15px 25px;border-radius:10px;">
+Total Loan:
+<span id="totalLoan">₹0</span>
+</div>
+
+</div>
 /* SEARCH */
 
 .search{
@@ -129,6 +141,7 @@ onkeyup="searchCustomer()">
 <th>Address</th>
 <th>Loan</th>
 <th>EMI</th>
+<th>Action</th>
 
 </tr>
 
@@ -189,9 +202,15 @@ await getDocs(collection(db,"customers"));
 const table =
 document.getElementById("customerTable");
 
+let totalCustomers = 0;
+let totalLoan = 0;
+
 querySnapshot.forEach((doc)=>{
 
 const data = doc.data();
+
+totalCustomers++;
+totalLoan += Number(data.loan || 0);
 
 let row = table.insertRow();
 
@@ -212,10 +231,13 @@ row.insertCell(4).innerHTML =
 
 });
 
+document.getElementById("totalCustomers").innerHTML =
+totalCustomers;
+
+document.getElementById("totalLoan").innerHTML =
+"₹" + totalLoan.toLocaleString();
+
 }
-
-loadCustomers();
-
 /* SEARCH */
 
 window.searchCustomer = function(){
