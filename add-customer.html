@@ -2,11 +2,12 @@
 <html>
 <head>
 <title>Add Customer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f2f4f8;
 padding:20px;
 }
@@ -52,9 +53,11 @@ border-radius:10px;
 font-size:16px;
 cursor:pointer;
 }
-<button onclick="saveCustomer()">
-Save Customer
-</button>
+
+button:hover{
+background:#163c91;
+}
+
 </style>
 </head>
 
@@ -66,15 +69,15 @@ Save Customer
 
 <h1>Add Customer</h1>
 
-<input type="text" placeholder="Customer Name">
+<input type="text" id="name" placeholder="Customer Name">
 
-<input type="text" placeholder="Phone Number">
+<input type="text" id="phone" placeholder="Phone Number">
 
-<input type="text" placeholder="Address">
+<input type="text" id="address" placeholder="Address">
 
-<input type="number" placeholder="Loan Amount">
+<input type="number" id="loan" placeholder="Loan Amount">
 
-<input type="number" placeholder="Monthly EMI">
+<input type="number" id="emi" placeholder="Monthly EMI">
 
 <button onclick="saveCustomer()">
 Save Customer
@@ -82,14 +85,8 @@ Save Customer
 
 </div>
 
-<script>
-  
-collection(db,"customers")
-function saveCustomer(){
+<script type="module">
 
-alert("Customer Saved Successfully");
-
-}
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -101,28 +98,20 @@ addDoc
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-
 apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-
 authDomain: "hbml-capital.firebaseapp.com",
-
 projectId: "hbml-capital",
-
 storageBucket: "hbml-capital.firebasestorage.app",
-
 messagingSenderId: "893969951538",
-
 appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 
-/* SAVE CUSTOMER */
-
 window.saveCustomer = async function(){
+
+try{
 
 let name =
 document.getElementById("name").value;
@@ -139,20 +128,40 @@ document.getElementById("loan").value;
 let emi =
 document.getElementById("emi").value;
 
+if(!name || !phone){
+alert("Please enter Name and Phone Number");
+return;
+}
+
 await addDoc(collection(db,"customers"),{
 
 name:name,
 phone:phone,
 address:address,
-loan:loan,
-emi:emi,
+loan:Number(loan),
+emi:Number(emi),
 created:new Date()
 
 });
 
-alert("Customer Saved");
+alert("Customer Saved Successfully");
+
+document.getElementById("name").value="";
+document.getElementById("phone").value="";
+document.getElementById("address").value="";
+document.getElementById("loan").value="";
+document.getElementById("emi").value="";
 
 }
+catch(error){
+
+console.log(error);
+alert("Error : " + error.message);
+
+}
+
+}
+
 </script>
 
 </body>
