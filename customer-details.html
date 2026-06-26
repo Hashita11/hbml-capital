@@ -29,8 +29,8 @@
                 <div class="text-center sm:text-left space-y-2">
                     <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase" id="name">Loading Profile...</h1>
                     <div class="flex flex-wrap justify-center sm:justify-start gap-2 text-[10px] font-mono font-bold uppercase">
-                        <span class="bg-slate-950 text-sky-400 px-2 py-0.5 rounded border border-slate-800" id="lblCustId">UID: Loading...</span>
-                        <span class="bg-slate-950 text-emerald-400 px-2 py-0.5 rounded border border-slate-800" id="loanType">Loan Asset</span>
+                        <span class="bg-slate-950 text-sky-400 px-2 py-1 rounded border border-slate-800" id="lblCustId">UID: HBML-SYSTEM</span>
+                        <span class="bg-slate-950 text-emerald-400 px-2 py-1 rounded border border-slate-800" id="loanType">MICROFINANCE LOAN</span>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-history text-purple-400 mr-1.5"></i> EMI Repayment History Logs</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse min-w-[500px]">
+                <table class="w-full text-left text-xs border-collapse min-w-[600px]">
                     <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="p-4">Payment Timestamp</th>
@@ -98,7 +98,7 @@
                     </thead>
                     <tbody id="paymentTable" class="divide-y divide-slate-800/60 font-medium text-slate-300">
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold animate-pulse"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> లోడింగ్ జరుగుతోంది...</td>
+                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> ట్రాన్సాక్షన్స్ చెక్ చేస్తున్నాము...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -127,12 +127,11 @@
         const customerId = params.get("id");
 
         if(!customerId){
-            alert("Customer Document Reference ID is missing.");
+            alert("Customer Reference ID Missing!");
             window.location.href = "view-customers.html";
             throw new Error("Missing ID Parameter.");
         }
 
-        /* 📉 STREAM INDIVIDUAL DATA LAYER FROM FIRESTORE CLOUD */
         async function loadCustomerLedger(id) {
             try {
                 const customerRef = doc(db, "customers", id);
@@ -147,18 +146,21 @@
                 const data = snap.data();
                 const cleanName = data.name || "Unknown Borrower";
                 
-                // సెట్ అバター మొదటి అక్షరం
                 document.getElementById("avatarLetter").innerText = cleanName.charAt(0).toUpperCase();
-
-                // ఫీల్డ్ టెక్స్ట్ ఇంజెక్షన్
                 document.getElementById("name").innerText = cleanName;
                 
-                // 🛠️ UID సింక్ ఫిక్స్: ఒకవేళ కస్టమర్ ఐడీ ఫీల్డ్ లేకపోతే డాక్యుమెంట్ ఐడీ లోని మొదటి 6 అక్షరాలు చూపిస్తుంది
+                // 🛠️ UID సేఫ్ సేవింగ్ లాజిక్: ఒకవేళ కస్టమర్ ఐడీ మిస్ అయితే ఫాల్‌బ్యాక్ ఐడీ చూపిస్తుంది
                 let displayUID = data.customerId || data.id || id;
-                if(displayUID.length > 10) displayUID = "HBML-" + displayUID.substring(0, 5).toUpperCase();
+                if(displayUID.length > 10) {
+                    displayUID = "HBML-" + displayUID.substring(0, 5).toUpperCase();
+                }
                 document.getElementById("lblCustId").innerText = "UID: " + displayUID;
                 
-                document.getElementById("loanType").innerText = data.loanType || "Microfinance Loan";
+                // 🛠️ లోన్ టైప్ చెక్
+                if(data.loanType) {
+                    document.getElementById("loanType").innerText = data.loanType.toUpperCase();
+                }
+
                 document.getElementById("phone").innerText = data.phone || "N/A";
                 document.getElementById("address").innerText = data.address || "N/A";
                 
@@ -168,7 +170,7 @@
                 document.getElementById("loanBox").innerText = "₹" + loanPrincipal.toLocaleString('en-IN');
                 document.getElementById("emiBox").innerText = "₹" + emiValue.toLocaleString('en-IN');
 
-                /* FETCH EMBEDDED REPAYMENT LIST */
+                /* Repayment subcollection check */
                 const tbody = document.getElementById("paymentTable");
                 tbody.innerHTML = "";
                 let totalPaid = 0;
@@ -194,7 +196,6 @@
                     tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-600 font-bold">No payment transaction blocks recorded yet.</td></tr>`;
                 }
 
-                // టోటల్స్ బాక్సులు లెక్కించడం
                 document.getElementById("paidBox").innerText = "₹" + totalPaid.toLocaleString('en-IN');
                 
                 let currentOutstanding = loanPrincipal - totalPaid;
@@ -207,12 +208,11 @@
             }
         }
 
-        /* 🛑 TRIGGER LOGICAL CONTROLLERS ACTION */
         document.getElementById("btnDelete").onclick = async function() {
-            if(confirm("Are you absolutely sure you want to permanently purge this customer account ledger? This action cannot be reversed.")) {
+            if(confirm("Are you absolutely sure you want to permanently delete this customer?")) {
                 try {
                     await deleteDoc(doc(db, "customers", customerId));
-                    alert("Account record data scrubbed successfully.");
+                    alert("Account record data deleted successfully.");
                     window.location.href = "view-customers.html";
                 } catch(e) { alert(e.message); }
             }
@@ -221,7 +221,6 @@
         document.getElementById("btnEdit").onclick = () => window.location.href = "edit-customer.html?id=" + customerId;
         document.getElementById("btnCollect").onclick = () => window.location.href = "collect-emi.html?id=" + customerId;
 
-        // ఇనిషియల్ ఎగ్జిక్యూషన్ లూప్
         window.addEventListener('DOMContentLoaded', () => { loadCustomerLedger(customerId); });
     </script>
 </body>
