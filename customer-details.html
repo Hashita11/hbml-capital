@@ -312,3 +312,181 @@ No Payments Found
 </table>
 
 </div>
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+collection,
+getDocs,
+deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+
+authDomain: "hbml-capital.firebaseapp.com",
+
+projectId: "hbml-capital",
+
+storageBucket: "hbml-capital.firebasestorage.app",
+
+messagingSenderId: "893969951538",
+
+appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* GET CUSTOMER ID */
+
+const params = new URLSearchParams(window.location.search);
+const customerId = params.get("id");
+
+if(customerId){
+
+loadCustomer(customerId);
+
+}
+
+/* LOAD CUSTOMER */
+
+async function loadCustomer(id){
+
+try{
+
+const customerRef = doc(db,"customers",id);
+
+const customerSnap = await getDoc(customerRef);
+
+if(customerSnap.exists()){
+
+const data = customerSnap.data();
+
+document.getElementById("customerId").innerHTML=id;
+document.getElementById("name").innerHTML=data.name || "";
+document.getElementById("phone").innerHTML=data.phone || "";
+document.getElementById("address").innerHTML=data.address || "";
+document.getElementById("loan").innerHTML="₹"+Number(data.loan||0).toLocaleString();
+document.getElementById("emi").innerHTML="₹"+Number(data.emi||0).toLocaleString();
+
+document.getElementById("loanBox").innerHTML="₹"+Number(data.loan||0).toLocaleString();
+
+document.getElementById("emiBox").innerHTML="₹"+Number(data.emi||0).toLocaleString();
+
+let totalPaid=0;
+
+/* PAYMENT HISTORY */
+
+const tbody=document.getElementById("paymentTable");
+
+tbody.innerHTML="";
+
+const paymentSnapshot=await getDocs(collection(db,"customers",id,"payments"));
+
+paymentSnapshot.forEach((payment)=>{
+
+const p=payment.data();
+
+totalPaid+=Number(p.amount||0);
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td>${p.date||""}</td>
+
+<td>₹${Number(p.amount||0).toLocaleString()}</td>
+
+<td>${p.mode||"Cash"}</td>
+
+<td>Paid</td>
+
+</tr>
+
+`;
+
+});
+
+if(tbody.innerHTML==""){
+
+tbody.innerHTML=`
+<tr>
+<td colspan="4">
+No Payments Found
+</td>
+</tr>
+`;
+
+}
+
+document.getElementById("paidBox").innerHTML=
+"₹"+totalPaid.toLocaleString();
+
+const balance=
+Number(data.loan||0)-totalPaid;
+
+document.getElementById("balanceBox").innerHTML=
+"₹"+balance.toLocaleString();
+
+}else{
+
+alert("Customer Not Found");
+
+}
+
+}catch(error){
+
+console.log(error);
+
+alert(error.message);
+
+}
+
+}
+
+/* DELETE CUSTOMER */
+
+document.querySelector(".delete").onclick=async function(){
+
+if(confirm("Delete this customer?")){
+
+await deleteDoc(doc(db,"customers",customerId));
+
+alert("Customer Deleted");
+
+window.location.href="view-customers.html";
+
+}
+
+};
+
+/* EDIT CUSTOMER */
+
+document.querySelector(".edit").onclick=function(){
+
+window.location.href="edit-customer.html?id="+customerId;
+
+};
+
+/* EMI COLLECTION */
+
+document.querySelector(".collect").onclick=function(){
+
+window.location.href="emi-collection.html?id="+customerId;
+
+};
+
+</script>
+
+</body>
+
+</html>
