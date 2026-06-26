@@ -17,11 +17,11 @@
 
     <div class="flex h-screen overflow-hidden">
         
+        <!-- SIDEBAR (DESKTOP) -->
         <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800">
             <div class="p-5 overflow-y-auto flex-1">
                 <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto" onerror="this.style.display='none'; document.getElementById('txt-logo').classList.remove('hidden')">
-                    <div id="txt-logo" class="h-9 w-9 bg-sky-600 rounded-lg flex items-center justify-center font-bold text-white hidden">H</div>
+                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto">
                     <div>
                         <h2 class="text-base font-black tracking-wider text-sky-400 leading-tight">HBML CAPITAL</h2>
                         <span class="text-xs text-slate-400">Management Panel</span>
@@ -50,24 +50,29 @@
             </div>
         </aside>
 
+        <!-- MAIN CONTENT -->
         <main class="flex-1 flex flex-col overflow-y-auto">
             
-            <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
-                <div class="flex items-center gap-3">
-                    <h1 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
+            <!-- GLOBAL TOPBAR (Logo Added Here for Mobile Visibility) -->
+            <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
+                <div class="flex items-center gap-2.5">
+                    <!-- Mobile Logo Indicator -->
+                    <img src="logo.png" alt="HBML Logo" class="h-8 w-auto lg:hidden block">
+                    <h1 class="text-base md:text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                     <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition" title="Toggle Mode">
                         <i class="fa-solid fa-moon dark:hidden text-lg"></i>
                         <i class="fa-solid fa-sun hidden dark:inline text-lg"></i>
                     </button>
                     <div class="h-5 w-px bg-slate-200 dark:bg-slate-700"></div>
-                    <div class="clock font-mono font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-sky-400 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner" id="clock"></div>
+                    <div class="clock font-mono font-bold text-xs md:text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-sky-400 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner" id="clock"></div>
                 </div>
             </header>
 
             <div class="p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
                 
+                <!-- PROFILE BANNER -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-5 rounded-2xl shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="flex items-center gap-4">
                         <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">
@@ -83,6 +88,7 @@
                     </button>
                 </div>
 
+                <!-- CARDS -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
                         <div>
@@ -117,6 +123,7 @@
                     </div>
                 </div>
 
+                <!-- ACTIONS -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()">
                         <i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer
@@ -132,6 +139,7 @@
                     </button>
                 </div>
 
+                <!-- DYNAMIC TABLE -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
                     <div class="p-5 border-b border-slate-100 dark:border-slate-800">
                         <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent Finance Activity</h3>
@@ -143,27 +151,12 @@
                                     <th class="p-4">Customer</th>
                                     <th class="p-4">Loan Amount</th>
                                     <th class="p-4">Status</th>
-                                    <th class="p-4 text-right">EMI</th>
+                                    <th class="p-4 text-right">EMI Status / Time</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
-                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
-                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Ramesh</td>
-                                    <td class="p-4">₹50,000</td>
-                                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">Approved</span></td>
-                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹5,000</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
-                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Suresh</td>
-                                    <td class="p-4">₹80,000</td>
-                                    <td class="p-4"><span class="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-amber-200/50 dark:border-amber-900/50">Pending</span></td>
-                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹8,000</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
-                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Kumar</td>
-                                    <td class="p-4">₹1,20,000</td>
-                                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">Approved</span></td>
-                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹12,000</td>
+                            <tbody id="recent-activity-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                                <tr>
+                                    <td colspan="4" class="p-4 text-center text-slate-400 text-xs animate-pulse">డేటా లోడ్ అవుతోంది...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -174,101 +167,92 @@
         </main>
     </div>
 
-    
-        /* LIVE CLOCK FUNCTION */
-        <script type="module">
-    /* FIREBASE IMPORTS */
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    <!-- FIREBASE MODULE & LOGIC SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    /* మీ ఒరిజినల్ CONFIG */
-    const firebaseConfig = {
-        apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-        authDomain: "hbml-capital.firebaseapp.com",
-        projectId: "hbml-capital",
-        storageBucket: "hbml-capital.firebasestorage.app",
-        messagingSenderId: "893969951538",
-        appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-    /* లైవ్ డేటాను టేబుల్‌లోకి తెచ్చే ఫంక్షన్ */
-    async function fetchRecentLogins() {
-        const tableBody = document.getElementById("recent-activity-body");
-        
-        try {
-            // లాగిన్ అయిన చివరి 5 ఒరిజినల్ రికార్డులను తీసుకుంటుంది
-            const q = query(collection(db, "hbml_logins"), orderBy("loginTime", "desc"), limit(5));
-            const querySnapshot = await getDocs(q);
+        async function fetchRecentLogins() {
+            const tableBody = document.getElementById("recent-activity-body");
             
-            let tableHTML = "";
-            
-            if(querySnapshot.empty) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 text-xs">నో రికార్డ్స్ ఫౌండ్.</td></tr>`;
-                return;
-            }
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
+            try {
+                const q = query(collection(db, "hbml_logins"), orderBy("loginTime", "desc"), limit(5));
+                const querySnapshot = await getDocs(q);
                 
-                // స్టేటస్ కలర్ సెట్ చేయడం
-                const statusBadge = data.role === "Admin" 
-                    ? `<span class="bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-sky-200/50 dark:border-sky-900/50">Admin Log</span>`
-                    : `<span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">${data.role}</span>`;
+                let tableHTML = "";
+                
+                if(querySnapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400 text-xs">నో రికార్డ్స్ ఫౌండ్.</td></tr>`;
+                    return;
+                }
 
-                tableHTML += `
-                    <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
-                        <td class="p-4 text-slate-900 dark:text-white font-bold text-left">
-                            <div>${data.name}</div>
-                            <div class="text-xs text-slate-400 font-normal">${data.email}</div>
-                        </td>
-                        <td class="p-4 font-mono text-xs text-slate-500">Secured</td>
-                        <td class="p-4">${statusBadge}</td>
-                        <td class="p-4 text-right text-xs text-slate-400 font-mono">${data.loginTime ? new Date(data.loginTime.seconds * 1000).toLocaleTimeString() : 'N/A'}</td>
-                    </tr>
-                `;
-            });
-            
-            tableBody.innerHTML = tableHTML;
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-            tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-500 text-xs">డేటా లోడ్ చేయడంలో లోపం జరిగింది.</td></tr>`;
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const statusBadge = data.role === "Admin" 
+                        ? `<span class="bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-sky-200/50 dark:border-sky-900/50">Admin Log</span>`
+                        : `<span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">${data.role}</span>`;
+
+                    tableHTML += `
+                        <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
+                            <td class="p-4 text-slate-900 dark:text-white font-bold text-left">
+                                <div>${data.name || 'Unknown'}</div>
+                                <div class="text-xs text-slate-400 font-normal">${data.email || 'N/A'}</div>
+                            </td>
+                            <td class="p-4 font-mono text-xs text-slate-500">—</td>
+                            <td class="p-4">${statusBadge}</td>
+                            <td class="p-4 text-right text-xs text-slate-500 font-mono">${data.loginTime ? new Date(data.loginTime.seconds * 1000).toLocaleTimeString() : 'N/A'}</td>
+                        </tr>
+                    `;
+                });
+                
+                tableBody.innerHTML = tableHTML;
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-500 text-xs">డేటా లోడ్ చేయడంలో లోపం జరిగింది.</td></tr>`;
+            }
         }
-    }
 
-    // పేజీ లోడ్ అవ్వగానే రన్ అవుతుంది
-    window.addEventListener('DOMContentLoaded', () => {
-        fetchRecentLogins();
-        if (localStorage.getItem('admin-dark-mode') === 'enabled') {
-            document.getElementById('body-root').classList.add('dark');
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchRecentLogins();
+            if (localStorage.getItem('admin-dark-mode') === 'enabled') {
+                document.getElementById('body-root').classList.add('dark');
+            }
+        });
+
+        window.toggleDarkMode = function() {
+            const bodyRoot = document.getElementById('body-root');
+            bodyRoot.classList.toggle('dark');
+            const isDark = bodyRoot.classList.contains('dark');
+            localStorage.setItem('admin-dark-mode', isDark ? 'enabled' : 'disabled');
         }
-    });
 
-    /* గ్లోబల్ విండో ఫంక్షన్లు */
-    window.toggleDarkMode = function() {
-        const bodyRoot = document.getElementById('body-root');
-        bodyRoot.classList.toggle('dark');
-        const isDark = bodyRoot.classList.contains('dark');
-        localStorage.setItem('admin-dark-mode', isDark ? 'enabled' : 'disabled');
-    }
+        window.addCustomer = () => window.location.href = "add-customer.html";
+        window.addEmployee = () => window.location.href = "add-employee.html";
+        window.loanReports = () => window.location.href = "loan-report.html";
+        window.viewAnalytics = () => window.location.href = "analytics.html";
+        window.logout = () => window.location.href = "index.html";
+        window.openReports = () => window.location.href = "loan-report.html";
 
-    window.addCustomer = () => window.location.href = "add-customer.html";
-    window.addEmployee = () => window.location.href = "add-employee.html";
-    window.loanReports = () => window.location.href = "loan-report.html";
-    window.viewAnalytics = () => window.location.href = "analytics.html";
-    window.logout = () => window.location.href = "index.html";
-    window.openReports = () => window.location.href = "loan-report.html";
-
-    /* LIVE CLOCK */
-    function updateClock(){
-        const now = new Date();
-        const clockEl = document.getElementById("clock");
-        if(clockEl) clockEl.innerHTML = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-</script>
+        /* LIVE CLOCK */
+        function updateClock(){
+            const now = new Date();
+            const clockEl = document.getElementById("clock");
+            if(clockEl) clockEl.innerHTML = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
 </body>
 </html>
