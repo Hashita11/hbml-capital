@@ -30,7 +30,7 @@
             <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Manual Customer Search</label>
             <div class="flex gap-2">
                 <input type="text" id="manualSearchId" placeholder="Enter Customer ID (e.g. HBML-3728)" class="w-full text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold uppercase focus:outline-none focus:border-slate-900 transition">
-                <button onclick="searchCustomerManual()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 rounded-xl transition shadow-xs cursor-pointer"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button onclick="searchCustomerManual()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 rounded-xl transition shadow-xs cursor-pointer"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
             
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 sm:col-span-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Customer Name</span>
-                <h2 id="name" class="text-lg font-black text-slate-900">Enter ID above or select from list</h2>
+                <h2 id="name" class="text-base font-black text-slate-500">Enter Customer ID above to search...</h2>
             </div>
 
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
@@ -89,7 +89,7 @@
         const db = getFirestore(app);
 
         const params = new URLSearchParams(window.location.search);
-        let activeDocId = params.get("id"); // Can be doc ID from URL or resolved from Customer ID Search
+        let activeDocId = params.get("id"); 
         let customer = {};
 
         /* URL ద్వారా లోడ్ చేసే ఫంక్షన్ */
@@ -98,17 +98,15 @@
             try {
                 const ref = doc(db, "customers", documentId);
                 const snap = await getDoc(ref);
-                if(!snap.exists()){
-                    alert("Customer Profile Not Found!");
-                    return;
+                if(snap.exists()){
+                    renderCustomerData(snap.data(), snap.id);
                 }
-                renderCustomerData(snap.data(), snap.id);
             } catch (error) {
-                alert("Error loading customer: " + error.message);
+                console.error("Error: " + error.message);
             }
         }
 
-        /* మ్యాన్యువల్ గా సెర్చ్ బాక్స్ ద్వారా లోడ్ చేసే ఫంక్షన్ */
+        /* మ్యాన్యువల్ గా కంప్లీట్ ఐడీ ద్వారా వెతికే ఫంక్షన్ */
         window.searchCustomerManual = async function() {
             let searchId = document.getElementById("manualSearchId").value.trim().toUpperCase();
             if(!searchId) {
@@ -119,7 +117,7 @@
                 const q = query(collection(db, "customers"), where("customerId", "==", searchId));
                 const querySnapshot = await getDocs(q);
                 if(querySnapshot.empty) {
-                    alert("No matching records found for ID: " + searchId);
+                    alert("No active record found for ID: " + searchId);
                     return;
                 }
                 querySnapshot.forEach((docRecord) => {
@@ -130,12 +128,15 @@
             }
         }
 
-        /* స్క్రీన్ పై డేటాను చూపించే కామన్ ఫంక్షన్ */
+        /* స్క్రీన్ పై డేటాను చూపించే ఫంక్షన్ */
         function renderCustomerData(data, docId) {
             customer = data;
             activeDocId = docId;
 
             document.getElementById("name").innerHTML = customer.name || "Unknown Profile";
+            document.getElementById("name").classList.remove("text-slate-500");
+            document.getElementById("name").classList.add("text-slate-900");
+            
             document.getElementById("loan").innerHTML = "₹" + Number(customer.loan || 0).toLocaleString('en-IN');
             document.getElementById("emi").innerHTML = "₹" + Number(customer.emi || 0).toLocaleString('en-IN');
 
@@ -148,7 +149,7 @@
         /* COLLECT EMI PAYMENT */
         window.collectEMI = async function(){
             if(!activeDocId){
-                alert("Please look up a customer first.");
+                alert("Please look up a customer profile first.");
                 return;
             }
             try {
@@ -187,6 +188,7 @@
             }
         }
 
+        /* అలర్ట్ బాక్స్ రాకుండా ఇక్కడ చెక్ మార్చాను */
         window.addEventListener('DOMContentLoaded', () => {
             if(activeDocId) {
                 loadCustomerByDocId(activeDocId);
