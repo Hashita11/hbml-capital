@@ -1,468 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>HBML Admin Panel</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f1f5fb;
-display:flex;
-min-height:100vh;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-width:250px;
-background:#0d2b6b;
-color:white;
-padding:20px;
-position:fixed;
-height:100%;
-overflow:auto;
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-.sidebar h2{
-text-align:center;
-margin-bottom:30px;
-}
-
-.menu{
-list-style:none;
-}
-
-.menu li{
-padding:15px;
-margin-bottom:10px;
-border-radius:10px;
-cursor:pointer;
-transition:0.3s;
-font-size:16px;
-}
-
-.menu li:hover{
-background:#163c91;
-}
-
-/* MAIN */
-
-.main{
-margin-left:270px;
-padding:20px;
-width:100%;
-}
-
-/* TOPBAR */
-
-.topbar{
-background:white;
-padding:20px;
-border-radius:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-margin-bottom:20px;
-}
-
-.topbar h1{
-color:#0d2b6b;
-font-size:30px;
-}
-
-.clock{
-font-size:18px;
-font-weight:bold;
-color:#0d2b6b;
-}
-
-/* PROFILE */
-
-.profile{
-background:white;
-padding:20px;
-border-radius:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-gap:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-margin-bottom:20px;
-}
-
-.profile-left{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.avatar{
-width:70px;
-height:70px;
-border-radius:50%;
-background:#0d2b6b;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:30px;
-font-weight:bold;
-}
-
-/* BUTTON */
-
-.btn{
-padding:12px 20px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:12px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.btn:hover{
-background:#163c91;
-}
-
-/* CARDS */
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-margin-bottom:20px;
-}
-
-.card{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-text-align:center;
-}
-
-.card h2{
-font-size:32px;
-color:#0d2b6b;
-margin-bottom:10px;
-}
-
-.card p{
-color:#666;
-font-size:16px;
-}
-
-/* ACTION BUTTONS */
-
-.actions{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin-bottom:20px;
-}
-
-/* TABLE */
-
-.table-box{
-background:white;
-padding:20px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
-overflow:auto;
-}
-
-.table-box h2{
-margin-bottom:15px;
-color:#0d2b6b;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-table td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-body{
-flex-direction:column;
-}
-
-.sidebar{
-width:100%;
-height:auto;
-position:relative;
-}
-
-.main{
-margin-left:0;
-}
-
-.topbar{
-flex-direction:column;
-gap:10px;
-text-align:center;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Admin Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar for sidebar elements */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+    </style>
 </head>
-
-<body>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar">
-
-<img src="logo.png" class="logo">
-
-<h2>HBML CAPITAL</h2>
-
-<ul class="menu">
-
-<li>🏠 Dashboard</li>
-
-<li>👥 Customers</li>
-
-<li>👨‍💼 Employees</li>
-
-<li>💰 EMI Collection</li>
-
-<li>📄 Loan Reports</li>
-
-<li>📊 Analytics</li>
-
-<li onclick="logout()">🚪 Logout</li>
-
-</ul>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main">
-
-<!-- TOPBAR -->
-
-<div class="topbar">
-
-<h1>Admin Dashboard</h1>
-
-<div class="clock" id="clock"></div>
-
-</div>
-
-<!-- PROFILE -->
-
-<div class="profile">
-
-<div class="profile-left">
-
-<div class="avatar">
-A
-</div>
-
-<div>
-<h2>Welcome Admin</h2>
-<p>HBML Capital Management Panel</p>
-</div>
-
-</div>
-
-<button class="btn"
-onclick="openReports()">
-Open Reports
-</button>
-
-</div>
-
-<!-- CARDS -->
-
-<div class="cards">
-
-<div class="card">
-<h2>150</h2>
-<p>Total Customers</p>
-</div>
-
-<div class="card">
-<h2>25</h2>
-<p>Total Employees</p>
-</div>
-
-<div class="card">
-<h2>₹5,80,000</h2>
-<p>Monthly EMI Collection</p>
-</div>
-
-<div class="card">
-<h2>18</h2>
-<p>Pending Loans</p>
-</div>
-
-</div>
-
-<!-- ACTION BUTTONS -->
-
-<div class="actions">
-
-<button class="btn"
-onclick="addCustomer()">
-Add Customer
-</button>
-
-<button class="btn"
-onclick="addEmployee()">
-Add Employee
-</button>
-
-<button class="btn"
-onclick="loanReports()">
-Loan Reports
-</button>
-
-<button class="btn"
-onclick="viewAnalytics()">
-Analytics
-</button>
-
-</div>
-
-<!-- TABLE -->
-
-<div class="table-box">
-
-<h2>Recent Finance Activity</h2>
-
-<table>
-
-<tr>
-<th>Customer</th>
-<th>Loan Amount</th>
-<th>Status</th>
-<th>EMI</th>
-</tr>
-
-<tr>
-<td>Ramesh</td>
-<td>₹50,000</td>
-<td>Approved</td>
-<td>₹5,000</td>
-</tr>
-
-<tr>
-<td>Suresh</td>
-<td>₹80,000</td>
-<td>Pending</td>
-<td>₹8,000</td>
-</tr>
-
-<tr>
-<td>Kumar</td>
-<td>₹1,20,000</td>
-<td>Approved</td>
-<td>₹12,000</td>
-</tr>
-
-</table>
-
-</div>
-
-</div>
-
-<script>
-
-/* LIVE CLOCK */
-
-function updateClock(){
-
-const now = new Date();
-
-document.getElementById("clock")
-.innerHTML =
-now.toLocaleTimeString();
-
-}
-
-setInterval(updateClock,1000);
-
-updateClock();
-
-/* BUTTON FUNCTIONS */
-
-function addCustomer(){
-
-window.location.href="add-customer.html";
-
-}
-
-function addEmployee(){
-
-window.location.href="add-employee.html";
-
-}
-
-function loanReports(){
-
-window.location.href="loan-report.html";
-
-}
-
-function viewAnalytics(){
-
-window.location.href="analytics.html";
-
-}
-/* LOGOUT */
-
-function logout(){
-
-window.location.href="index.html";
-
-}
-  function openReports(){
-
-window.location.href="loan-report.html";
-
-}
-
-</script>
-
+<body class="bg-slate-50 text-slate-800 font-sans transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100" id="body-root">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800">
+            <div class="p-5 overflow-y-auto flex-1">
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto" onerror="this.style.display='none'; document.getElementById('txt-logo').classList.remove('hidden')">
+                    <div id="txt-logo" class="h-9 w-9 bg-sky-600 rounded-lg flex items-center justify-center font-bold text-white hidden">H</div>
+                    <div>
+                        <h2 class="text-base font-black tracking-wider text-sky-400 leading-tight">HBML CAPITAL</h2>
+                        <span class="text-xs text-slate-400">Management Panel</span>
+                    </div>
+                </div>
+
+                <nav class="space-y-1 text-sm">
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Core Navigation</p>
+                    <a href="admin.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 rounded-lg text-white font-medium shadow-xs"><i class="fa-solid fa-chart-pie w-5 text-center"></i> 🏠 Dashboard</a>
+                    <a href="customer-search.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users w-5 text-center"></i> 👥 Customers</a>
+                    <a href="view-employees.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-tie w-5 text-center"></i> 👨‍💼 Employees</a>
+                    <a href="collect-emi.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-money-bill-transfer w-5 text-center"></i> 💰 EMI Collection</a>
+                    <a href="loan-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> 📄 Loan Reports</a>
+                    <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-line w-5 text-center"></i> 📊 Analytics</a>
+                    
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Extra Tools</p>
+                    <a href="dsashboard-charts.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-bar w-5 text-center"></i> 📈 Charts Integration</a>
+                    <a href="whatsapp-reminder.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp w-5 text-center text-green-400"></i> 📱 WhatsApp Alerts</a>
+                </nav>
+            </div>
+            
+            <div class="p-4 border-t border-slate-800 bg-slate-950/40">
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-rose-400 hover:bg-rose-950/30 rounded-lg transition font-medium cursor-pointer">
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i> 🚪 Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-y-auto">
+            
+            <header class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
+                <div class="flex items-center gap-3">
+                    <h1 class="text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition" title="Toggle Mode">
+                        <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline text-lg"></i>
+                    </button>
+                    <div class="h-5 w-px bg-slate-200 dark:bg-slate-700"></div>
+                    <div class="clock font-mono font-bold text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-sky-400 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner" id="clock"></div>
+                </div>
+            </header>
+
+            <div class="p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
+                
+                <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-5 rounded-2xl shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">
+                            A
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-black text-slate-900 dark:text-white">Welcome Admin</h2>
+                            <p class="text-xs font-medium text-slate-400">HBML Capital Management Panel</p>
+                        </div>
+                    </div>
+                    <button class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition cursor-pointer" onclick="openReports()">
+                        <i class="fa-solid fa-folder-open mr-1.5"></i> Open Reports
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Customers</p>
+                            <h3 class="text-2xl font-black mt-1">150</h3>
+                        </div>
+                        <div class="h-11 w-11 bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Employees</p>
+                            <h3 class="text-2xl font-black mt-1">25</h3>
+                        </div>
+                        <div class="h-11 w-11 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-user-tie"></i></div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Monthly EMI</p>
+                            <h3 class="text-2xl font-black mt-1 text-emerald-600 dark:text-emerald-400">₹5,80,000</h3>
+                        </div>
+                        <div class="h-11 w-11 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Loans</p>
+                            <h3 class="text-2xl font-black mt-1 text-amber-500">18</h3>
+                        </div>
+                        <div class="h-11 w-11 bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-clock-history"></i></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()">
+                        <i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer
+                    </button>
+                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addEmployee()">
+                        <i class="fa-solid fa-user-tie text-purple-400"></i> Add Employee
+                    </button>
+                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="loanReports()">
+                        <i class="fa-solid fa-file-invoice text-amber-400"></i> Loan Reports
+                    </button>
+                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="viewAnalytics()">
+                        <i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics
+                    </button>
+                </div>
+
+                <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-800">
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent Finance Activity</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                                <tr>
+                                    <th class="p-4">Customer</th>
+                                    <th class="p-4">Loan Amount</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-right">EMI</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Ramesh</td>
+                                    <td class="p-4">₹50,000</td>
+                                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">Approved</span></td>
+                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹5,000</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Suresh</td>
+                                    <td class="p-4">₹80,000</td>
+                                    <td class="p-4"><span class="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-amber-200/50 dark:border-amber-900/50">Pending</span></td>
+                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹8,000</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
+                                    <td class="p-4 text-slate-900 dark:text-white font-bold">Kumar</td>
+                                    <td class="p-4">₹1,20,000</td>
+                                    <td class="p-4"><span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">Approved</span></td>
+                                    <td class="p-4 text-right text-slate-900 dark:text-white">₹12,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        /* LIVE CLOCK FUNCTION */
+        function updateClock(){
+            const now = new Date();
+            document.getElementById("clock").innerHTML = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        /* ORIGINAL REDIRECT BUTTON FUNCTIONS */
+        function addCustomer(){
+            window.location.href = "add-customer.html";
+        }
+
+        function addEmployee(){
+            window.location.href = "add-employee.html";
+        }
+
+        function loanReports(){
+            window.location.href = "loan-report.html";
+        }
+
+        function viewAnalytics(){
+            window.location.href = "analytics.html";
+        }
+
+        function logout(){
+            window.location.href = "index.html";
+        }
+
+        function openReports(){
+            window.location.href = "loan-report.html";
+        }
+
+        /* LIGHT / DARK MODE TOGGLE */
+        function toggleDarkMode() {
+            const bodyRoot = document.getElementById('body-root');
+            bodyRoot.classList.toggle('dark');
+            const isDark = bodyRoot.classList.contains('dark');
+            localStorage.setItem('admin-dark-mode', isDark ? 'enabled' : 'disabled');
+        }
+
+        // Keep mode preference on reload
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('admin-dark-mode') === 'enabled') {
+                document.getElementById('body-root').classList.add('dark');
+            }
+        });
+    </script>
 </body>
 </html>
