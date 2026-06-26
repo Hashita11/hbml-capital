@@ -11,13 +11,13 @@
 
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl">
-                <i class="fa-solid fa-id-card text-sky-400 mr-1.5"></i> Customer Statement Account
-            </div>
+            <button onclick="window.print()" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 hover:border-sky-500/40 px-3 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-md">
+                <i class="fa-solid fa-print text-sky-400"></i> Print Statement
+            </button>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
@@ -29,7 +29,7 @@
                 <div class="text-center sm:text-left space-y-2">
                     <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase" id="name">Loading Profile...</h1>
                     <div class="flex flex-wrap justify-center sm:justify-start gap-2 text-[10px] font-mono font-bold uppercase">
-                        <span class="bg-slate-950 text-sky-400 px-2 py-1 rounded border border-slate-800" id="lblCustId">UID: HBML-SYSTEM</span>
+                        <span class="bg-slate-950 text-sky-400 px-2 py-1 rounded border border-slate-800" id="lblCustId">UID: Loading...</span>
                         <span class="bg-slate-950 text-emerald-400 px-2 py-1 rounded border border-slate-800" id="loanType">MICROFINANCE LOAN</span>
                     </div>
                 </div>
@@ -149,14 +149,12 @@
                 document.getElementById("avatarLetter").innerText = cleanName.charAt(0).toUpperCase();
                 document.getElementById("name").innerText = cleanName;
                 
-                // 🛠️ UID సేఫ్ సేవింగ్ లాజిక్: ఒకవేళ కస్టమర్ ఐడీ మిస్ అయితే ఫాల్‌బ్యాక్ ఐడీ చూపిస్తుంది
                 let displayUID = data.customerId || data.id || id;
                 if(displayUID.length > 10) {
                     displayUID = "HBML-" + displayUID.substring(0, 5).toUpperCase();
                 }
                 document.getElementById("lblCustId").innerText = "UID: " + displayUID;
                 
-                // 🛠️ లోన్ టైప్ చెక్
                 if(data.loanType) {
                     document.getElementById("loanType").innerText = data.loanType.toUpperCase();
                 }
