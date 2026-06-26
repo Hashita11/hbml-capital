@@ -1,94 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Audit Report</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-max-width:1000px;
-margin:auto;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - System Audit Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-5xl mx-auto space-y-6">
+        
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+            </a>
+            <button onclick="fetchLiveAuditLogs()" id="btnAuditRefresh" class="text-xs font-black text-amber-400 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/50 px-4 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-arrows-rotate" id="auditRefreshIcon"></i> Run System Audit
+            </button>
+        </div>
 
-<div class="box">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+            
+            <div class="text-center space-y-2">
+                <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+                <div id="fallback-icon" class="h-14 w-14 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">Finance & System Audit Report</h1>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Internal Security & Operations Audit Trail</p>
+            </div>
 
-<img src="logo.png" class="logo">
+            <div class="bg-amber-950/20 border border-amber-900/40 p-4 rounded-xl flex items-start gap-3 text-xs text-amber-400/90">
+                <i class="fa-solid fa-shield-halved text-base mt-0.5 text-amber-500"></i>
+                <div>
+                    <span class="font-black block uppercase tracking-wide">Regulatory Integrity Notice</span>
+                    <p class="font-medium mt-0.5">This log captures realtime administrative entry records, transaction check-ins, and session actions. Any modifications to this ledger are restricted by system integrity rules.</p>
+                </div>
+            </div>
 
-<h1>Finance Audit Report</h1>
+            <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/40 shadow-inner">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="p-4">Timestamp (తేదీ & సమయం)</th>
+                                <th class="p-4">User / Operator</th>
+                                <th class="p-4">System Core Channel</th>
+                                <th class="p-4 text-right">Access Authorization</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditTableBody" class="divide-y divide-slate-800/60 font-medium text-slate-300">
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-slate-500 font-bold">
+                                    <i class="fa-solid fa-spinner animate-spin mr-2 text-amber-400 text-base"></i> ఆడిట్ నివేదిక లోడ్ అవుతోంది...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<table>
+        </div>
 
-<tr>
-<th>Date</th>
-<th>Activity</th>
-<th>Employee</th>
-<th>Status</th>
-</tr>
+    </div>
 
-<tr>
-<td>30-05-2026</td>
-<td>EMI Collection</td>
-<td>Ramesh</td>
-<td>Completed</td>
-</tr>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<tr>
-<td>30-05-2026</td>
-<td>Loan Approval</td>
-<td>Suresh</td>
-<td>Approved</td>
-</tr>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</table>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-</div>
+        /* 📉 FETCH REALTIME LOGIN SESSIONS & TRANSACTIONS AS AUDIT TRAIL */
+        async function fetchLiveAuditLogs() {
+            const tbody = document.getElementById("auditTableBody");
+            const icon = document.getElementById("auditRefreshIcon");
+            const btn = document.getElementById("btnAuditRefresh");
 
+            if(icon) icon.classList.add("animate-spin");
+            if(btn) btn.classList.add("opacity-60");
+
+            try {
+                // hbml_logins కలెక్షన్ నుండి లేటెస్ట్ 15 ఆడిట్ లాగ్స్ ని లాగడం
+                const q = query(collection(db, "hbml_logins"), orderBy("loginTime", "desc"), limit(15));
+                const querySnapshot = await getDocs(q);
+                let html = "";
+
+                if(querySnapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-500 font-bold">No authorization logs recorded in this session.</td></tr>`;
+                    resetRefreshState(icon, btn);
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    
+                    // రోల్స్ ని బట్టి డిఫరెంట్ కలర్ బ్యాడ్జ్ డిజైన్
+                    const statusBadge = data.role === "Admin" 
+                        ? `<span class="bg-sky-500/10 text-sky-400 px-2.5 py-0.5 rounded text-[10px] font-black border border-sky-500/20 shadow-xs uppercase tracking-wider">Admin Secure</span>`
+                        : `<span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-0.5 rounded text-[10px] font-black border border-emerald-500/20 shadow-xs uppercase tracking-wider">${data.role || 'Staff'}</span>`;
+
+                    // టైమ్‌స్టాంప్ ఫార్మాటింగ్
+                    let formattedTime = "N/A";
+                    if (data.loginTime) {
+                        const dateObj = new Date(data.loginTime.seconds * 1000);
+                        formattedTime = dateObj.toLocaleDateString('en-IN') + " - " + dateObj.toLocaleTimeString('en-IN');
+                    }
+
+                    html += `
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60">
+                            <td class="p-4 font-mono text-slate-400 text-[11px]">${formattedTime}</td>
+                            <td class="p-4">
+                                <div class="font-black text-white text-sm">${data.name || 'System Operator'}</div>
+                                <div class="text-[10px] text-slate-500 font-normal mt-0.5">${data.email || 'internal@hbml.com'}</div>
+                            </td>
+                            <td class="p-4 font-mono text-amber-500/90 text-[11px]">
+                                <i class="fa-solid fa-link mr-1 text-slate-600"></i>firebase-session.js
+                            </td>
+                            <td class="p-4 text-right">${statusBadge}</td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = html;
+
+            } catch (error) {
+                console.error("Audit System Error:", error);
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500 font-bold">Audit System Failed: Indexing restriction or link broken.</td></tr>`;
+            }
+
+            resetRefreshState(icon, btn);
+        }
+
+        function resetRefreshState(icon, btn) {
+            if(icon) setTimeout(() => icon.classList.remove("animate-spin"), 600);
+            if(btn) setTimeout(() => btn.classList.remove("opacity-60"), 600);
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchLiveAuditLogs);
+        window.fetchLiveAuditLogs = fetchLiveAuditLogs;
+    </script>
 </body>
 </html>
