@@ -3,220 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Admin Panel - Master System</title>
+    <title>HBML Admin Dashboard - Master System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Custom scrollbar for sidebar elements */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100" id="body-root">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6" id="body-root">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="max-w-4xl mx-auto space-y-6">
         
-        <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800 shrink-0">
-            <div class="p-5 overflow-y-auto flex-1">
-                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto">
-                    <div>
-                        <h2 class="text-base font-black tracking-wider text-sky-400 leading-tight">HBML CAPITAL</h2>
-                        <span class="text-xs text-slate-400">Management Panel</span>
-                    </div>
-                </div>
-
-                <nav class="space-y-1 text-sm">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Core Dashboard</p>
-                    <a href="admin.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 rounded-lg text-white font-medium shadow-xs"><i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard</a>
-                    <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-line w-5 text-center"></i> Analytics Panel</a>
-                    <a href="dsashboard-charts.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-bar w-5 text-center"></i> Dashboard Charts</a>
-
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Customer & Groups</p>
-                    <a href="add-customer.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-plus w-5 text-center"></i> Add New Customer</a>
-                    <a href="add-group-loan.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-emerald-400 hover:text-emerald-300 transition font-bold"><i class="fa-solid fa-users w-5 text-center"></i> Add Group Loan</a>
-                    <a href="customer-search.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-magnifying-glass w-5 text-center"></i> Search Customer</a>
-                    <a href="view-customers.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users w-5 text-center"></i> View All Customers</a>
-                    <a href="customer-details.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-address-card w-5 text-center"></i> Customer Details</a>
-                    <a href="customer.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-shield w-5 text-center"></i> Customer Portal</a>
-
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">EMI & Loans</p>
-                    <a href="collect-emi.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-money-bill-transfer w-5 text-center text-emerald-400"></i> Collect EMI</a>
-                    <a href="emi-collection.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-hand-holding-dollar w-5 text-center"></i> EMI Collection View</a>
-                    <a href="emi-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-calendar-days w-5 text-center"></i> EMI Dashboard</a>
-                    <a href="emi-calculator.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-calculator w-5 text-center"></i> EMI Calculator</a>
-                    <a href="emi-receipt.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-receipt w-5 text-center"></i> Print EMI Receipt</a>
-                    <a href="loan-approval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-check-double w-5 text-center text-amber-400"></i> Loan Approvals</a>
-                    <a href="payment-history.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-timeline w-5 text-center"></i> Payment History</a>
-
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Staff & HR Module</p>
-                    <a href="add-employee.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-gear w-5 text-center"></i> Add Employee</a>
-                    <a href="view-employees.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users-gear w-5 text-center"></i> View Employees</a>
-                    <a href="employee.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-id-badge w-5 text-center"></i> Employee Portal</a>
-                    <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-clipboard-user w-5 text-center"></i> Attendance Manager</a>
-                    <a href="staff-salary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-wallet w-5 text-center"></i> Staff Salary Board</a>
-                    <a href="gps-tracking.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-red-400"></i> GPS Field Tracking</a>
-
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Reports & Automation</p>
-                    <a href="loan-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> Loan Reports</a>
-                    <a href="audit-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-shield w-5 text-center"></i> Audit Reports</a>
-                    <a href="pdf-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-pdf w-5 text-center text-rose-400"></i> Export PDF Report</a>
-                    <a href="whatsapp-reminder.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp w-5 text-center text-green-400"></i> WhatsApp Reminder</a>
-                    <a href="notifications.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-bell w-5 text-center"></i> System Notifications</a>
-                </nav>
+        <!-- HEADER TOP BAR -->
+        <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="HBML Logo" class="h-8 w-auto">
+                <h1 class="text-base md:text-xl font-black tracking-tight text-white">HBML Admin Master Panel</h1>
             </div>
-            
-            <div class="p-4 border-t border-slate-800 bg-slate-950/40 space-y-1 text-sm">
-                <a href="settings.html" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-sliders w-5 text-center"></i> Settings System</a>
-                <a href="backup-data.html" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-database w-5 text-center text-amber-500"></i> Backup Data Log</a>
-                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 text-rose-400 hover:bg-rose-950/30 rounded-lg transition font-medium cursor-pointer mt-2">
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout (`index.html`)
+            <div class="flex items-center gap-3">
+                <button onclick="toggleDarkMode()" class="text-slate-400 hover:text-white transition" title="Toggle Mode">
+                    <i class="fa-solid fa-moon text-lg dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-lg hidden dark:inline"></i>
+                </button>
+                <div id="clock" class="font-mono text-sky-400 font-bold bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs md:text-sm shadow-inner"></div>
+            </div>
+        </div>
+
+        <!-- WELCOME & MAIN REPORT LINK -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl text-center space-y-4 shadow-xl">
+            <div class="h-16 w-16 bg-sky-950 text-sky-400 rounded-full flex items-center justify-center text-2xl font-black mx-auto border border-sky-800 shadow-md">A</div>
+            <div>
+                <h2 class="text-xl font-black">Welcome Admin</h2>
+                <p class="text-xs text-slate-400 font-medium">HBML Capital System Controller</p>
+            </div>
+            <button onclick="location.href='loan-report.html'" class="w-full sm:w-auto bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm py-3.5 px-8 rounded-2xl transition shadow-lg shadow-sky-950/40 cursor-pointer">
+                <i class="fa-solid fa-folder-open mr-2"></i> Open Reports
+            </button>
+        </div>
+
+        <!-- 📊 CATEGORIZED QUICK ACTION GRID SYSTEMS (NO STATIC BOXES) -->
+        <div class="space-y-6">
+
+            <!-- CATEGORY 1: LOAN ONBOARDING & CORE ACTIONS -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced"></i> Loan Management & Actions (లోన్ నిర్వహణ)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="location.href='add-customer.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-sky-500 cursor-pointer">
+                        <i class="fa-solid fa-user-plus text-sky-400 text-xl"></i> Add Customer
+                    </button>
+                    <button onclick="location.href='add-group-loan.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-emerald-500 cursor-pointer">
+                        <i class="fa-solid fa-users text-emerald-400 text-xl"></i> Add Group Loan
+                    </button>
+                    <button onclick="location.href='collect-emi.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-cash-register text-amber-400 text-xl"></i> Collect EMI
+                    </button>
+                    <button onclick="location.href='loan-approval.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                        <i class="fa-solid fa-check-double text-teal-400 text-xl"></i> Loan Approvals
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 2: EMI LEDGERS & MONITORING dashboards -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-amber-500 flex items-center gap-2">
+                    <i class="fa-solid fa-money-check-dollar"></i> EMI Dashboards & Logs (ఈఎంఐ రికార్డులు)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="location.href='emi-dashboard.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-calendar-days text-amber-500 text-xl"></i> EMI Dashboard
+                    </button>
+                    <button onclick="location.href='emi-collection.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-hand-holding-dollar text-amber-500 text-xl"></i> Collection View
+                    </button>
+                    <button onclick="location.href='payment-history.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-timeline text-amber-500 text-xl"></i> Pay History
+                    </button>
+                    <button onclick="location.href='emi-calculator.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-calculator text-amber-500 text-xl"></i> EMI Calculator
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 3: CUSTOMER SERVICES & SEARCH -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-purple-400 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Customer Profiles (కస్టమర్ సెక్షన్)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                    <button onclick="location.href='customer-search.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-purple-500 cursor-pointer">
+                        <i class="fa-solid fa-search text-purple-400 text-xl"></i> Search Profiles
+                    </button>
+                    <button onclick="location.href='view-customers.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-purple-500 cursor-pointer">
+                        <i class="fa-solid fa-users text-purple-400 text-xl"></i> View All Users
+                    </button>
+                    <button onclick="location.href='customer-details.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-purple-500 cursor-pointer">
+                        <i class="fa-solid fa-address-card text-purple-400 text-xl"></i> Detail Ledger
+                    </button>
+                    <button onclick="location.href='customer-profile.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-purple-500 cursor-pointer">
+                        <i class="fa-solid fa-id-card-clip text-purple-400 text-xl"></i> Profile View
+                    </button>
+                    <button onclick="location.href='customer.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-purple-500 col-span-2 sm:col-span-1 cursor-pointer">
+                        <i class="fa-solid fa-user-shield text-purple-400 text-xl"></i> Client Portal
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 4: ADVANCED BUSINESS ANALYTICS & CHARTS -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-teal-400 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i> Business Performance & Intelligence (ఎనలిటిక్స్)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="location.href='analytics.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                        <i class="fa-solid fa-chart-line text-teal-400 text-xl"></i> Analytics Panel
+                    </button>
+                    <button onclick="location.href='dsashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                        <i class="fa-solid fa-chart-bar text-teal-400 text-xl"></i> Metric Charts
+                    </button>
+                    <button onclick="location.href='branch-management.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                        <i class="fa-solid fa-code-branch text-teal-400 text-xl"></i> Branches
+                    </button>
+                    <button onclick="location.href='mobile-app.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                        <i class="fa-solid fa-mobile-screen-button text-teal-400 text-xl"></i> Mobile App Config
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 5: STAFF, HR & FIELD AUTOMATIONS -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear"></i> Staff, HR & Field Systems (సిబ్బంది & ఫీల్డ్ మేనేజ్‌మెంట్)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="location.href='add-employee.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-user-tie text-rose-400 text-xl"></i> Add Employee
+                    </button>
+                    <button onclick="location.href='view-employees.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-users-gear text-rose-400 text-xl"></i> View Staff List
+                    </button>
+                    <button onclick="location.href='attendance.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-clipboard-user text-rose-400 text-xl"></i> Attendance
+                    </button>
+                    <button onclick="location.href='staff-salary.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-wallet text-rose-400 text-xl"></i> Salaries Board
+                    </button>
+                    <button onclick="location.href='gps-tracking.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-red-500 cursor-pointer">
+                        <i class="fa-solid fa-map-location-dot text-red-400 text-xl"></i> GPS Tracking
+                    </button>
+                    <button onclick="location.href='whatsapp-reminder.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-green-500 cursor-pointer">
+                        <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i> WA Reminders
+                    </button>
+                    <button onclick="location.href='emi-receipt.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-cyan-500 cursor-pointer">
+                        <i class="fa-solid fa-receipt text-cyan-400 text-xl"></i> Print Receipt
+                    </button>
+                    <button onclick="location.href='employee.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-id-badge text-rose-400 text-xl"></i> Staff Portal
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 6: ENGINE INTEGRITY, SECURITY & SYSTEM REVEALS -->
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Security, Automation & Logs (భద్రత & ఆటోమేషన్)
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="location.href='audit-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-emerald-500 cursor-pointer">
+                        <i class="fa-solid fa-file-shield text-emerald-400 text-xl"></i> Audit Reports
+                    </button>
+                    <button onclick="location.href='pdf-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                        <i class="fa-solid fa-file-pdf text-rose-400 text-xl"></i> Export PDF
+                    </button>
+                    <button onclick="location.href='notifications.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-sky-500 cursor-pointer">
+                        <i class="fa-solid fa-bell text-sky-400 text-xl"></i> Notifications
+                    </button>
+                    <button onclick="location.href='backup-data.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                        <i class="fa-solid fa-database text-amber-500 text-xl"></i> Backup Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATEGORY 7: SETTINGS SYSTEM -->
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-md grid grid-cols-2 gap-4">
+                <button onclick="location.href='settings.html'" class="bg-slate-800/60 hover:bg-slate-800 p-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-800 hover:border-slate-500 cursor-pointer">
+                    <i class="fa-solid fa-sliders text-slate-400"></i> Settings System
+                </button>
+                <button onclick="logout()" class="bg-rose-950/20 hover:bg-rose-900/30 p-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-rose-900/40 text-rose-400 cursor-pointer">
+                    <i class="fa-solid fa-right-from-bracket"></i> Secure Logout
                 </button>
             </div>
-        </aside>
 
-        <main class="flex-1 flex flex-col overflow-y-auto">
-            
-            <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
-                <div class="flex items-center gap-2.5">
-                    <img src="logo.png" alt="HBML Logo" class="h-8 w-auto lg:hidden block">
-                    <h1 class="text-base md:text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition" title="Toggle Mode">
-                        <i class="fa-solid fa-moon dark:hidden text-lg"></i>
-                        <i class="fa-solid fa-sun hidden dark:inline text-lg"></i>
-                    </button>
-                    <div class="h-5 w-px bg-slate-200 dark:bg-slate-700"></div>
-                    <div class="clock font-mono font-bold text-xs md:text-sm bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-sky-400 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner" id="clock"></div>
-                </div>
-            </header>
+        </div>
 
-            <div class="p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
-                
-                <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-5 rounded-2xl shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">A</div>
-                        <div>
-                            <h2 class="text-lg font-black text-slate-900 dark:text-white">Welcome Admin</h2>
-                            <p class="text-xs font-medium text-slate-400">HBML Capital System Controller</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <button class="flex-1 sm:flex-none bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition cursor-pointer" onclick="openReports()">
-                            <i class="fa-solid fa-folder-open mr-1.5"></i> Open Reports
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-xs space-y-3">
-                    <span class="text-xs font-black uppercase tracking-wider text-slate-400 block"><i class="fa-solid fa-layer-group text-sky-500 mr-1.5"></i> Loan Management Onboarding Gateways</span>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <a href="add-customer.html" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 p-4 rounded-xl hover:border-slate-900 dark:hover:border-sky-400 transition group text-left">
-                            <div class="flex items-center gap-3">
-                                <div class="h-10 w-10 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-user-plus"></i></div>
-                                <div>
-                                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Add Customer</h4>
-                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">సింగిల్ కస్టమర్ లోన్</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 dark:group-hover:text-sky-400 transition"></i>
-                        </a>
-                        <a href="add-group-loan.html" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 p-4 rounded-xl hover:border-slate-900 dark:hover:border-emerald-400 transition group text-left">
-                            <div class="flex items-center gap-3">
-                                <div class="h-10 w-10 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></div>
-                                <div>
-                                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Add Group Loan</h4>
-                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">పొదుపు సంఘాల లోన్</p>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 dark:group-hover:text-emerald-400 transition"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Customers</p>
-                            <h3 class="text-2xl font-black mt-1">150</h3>
-                        </div>
-                        <div class="h-11 w-11 bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Employees</p>
-                            <h3 class="text-2xl font-black mt-1">25</h3>
-                        </div>
-                        <div class="h-11 w-11 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-user-tie"></i></div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Monthly EMI</p>
-                            <h3 class="text-2xl font-black mt-1 text-emerald-600 dark:text-emerald-400">₹5,80,000</h3>
-                        </div>
-                        <div class="h-11 w-11 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-money-bill-wave"></i></div>
-                    </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending Loans</p>
-                            <h3 class="text-2xl font-black mt-1 text-amber-500">18</h3>
-                        </div>
-                        <div class="h-11 w-11 bg-amber-50 dark:bg-amber-950/40 text-amber-500 dark:text-amber-400 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-clock-history"></i></div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-xs">
-                    <h3 class="text-sm font-black uppercase tracking-wider text-slate-400 mb-4"><i class="fa-solid fa-circle-nodes text-sky-500 mr-2"></i> Quick Action Grid System</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()"><i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer</button>
-                        <button class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='add-group-loan.html'"><i class="fa-solid fa-users text-emerald-300"></i> Add Group Loan</button>
-                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addEmployee()"><i class="fa-solid fa-user-tie text-purple-400"></i> Add Employee</button>
-                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="loanReports()"><i class="fa-solid fa-file-invoice text-amber-400"></i> Loan Reports</button>
-                        
-                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='collect-emi.html'"><i class="fa-solid fa-cash-register text-emerald-500"></i> Collect EMI</button>
-                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='customer-search.html'"><i class="fa-solid fa-search text-sky-500"></i> Search Profiles</button>
-                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='whatsapp-reminder.html'"><i class="fa-brands fa-whatsapp text-green-500"></i> Reminders</button>
-                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='gps-tracking.html'"><i class="fa-solid fa-location-crosshairs text-red-500"></i> GPS Tracking</button>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
-                    <div class="p-5 border-b border-slate-100 dark:border-slate-800">
-                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent System Activity</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm border-collapse">
-                            <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
-                                <tr>
-                                    <th class="p-4">User Details</th>
-                                    <th class="p-4">Project Core</th>
-                                    <th class="p-4">Access Role</th>
-                                    <th class="p-4 text-right">Login Timestamp</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recent-activity-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
-                                <tr>
-                                    <td colspan="4" class="p-4 text-center text-slate-400 text-xs animate-pulse">డేటా లోడ్ అవుతోంది...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+        <!-- FIREBASE INJECT ACTIVITY BOX -->
+        <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+            <div class="p-5 border-b border-slate-100 dark:border-slate-800">
+                <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent System Activity Logs</h3>
             </div>
-        </main>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                        <tr>
+                            <th class="p-4">User Details</th>
+                            <th class="p-4">Project Core</th>
+                            <th class="p-4">Access Role</th>
+                            <th class="p-4 text-right">Login Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-activity-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
+                        <tr>
+                            <td colspan="4" class="p-4 text-center text-slate-400 text-xs animate-pulse">డేటా లోడ్ అవుతోంది...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
+    <!-- FIREBASE AND REALTIME ENGINE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        /* FIREBASE CONFIGURATION */
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
             authDomain: "hbml-capital.firebaseapp.com",
@@ -229,14 +237,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* FETCH FIRESTORE REALTIME RECORDS */
         async function fetchRecentLogins() {
             const tableBody = document.getElementById("recent-activity-body");
-            
             try {
                 const q = query(collection(db, "hbml_logins"), orderBy("loginTime", "desc"), limit(5));
                 const querySnapshot = await getDocs(q);
-                
                 let tableHTML = "";
                 
                 if(querySnapshot.empty) {
@@ -262,10 +267,8 @@
                         </tr>
                     `;
                 });
-                
                 tableBody.innerHTML = tableHTML;
             } catch (error) {
-                console.error("Error fetching data: ", error);
                 tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-500 text-xs">డేటా లోడ్ చేయడంలో లోపం జరిగింది.</td></tr>`;
             }
         }
@@ -284,15 +287,8 @@
             localStorage.setItem('admin-dark-mode', isDark ? 'enabled' : 'disabled');
         }
 
-        /* ALL CONTROLLER ROUTING METHODS */
-        window.addCustomer = () => window.location.href = "add-customer.html";
-        window.addEmployee = () => window.location.href = "add-employee.html";
-        window.loanReports = () => window.location.href = "loan-report.html";
-        window.viewAnalytics = () => window.location.href = "analytics.html";
         window.logout = () => window.location.href = "index.html";
-        window.openReports = () => window.location.href = "loan-report.html";
 
-        /* LIVE CLOCK SOURCE */
         function updateClock(){
             const now = new Date();
             const clockEl = document.getElementById("clock");
