@@ -1,89 +1,179 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Backup Data</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:600px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-margin-bottom:15px;
-}
-
-h1{
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-button{
-padding:15px 25px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-margin:10px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Cloud Backup & Storage</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-<body>
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl text-center space-y-6">
+        
+        <div class="flex justify-start">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+        </div>
 
-<div class="box">
+        <div class="space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-16 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-amber-500 rounded-2xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 mx-auto hidden">H</div>
+            <h1 class="text-xl font-black tracking-tight uppercase text-white">HBML Backup System</h1>
+            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Cloud Synchronizer & Data Exporter</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-2xl text-left space-y-2">
+            <div class="flex items-center gap-2 text-xs font-black text-amber-400 uppercase tracking-wide">
+                <i class="fa-solid fa-database animate-pulse"></i> Engine Status: Connected
+            </div>
+            <p class="text-[11px] text-slate-400 font-medium leading-relaxed">ఇక్కడి నుండి మీ ఫైర్‌బేస్ క్లౌడ్ డేటాబేస్ లోని సింగిల్ లోన్స్ మరియు పొదుపు సంఘాల లోన్ రికార్డులను ఎక్సెల్ షీట్ (CSV ફైల్) రూపంలో మీ డివైజ్ లోకి సురక్షితంగా బ్యాకప్ డౌన్‌లోడ్ చేసుకోవచ్చు.</p>
+        </div>
 
-<h1>HBML Backup System</h1>
+        <div class="space-y-3 pt-2">
+            <button onclick="backupIndividualCustomers()" id="btnSingleBackup" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/40 text-sky-400 font-bold py-3.5 px-4 rounded-xl transition shadow-md text-xs tracking-wider uppercase flex items-center justify-center gap-2.5 cursor-pointer active:scale-98">
+                <i class="fa-solid fa-user-shield text-base" id="iconSingle"></i> Backup Individual Data
+            </button>
 
-<button onclick="backupData()">
+            <button onclick="backupGroupLoans()" id="btnGroupBackup" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 text-emerald-400 font-bold py-3.5 px-4 rounded-xl transition shadow-md text-xs tracking-wider uppercase flex items-center justify-center gap-2.5 cursor-pointer active:scale-98">
+                <i class="fa-solid fa-users-gear text-base" id="iconGroup"></i> Backup Group Loan Data
+            </button>
+        </div>
 
-Backup Customer Data
+        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest pt-2">
+            Secured Cloud Encryption System
+        </div>
 
-</button>
+    </div>
 
-<button onclick="exportData()">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-Export Reports
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</button>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-</div>
+        /* 📊 1. REALTIME CSV EXPORTER: INDIVIDUAL BORROWERS LEDGER */
+        window.backupIndividualCustomers = async function() {
+            const btn = document.getElementById("btnSingleBackup");
+            const icon = document.getElementById("iconSingle");
+            
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-arrows-rotate animate-spin text-sky-400";
 
-<script>
+            try {
+                const snap = await getDocs(collection(db, "customers"));
+                if(snap.empty) {
+                    alert("No customer records found to backup!");
+                    resetButtonState(btn, icon, "fa-solid fa-user-shield");
+                    return;
+                }
 
-function backupData(){
+                // CSV హెడర్స్ అమర్చడం
+                let csvContent = "Customer ID,Name,Phone,Aadhaar,PAN,Loan Type,Method,Principal,Total Loan,Monthly EMI,Balance\n";
 
-alert("Firebase Backup Completed");
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    let row = [
+                        `"${data.customerId || 'N/A'}"`,
+                        `"${data.name || 'N/A'}"`,
+                        `"${data.phone || 'N/A'}"`,
+                        `"${data.aadhaar || 'N/A'}"`,
+                        `"${data.pan || 'N/A'}"`,
+                        `"${data.loanType || 'Microfinance'}"`,
+                        `"${data.interestMethod || 'Flat'}"`,
+                        `"${data.loanPrincipal || 0}"`,
+                        `"${data.loan || 0}"`,
+                        `"${data.emi || 0}"`,
+                        `"${data.balance || 0}"`
+                    ].join(",");
+                    csvContent += row + "\n";
+                });
 
-}
+                downloadCSVFile(csvContent, "HBML_Individual_Customers_Backup.csv");
 
-function exportData(){
+            } catch (error) {
+                alert("Backup Loop Broken: " + error.message);
+            }
+            resetButtonState(btn, icon, "fa-solid fa-user-shield");
+        }
 
-alert("Finance Report Exported");
+        /* 👥 2. REALTIME CSV EXPORTER: SANGAM GROUP LOANS RECORDSET */
+        window.backupGroupLoans = async function() {
+            const btn = document.getElementById("btnGroupBackup");
+            const icon = document.getElementById("iconGroup");
+            
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-arrows-rotate animate-spin text-emerald-400";
 
-}
+            try {
+                const snap = await getDocs(collection(db, "group_loans"));
+                if(snap.empty) {
+                    alert("No group loan records found to backup!");
+                    resetButtonState(btn, icon, "fa-solid fa-users-gear");
+                    return;
+                }
 
-</script>
+                // CSV హెడర్స్
+                let csvContent = "Group ID,Group Name,Member Name,Phone,Aadhaar,Principal,Total Payable,Monthly EMI,Balance\n";
 
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    let groupId = data.groupId || "N/A";
+                    let groupName = data.groupName || "N/A";
+                    let members = data.members || [];
+
+                    members.forEach(m => {
+                        let row = [
+                            `"${groupId}"`,
+                            `"${groupName}"`,
+                            `"${m.name || 'N/A'}"`,
+                            `"${m.phone || 'N/A'}"`,
+                            `"${m.aadhaar || 'N/A'}"`,
+                            `"${m.loanPrincipal || 0}"`,
+                            `"${m.totalPayable || 0}"`,
+                            `"${m.emi || 0}"`,
+                            `"${m.balance || 0}"`
+                        ].join(",");
+                        csvContent += row + "\n";
+                    });
+                });
+
+                downloadCSVFile(csvContent, "HBML_Group_Loans_Backup.csv");
+
+            } catch (error) {
+                alert("Group Backup Failed: " + error.message);
+            }
+            resetButtonState(btn, icon, "fa-solid fa-users-gear");
+        }
+
+        /* 💾 FILE TRIGGER GENERATOR MODULE */
+        function downloadCSVFile(content, fileName) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetButtonState(btn, icon, originalClass) {
+            btn.classList.remove("opacity-50");
+            icon.className = originalClass;
+        }
+    </script>
 </body>
 </html>
