@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom scrollbar for backend lists */
+        /* Custom scrollbar for database lists */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
@@ -69,7 +69,7 @@
                     </div>
                     <div class="sm:col-span-2">
                         <label class="text-xs font-bold text-slate-400 block mb-1">Highest Qualification</label>
-                        <input type="text" id="qualification" placeholder="e.g., B.Com, MBA, Intermediate, B.Tech" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                        <input type="text" id="qualification" placeholder="e.g., B.Com, MBA, Intermediate" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="text-xs font-bold text-slate-400 block mb-1">Bank Name</label>
-                        <input type="text" id="bankName" placeholder="e.g., SBI, HDFC, Union Bank" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                        <input type="text" id="bankName" placeholder="e.g., SBI, HDFC" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-slate-400 block mb-1">Account Holder Name</label>
@@ -126,13 +126,36 @@
             <i class="fa-solid fa-cloud-arrow-up"></i> REGISTER & SAVE PROFILE
         </button>
 
+        <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 text-left shadow-xs">
+            <div class="p-4 border-b border-slate-200 bg-slate-100/60 flex justify-between items-center">
+                <h3 class="text-xs font-black uppercase tracking-wider text-slate-500"><i class="fa-solid fa-users-gear mr-1.5 text-slate-400"></i> Registered Staff Members</h3>
+                <span class="text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-sm font-mono font-bold">Live</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border-collapse">
+                    <thead class="bg-slate-200/50 text-slate-500 text-xs font-bold uppercase border-b border-slate-200">
+                        <tr>
+                            <th class="p-3 pl-4 text-left">Staff Info</th>
+                            <th class="p-3 text-center">Monthly Pay</th>
+                            <th class="p-3 text-right pr-4">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employee-table-body" class="divide-y divide-slate-200 font-medium text-slate-700">
+                        <tr>
+                            <td colspan="3" class="p-4 text-center text-slate-400 text-xs animate-pulse">సిబ్బంది వివరాలు లోడ్ అవుతున్నాయి...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        /* FIREBASE MASTER SETUP */
+        /* FIREBASE CONFIGURATION */
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
             authDomain: "hbml-capital.firebaseapp.com",
@@ -151,7 +174,50 @@
             document.getElementById("employeeId").value = "HBML-EMP-" + token;
         }
 
-        window.addEventListener('DOMContentLoaded', generateEmployeeID);
+        /* FETCH LIVE EMPLOYEES */
+        async function fetchEmployees() {
+            const tableBody = document.getElementById("employee-table-body");
+            try {
+                const q = query(collection(db, "employees"), orderBy("created", "desc"));
+                const querySnapshot = await getDocs(q);
+                let tableHTML = "";
+
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400 text-xs">రికార్డులు ఏవీ లేవు.</td></tr>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let roleStyle = "bg-slate-100 text-slate-700 border-slate-200";
+                    if(data.role === "Manager") roleStyle = "bg-purple-50 text-purple-700 border-purple-200/60";
+                    if(data.role === "Field Officer") roleStyle = "bg-amber-50 text-amber-700 border-amber-200/60";
+                    if(data.role === "Office Staff") roleStyle = "bg-sky-50 text-sky-700 border-sky-200/60";
+
+                    tableHTML += `
+                        <tr class="hover:bg-slate-100/50 transition">
+                            <td class="p-3 pl-4 text-left">
+                                <div class="font-bold text-slate-900">${data.name}</div>
+                                <div class="text-[10px] font-mono text-slate-400 font-bold">${data.employeeId || 'N/A'} • Aadhaar: ${data.aadhaar ? '***' + data.aadhaar.slice(-4) : '—'}</div>
+                            </td>
+                            <td class="p-3 text-center text-xs font-bold font-mono text-slate-600">₹${Number(data.salary).toLocaleString('en-IN')}</td>
+                            <td class="p-3 text-right pr-4">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md border ${roleStyle}">${data.role}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = tableHTML;
+            } catch (error) {
+                console.error("Error table fetch:", error);
+                tableBody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-rose-500 text-xs">డేటా లోడ్ చేయడం సాధ్యపడలేదు.</td></tr>`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generateEmployeeID();
+            fetchEmployees();
+        });
 
         /* WRITE RECORD TO CLOUD FIREBASE */
         window.saveEmployee = async function() {
@@ -171,7 +237,6 @@
                 let ifsc = document.getElementById("ifsc").value.trim().toUpperCase();
                 let address = document.getElementById("address").value.trim();
 
-                /* COMPLETE LOGICAL VALIDATIONS */
                 if(!name || !phone || !aadhaar || !pan || !salary || !accountNumber || !ifsc) {
                     alert("Please fill in all mandatory details, including Aadhaar, PAN, Salary, and Bank Info.");
                     return;
@@ -182,7 +247,6 @@
                     return;
                 }
 
-                /* DB PAYLOAD */
                 await addDoc(collection(db, "employees"), {
                     employeeId: employeeId,
                     name: name,
@@ -203,9 +267,9 @@
                     created: new Date()
                 });
 
-                alert("Employee [ " + name + " ] Profile Saved Successfully on Cloud!");
+                alert("Employee Added Successfully");
 
-                /* RESET ALL VALUES */
+                // Reset fields
                 document.getElementById("name").value = "";
                 document.getElementById("phone").value = "";
                 document.getElementById("email").value = "";
@@ -218,7 +282,9 @@
                 document.getElementById("accountNumber").value = "";
                 document.getElementById("ifsc").value = "";
                 document.getElementById("address").value = "";
+                
                 generateEmployeeID();
+                fetchEmployees();
 
             } catch(error) {
                 console.error(error);
