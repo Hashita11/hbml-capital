@@ -1,188 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Add Employee</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:500px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-input,select{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#163c91;
-}
-
-.table-box{
-margin-top:25px;
-overflow:auto;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:12px;
-}
-
-table td{
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Full Employee Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom scrollbar for backend lists */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+    </style>
 </head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-<body>
+    <div class="w-full max-w-2xl mb-4 flex justify-between items-center">
+        <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
+            <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+        </a>
+    </div>
 
-<div class="box">
+    <div class="w-full max-w-2xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-6">
+        
+        <div>
+            <div class="flex justify-center mb-3">
+                <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+                <div id="fallback-icon" class="h-16 w-16 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
+            </div>
+            <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">Employee Onboarding</h1>
+            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Full Profile & Salary Disbursal Setup</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="space-y-5 text-left text-sm">
+            
+            <div class="border-b border-slate-100 pb-4">
+                <h3 class="text-xs font-black uppercase tracking-wider text-sky-600 mb-3"><i class="fa-solid fa-id-card-clip mr-1.5"></i> Basic & System Info</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Employee ID (Auto)</label>
+                        <input type="text" id="employeeId" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 font-mono font-bold text-slate-600 outline-none cursor-not-allowed" readonly>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Full Name</label>
+                        <input type="text" id="name" placeholder="Employee Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Phone Number</label>
+                        <input type="text" id="phone" placeholder="Phone Number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Email Address</label>
+                        <input type="email" id="email" placeholder="Email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                </div>
+            </div>
 
-<h1>Add Employee</h1>
+            <div class="border-b border-slate-100 pb-4 bg-slate-50/50 p-4 rounded-xl border border-slate-200/60">
+                <h3 class="text-xs font-black uppercase tracking-wider text-purple-600 mb-3"><i class="fa-solid fa-fingerprint mr-1.5"></i> KYC & Background</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Aadhaar Number</label>
+                        <input type="text" id="aadhaar" maxlength="12" placeholder="12 Digit Aadhaar" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition font-mono">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">PAN Card Number</label>
+                        <input type="text" id="pan" maxlength="10" placeholder="PAN Card Code" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition font-mono uppercase">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Highest Qualification</label>
+                        <input type="text" id="qualification" placeholder="e.g., B.Com, MBA, Intermediate, B.Tech" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                </div>
+            </div>
 
-<input type="text"
-id="name"
-placeholder="Employee Name">
+            <div class="border-b border-slate-100 pb-4">
+                <h3 class="text-xs font-black uppercase tracking-wider text-amber-600 mb-3"><i class="fa-solid fa-briefcase mr-1.5"></i> Designation & Pay Scale</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Designation Role</label>
+                        <select id="role" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition cursor-pointer">
+                            <option>Collection Staff</option>
+                            <option>Manager</option>
+                            <option>Field Officer</option>
+                            <option>Office Staff</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Gross Salary (Monthly)</label>
+                        <input type="number" id="salary" placeholder="₹ Salary Amount" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+                    </div>
+                </div>
+            </div>
 
-<input type="text"
-id="phone"
-placeholder="Phone Number">
+            <div class="border-b border-slate-100 pb-4 bg-emerald-50/20 p-4 rounded-xl border border-emerald-100">
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-600 mb-3"><i class="fa-solid fa-building-columns mr-1.5"></i> Salary Bank Disbursal Account</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Bank Name</label>
+                        <input type="text" id="bankName" placeholder="e.g., SBI, HDFC, Union Bank" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Account Holder Name</label>
+                        <input type="text" id="accountHolder" placeholder="Name as per Passbook" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Account Number</label>
+                        <input type="text" id="accountNumber" placeholder="Bank Account Number" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition font-mono">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">IFSC Code</label>
+                        <input type="text" id="ifsc" placeholder="SBIN0001234" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition font-mono uppercase">
+                    </div>
+                </div>
+            </div>
 
-<input type="email"
-id="email"
-placeholder="Email">
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Permanent Address</label>
+                <input type="text" id="address" placeholder="Door No, Street, Town/Village, District" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-slate-900 transition">
+            </div>
 
-<select id="role">
+        </div>
 
-<option>Collection Staff</option>
+        <button onclick="saveEmployee()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> REGISTER & SAVE PROFILE
+        </button>
 
-<option>Manager</option>
+    </div>
 
-<option>Field Officer</option>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<option>Office Staff</option>
+        /* FIREBASE MASTER SETUP */
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</select>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<button onclick="saveEmployee()">
+        /* AUTO GENERATE EMPLOYEE KEY */
+        function generateEmployeeID() {
+            const token = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById("employeeId").value = "HBML-EMP-" + token;
+        }
 
-Save Employee
+        window.addEventListener('DOMContentLoaded', generateEmployeeID);
 
-</button>
+        /* WRITE RECORD TO CLOUD FIREBASE */
+        window.saveEmployee = async function() {
+            try {
+                let employeeId = document.getElementById("employeeId").value;
+                let name = document.getElementById("name").value.trim();
+                let phone = document.getElementById("phone").value.trim();
+                let email = document.getElementById("email").value.trim();
+                let aadhaar = document.getElementById("aadhaar").value.trim();
+                let pan = document.getElementById("pan").value.trim().toUpperCase();
+                let qualification = document.getElementById("qualification").value.trim();
+                let role = document.getElementById("role").value;
+                let salary = document.getElementById("salary").value;
+                let bankName = document.getElementById("bankName").value.trim();
+                let accountHolder = document.getElementById("accountHolder").value.trim();
+                let accountNumber = document.getElementById("accountNumber").value.trim();
+                let ifsc = document.getElementById("ifsc").value.trim().toUpperCase();
+                let address = document.getElementById("address").value.trim();
 
-<div class="table-box">
+                /* COMPLETE LOGICAL VALIDATIONS */
+                if(!name || !phone || !aadhaar || !pan || !salary || !accountNumber || !ifsc) {
+                    alert("Please fill in all mandatory details, including Aadhaar, PAN, Salary, and Bank Info.");
+                    return;
+                }
 
-<table id="employeeTable">
+                if(aadhaar.length !== 12) {
+                    alert("Aadhaar Number must be exactly 12 digits.");
+                    return;
+                }
 
-<tr>
-<th>Name</th>
-<th>Phone</th>
-<th>Role</th>
-</tr>
+                /* DB PAYLOAD */
+                await addDoc(collection(db, "employees"), {
+                    employeeId: employeeId,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    aadhaar: aadhaar,
+                    pan: pan,
+                    qualification: qualification,
+                    role: role,
+                    salary: Number(salary),
+                    bankDetails: {
+                        bankName: bankName,
+                        accountHolder: accountHolder,
+                        accountNumber: accountNumber,
+                        ifsc: ifsc
+                    },
+                    address: address,
+                    created: new Date()
+                });
 
-</table>
+                alert("Employee [ " + name + " ] Profile Saved Successfully on Cloud!");
 
-</div>
+                /* RESET ALL VALUES */
+                document.getElementById("name").value = "";
+                document.getElementById("phone").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("aadhaar").value = "";
+                document.getElementById("pan").value = "";
+                document.getElementById("qualification").value = "";
+                document.getElementById("salary").value = "";
+                document.getElementById("bankName").value = "";
+                document.getElementById("accountHolder").value = "";
+                document.getElementById("accountNumber").value = "";
+                document.getElementById("ifsc").value = "";
+                document.getElementById("address").value = "";
+                generateEmployeeID();
 
-</div>
-
-<script>
-
-function saveEmployee(){
-
-let name =
-document.getElementById("name").value;
-
-let phone =
-document.getElementById("phone").value;
-
-let role =
-document.getElementById("role").value;
-
-if(name==="" || phone===""){
-
-alert("Fill all fields");
-
-return;
-
-}
-
-let table =
-document.getElementById("employeeTable");
-
-let row =
-table.insertRow();
-
-row.insertCell(0).innerHTML = name;
-
-row.insertCell(1).innerHTML = phone;
-
-row.insertCell(2).innerHTML = role;
-
-alert("Employee Added Successfully");
-
-document.getElementById("name").value="";
-document.getElementById("phone").value="";
-document.getElementById("email").value="";
-
-}
-
-</script>
-
+            } catch(error) {
+                console.error(error);
+                alert("Database Error: " + error.message);
+            }
+        }
+    </script>
 </body>
 </html>
