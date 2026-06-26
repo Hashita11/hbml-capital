@@ -9,61 +9,61 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-    <div class="max-w-5xl mx-auto space-y-6">
+    <div class="max-w-4xl mx-auto space-y-6">
         
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
-                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl">
-                <i class="fa-solid fa-chart-bar text-sky-400 mr-1.5"></i> Live Financial Auditing
-            </div>
+            <button onclick="triggerLiveAudit()" id="btnAudit" class="text-xs font-black text-sky-400 uppercase tracking-wider bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 px-3 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-arrows-rotate" id="auditIcon"></i> Live Financial Auditing
+            </button>
         </div>
 
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
-            <h1 class="text-2xl font-black tracking-tight uppercase">Loan Reports Ledger</h1>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Loan Reports Ledger</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Live Capital Outflow & Overdue Balances</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-md flex items-center justify-between">
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800/80 shadow-md flex items-center justify-between">
                 <div>
                     <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Active Disbursed</p>
                     <h3 id="statTotalDisbursed" class="text-xl font-black mt-1 text-sky-400 font-mono">₹0</h3>
                 </div>
-                <div class="h-10 w-10 bg-sky-950/50 text-sky-400 rounded-xl flex items-center justify-center text-base border border-sky-900/40"><i class="fa-solid fa-building-columns"></i></div>
+                <div class="h-10 w-10 bg-sky-950/40 text-sky-400 rounded-xl flex items-center justify-center text-base border border-sky-900/30"><i class="fa-solid fa-building-columns"></i></div>
             </div>
 
-            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-md flex items-center justify-between">
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800/80 shadow-md flex items-center justify-between">
                 <div>
                     <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Capital Recovered</p>
                     <h3 id="statTotalRecovered" class="text-xl font-black mt-1 text-emerald-400 font-mono">₹0</h3>
                 </div>
-                <div class="h-10 w-10 bg-emerald-950/50 text-emerald-400 rounded-xl flex items-center justify-center text-base border border-emerald-900/40"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                <div class="h-10 w-10 bg-emerald-950/40 text-emerald-400 rounded-xl flex items-center justify-center text-base border border-emerald-900/30"><i class="fa-solid fa-money-bill-trend-up"></i></div>
             </div>
 
-            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-md flex items-center justify-between">
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800/80 shadow-md flex items-center justify-between">
                 <div>
                     <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Net Outstanding Balance</p>
                     <h3 id="statTotalBalance" class="text-xl font-black mt-1 text-amber-500 font-mono">₹0</h3>
                 </div>
-                <div class="h-10 w-10 bg-amber-950/50 text-amber-500 rounded-xl flex items-center justify-center text-base border border-amber-900/40"><i class="fa-solid fa-clock-history"></i></div>
+                <div class="h-10 w-10 bg-amber-950/40 text-amber-500 rounded-xl flex items-center justify-center text-base border border-amber-900/30"><i class="fa-solid fa-clock-history"></i></div>
             </div>
         </div>
 
-        <div class="flex border-b border-slate-800 text-sm font-black">
-            <button id="tabSingle" onclick="switchReportTab('single')" class="px-5 py-3 border-b-2 border-sky-500 text-sky-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-user"></i> Individual Loans (సింగిల్ లోన్లు)
+        <div class="flex border-b border-slate-800 text-xs md:text-sm font-black">
+            <button id="tabSingle" onclick="switchReportTab('single')" class="w-1/2 sm:w-auto px-5 py-3 border-b-2 border-sky-500 text-sky-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-user"></i> Individual Loans (సింగిల్)
             </button>
-            <button id="tabGroup" onclick="switchReportTab('group')" class="px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-users"></i> Group Loans (పొదుపు సంఘాలు)
+            <button id="tabGroup" onclick="switchReportTab('group')" class="w-1/2 sm:w-auto px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-users"></i> Group Loans (సంఘాలు)
             </button>
         </div>
 
         <div id="reportSingleContainer" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-table-list text-sky-500 mr-1"></i> Individual Ledger Rows</span>
             </div>
             <div class="overflow-x-auto">
@@ -74,12 +74,12 @@
                             <th class="p-4">Loan Type & Method</th>
                             <th class="p-4">Sanctioned Amount</th>
                             <th class="p-4">Paid (EMI)</th>
-                            <th class="p-4 text-right">Outstanding Balance</th>
+                            <th class="p-4 text-right">Outstanding</th>
                         </tr>
                     </thead>
                     <tbody id="tblSingleBody" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
-                            <td colspan="5" class="p-8 text-center text-slate-500 animate-pulse font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> ఫైర్‌బేస్ నుండి డేటా లోడ్ అవుతోంది...</td>
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> Loading Data...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -87,7 +87,7 @@
         </div>
 
         <div id="reportGroupContainer" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden hidden">
-            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-users-viewfinder text-emerald-500 mr-1"></i> Joint Liability Groups Rowset</span>
             </div>
             <div class="overflow-x-auto">
@@ -103,7 +103,7 @@
                     </thead>
                     <tbody id="tblGroupBody" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
-                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-emerald-400"></i> ఫైర్‌బేస్ నుండి గ్రూప్ డేటా లోడ్ అవుతోంది...</td>
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-emerald-400"></i> Loading Group Data...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -128,7 +128,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 🔄 ట్యాబ్ మార్చుకునే సులభమైన లాజిక్
         window.switchReportTab = function(type) {
             const singleContainer = document.getElementById("reportSingleContainer");
             const groupContainer = document.getElementById("reportGroupContainer");
@@ -138,17 +137,40 @@
             if (type === 'single') {
                 singleContainer.classList.remove("hidden");
                 groupContainer.classList.add("hidden");
-                tabSingle.className = "px-5 py-3 border-b-2 border-sky-500 text-sky-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center gap-2";
-                tabGroup.className = "px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center gap-2";
+                tabSingle.className = "w-1/2 sm:w-auto px-5 py-3 border-b-2 border-sky-500 text-sky-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center justify-center gap-2";
+                tabGroup.className = "w-1/2 sm:w-auto px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-2";
             } else {
                 singleContainer.classList.add("hidden");
                 groupContainer.classList.remove("hidden");
-                tabGroup.className = "px-5 py-3 border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center gap-2";
-                tabSingle.className = "px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center gap-2";
+                tabGroup.className = "w-1/2 sm:w-auto px-5 py-3 border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/40 rounded-t-xl transition cursor-pointer flex items-center justify-center gap-2";
+                tabSingle.className = "w-1/2 sm:w-auto px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-2";
             }
         }
 
-        /* 📉 1. FETCH FIRESTORE REALTIME RECORDS FOR INDIVIDUAL CUSTOMERS */
+        /* ⚡ LIVE AUDIT REFRESH ACTION (బటన్ పనిచేసే లాజిక్) */
+        window.triggerLiveAudit = async function() {
+            const icon = document.getElementById("auditIcon");
+            const btn = document.getElementById("btnAudit");
+            
+            // బటన్ తిరిగే యానిమేషన్ యాడ్ చేయడం
+            icon.classList.add("animate-spin");
+            btn.classList.add("opacity-60");
+            
+            // టేబుల్స్ లో లోడింగ్ టెక్స్ట్ చూపించడం
+            document.getElementById("tblSingleBody").innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> Auditing Live Ledger...</td></tr>`;
+            document.getElementById("tblGroupBody").innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-emerald-400"></i> Auditing Group Ledger...</td></tr>`;
+
+            // డేటాను మళ్లీ ఫ్రెష్ గా లోడ్ చేయడం
+            await loadIndividualReports();
+            await loadGroupReports();
+
+            // యానిమేషన్ స్టాప్ చేయడం
+            setTimeout(() => {
+                icon.classList.remove("animate-spin");
+                btn.classList.remove("opacity-60");
+            }, 600);
+        }
+
         async function loadIndividualReports() {
             const tbody = document.getElementById("tblSingleBody");
             let totalDisbursed = 0;
@@ -176,14 +198,14 @@
                     totalBalance += balance;
 
                     html += `
-                        <tr class="hover:bg-slate-900/40 transition">
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60">
                             <td class="p-4">
-                                <div class="font-black text-white">${data.name || 'N/A'}</div>
+                                <div class="font-black text-white text-sm">${data.name || 'N/A'}</div>
                                 <div class="text-[10px] text-sky-400 font-mono">${data.customerId || 'N/A'}</div>
                             </td>
                             <td class="p-4">
                                 <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded text-[10px] font-bold">${data.loanType || 'Microfinance'}</span>
-                                <span class="text-[10px] text-slate-500 block mt-0.5">${data.interestMethod || 'Flat'} Rate</span>
+                                <span class="text-[10px] text-slate-500 block mt-0.5">${data.interestMethod || 'Flat'}</span>
                             </td>
                             <td class="p-4 font-mono font-bold text-slate-200">₹${principal.toLocaleString('en-IN')}</td>
                             <td class="p-4 font-mono text-emerald-400">₹${paid.toLocaleString('en-IN')}</td>
@@ -194,21 +216,17 @@
 
                 tbody.innerHTML = html;
 
-                // మాతృ సంఖ్యలను బోర్డు మీద అప్‌డేట్ చేయడం
                 document.getElementById("statTotalDisbursed").innerText = "₹" + Math.round(totalDisbursed).toLocaleString('en-IN');
                 document.getElementById("statTotalRecovered").innerText = "₹" + Math.round(totalRecovered).toLocaleString('en-IN');
                 document.getElementById("statTotalBalance").innerText = "₹" + Math.round(totalBalance).toLocaleString('en-IN');
 
             } catch (error) {
-                console.error(error);
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading individual report ledger.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading data.</td></tr>`;
             }
         }
 
-        /* 📉 2. FETCH FIRESTORE REALTIME RECORDS FOR SANGAM GROUP LOANS */
         async function loadGroupReports() {
             const tbody = document.getElementById("tblGroupBody");
-
             try {
                 const snap = await getDocs(collection(db, "group_loans"));
                 let html = "";
@@ -221,8 +239,6 @@
                 snap.forEach((docRecord) => {
                     const data = docRecord.data();
                     let members = data.members || [];
-                    
-                    // గ్రూప్ ప్రిన్సిపల్ లెక్క
                     let groupPrincipal = 0;
                     let groupPayable = 0;
                     let groupEmi = 0;
@@ -234,31 +250,27 @@
                     });
 
                     html += `
-                        <tr class="hover:bg-slate-900/40 transition">
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60">
                             <td class="p-4">
-                                <div class="font-black text-white">${data.groupName || 'N/A'}</div>
+                                <div class="font-black text-white text-sm">${data.groupName || 'N/A'}</div>
                                 <div class="text-[10px] text-emerald-400 font-mono">${data.groupId || 'N/A'}</div>
                             </td>
                             <td class="p-4 font-bold text-slate-400">${members.length} Members</td>
-                            <td class="p-4 font-mono">${data.tenureMonths || 12} Months</td>
+                            <td class="p-4 font-mono">${data.tenureMonths || 12} M</td>
                             <td class="p-4">
-                                <div class="font-mono font-bold text-slate-200">Principal: ₹${groupPrincipal.toLocaleString('en-IN')}</div>
-                                <div class="text-[10px] text-slate-400">Total Payable: ₹${groupPayable.toLocaleString('en-IN')} (${data.interestRate}% Int)</div>
+                                <div class="font-mono font-bold text-slate-200">₹${groupPrincipal.toLocaleString('en-IN')}</div>
+                                <div class="text-[10px] text-slate-500">Matrix: ₹${groupPayable.toLocaleString('en-IN')}</div>
                             </td>
                             <td class="p-4 text-right font-mono font-black text-emerald-400">₹${Math.round(groupEmi).toLocaleString('en-IN')}</td>
                         </tr>
                     `;
                 });
-
                 tbody.innerHTML = html;
-
             } catch (error) {
-                console.error(error);
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading group loan data rows.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading group data.</td></tr>`;
             }
         }
 
-        // స్క్రీన్ లోడ్ అవ్వగానే రన్ చేయాల్సిన డ్యూయల్ లాజిక్స్
         window.addEventListener('DOMContentLoaded', () => {
             loadIndividualReports();
             loadGroupReports();
