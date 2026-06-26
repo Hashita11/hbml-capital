@@ -1,173 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Add Customer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-font-family:Arial,sans-serif;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:500px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-input{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#163c91;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Add Customer</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-<body>
+    <!-- BACK TO DASHBOARD BUTTON -->
+    <div class="w-full max-w-xl mb-4 flex justify-between items-center">
+        <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
+            <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+        </a>
+    </div>
 
-<div class="box">
+    <!-- MAIN FORM BOX -->
+    <div class="w-full max-w-xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center">
+        
+        <!-- BRANDING LOGO -->
+        <div class="flex justify-center mb-4">
+            <img src="logo.png" alt="HBML Logo" class="h-20 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-20 w-20 bg-slate-900 text-sky-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-md border border-slate-800 hidden">H</div>
+        </div>
 
-<img src="logo.png" class="logo">
+        <h1 class="text-2xl font-black tracking-tight text-slate-900 uppercase">Add New Customer</h1>
+        <p class="text-xs text-slate-400 font-bold mt-1 mb-6 uppercase tracking-wider">KYC & Financial Onboarding</p>
 
-<h1>Add Customer</h1>
+        <!-- INPUT FIELDS -->
+        <div class="space-y-4 text-left">
+            
+            <!-- SYSTEM GENERATED CUSTOMER ID -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer ID (Auto-Generated)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-id-badge"></i></span>
+                    <input type="text" id="customerId" class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm font-mono font-bold text-slate-600 outline-none cursor-not-allowed" readonly>
+                </div>
+            </div>
 
-<input type="text" id="name" placeholder="Customer Name">
+            <!-- CUSTOMER NAME & PHONE -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer Name</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="name" placeholder="Enter Full Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Phone Number</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-phone"></i></span>
+                        <input type="text" id="phone" placeholder="Enter 10-Digit Mobile" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition">
+                    </div>
+                </div>
+            </div>
 
-<input type="text" id="phone" placeholder="Phone Number">
+            <!-- KYC SECTION: AADHAAR & PAN -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Aadhaar Number</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-fingerprint"></i></span>
+                        <input type="text" id="aadhaar" maxlength="12" placeholder="12 Digit Number" class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-slate-900 transition font-mono">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">PAN Card Number</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-address-card"></i></span>
+                        <input type="text" id="pan" maxlength="10" placeholder="ABCDE1234F" class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-slate-900 transition font-mono uppercase">
+                    </div>
+                </div>
+            </div>
 
-<input type="text" id="address" placeholder="Address">
+            <!-- FULL ADDRESS -->
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Permanent Address</label>
+                <div class="relative">
+                    <span class="absolute top-3.5 left-4 text-slate-400 text-sm"><i class="fa-solid fa-location-dot"></i></span>
+                    <input type="text" id="address" placeholder="Enter Street, Village, Mandal, City" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition">
+                </div>
+            </div>
 
-<input type="number" id="loan" placeholder="Loan Amount">
+            <!-- FINANCIALS: LOAN & EMI -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Approved Loan Amount</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
+                        <input type="number" id="loan" placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Fixed Monthly EMI</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
+                        <input type="number" id="emi" placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+                    </div>
+                </div>
+            </div>
 
-<input type="number" id="emi" placeholder="Monthly EMI">
+        </div>
 
-<button onclick="saveCustomer()">
-Save Customer
-</button>
+        <!-- SAVE BUTTON -->
+        <button onclick="saveCustomer()" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> SAVE CUSTOMER PROFILE
+        </button>
 
-</div>
+    </div>
 
-<script type="module">
+    <!-- FIREBASE AND ID LOGIC MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        /* FIREBASE CONFIGURATION */
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-import {
-getFirestore,
-collection,
-addDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-const firebaseConfig = {
-apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-authDomain: "hbml-capital.firebaseapp.com",
-projectId: "hbml-capital",
-storageBucket: "hbml-capital.firebasestorage.app",
-messagingSenderId: "893969951538",
-appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-};
+        /* UNIQUE CUSTOMER ID GENERATOR (HBML-XXXX फियाट) */
+        function generateCustomerID() {
+            const randomNumber = Math.floor(1000 + Math.random() * 9000); // Generates 4 digit unique code
+            document.getElementById("customerId").value = "HBML-" + randomNumber;
+        }
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        // Generate ID immediately on page render
+        window.addEventListener('DOMContentLoaded', generateCustomerID);
 
-window.saveCustomer = async function(){
+        /* SAVE DATA FUNCTION TO FIRESTORE */
+        window.saveCustomer = async function() {
+            try {
+                let customerId = document.getElementById("customerId").value;
+                let name = document.getElementById("name").value.trim();
+                let phone = document.getElementById("phone").value.trim();
+                let aadhaar = document.getElementById("aadhaar").value.trim();
+                let pan = document.getElementById("pan").value.trim().toUpperCase();
+                let address = document.getElementById("address").value.trim();
+                let loan = document.getElementById("loan").value;
+                let emi = document.getElementById("emi").value;
 
-try{
+                /* COMPREHENSIVE VALIDATION */
+                if(!name || !phone || !aadhaar || !pan || !loan || !emi) {
+                    alert("Please fill in all mandatory fields, including Aadhaar and PAN.");
+                    return;
+                }
 
-let name =
-document.getElementById("name").value;
+                if(phone.length !== 10) {
+                    alert("Please enter a valid 10-digit mobile number.");
+                    return;
+                }
 
-let phone =
-document.getElementById("phone").value;
+                if(aadhaar.length !== 12) {
+                    alert("Aadhaar Number must be exactly 12 digits.");
+                    return;
+                }
 
-let address =
-document.getElementById("address").value;
+                /* FIRESTORE UPLOAD PAYLOAD */
+                await addDoc(collection(db, "customers"), {
+                    customerId: customerId,
+                    name: name,
+                    phone: phone,
+                    aadhaar: aadhaar,
+                    pan: pan,
+                    address: address,
+                    loan: Number(loan),
+                    emi: Number(emi),
+                    paid: 0,
+                    balance: Number(loan),
+                    created: new Date()
+                });
 
-let loan =
-document.getElementById("loan").value;
+                alert("Customer Profile [ " + customerId + " ] Saved Successfully!");
 
-let emi =
-document.getElementById("emi").value;
+                /* CLEAR ENTRIES AND REGENERATE NEXT RELEVANT ID */
+                document.getElementById("name").value = "";
+                document.getElementById("phone").value = "";
+                document.getElementById("aadhaar").value = "";
+                document.getElementById("pan").value = "";
+                document.getElementById("address").value = "";
+                document.getElementById("loan").value = "";
+                document.getElementById("emi").value = "";
+                generateCustomerID();
 
-if(!name || !phone){
-alert("Please enter Name and Phone Number");
-return;
-}
-
-await addDoc(collection(db,"customers"),{
-
-name:name,
-phone:phone,
-address:address,
-loan:Number(loan),
-emi:Number(emi),
-
-paid:0,
-
-balance:Number(loan),
-
-created:new Date()
-
-});
-
-alert("Customer Saved Successfully");
-
-document.getElementById("name").value="";
-document.getElementById("phone").value="";
-document.getElementById("address").value="";
-document.getElementById("loan").value="";
-document.getElementById("emi").value="";
-
-}
-catch(error){
-
-console.log(error);
-alert("Error : " + error.message);
-
-}
-
-}
-
-</script>
-
+            } catch(error) {
+                console.error(error);
+                alert("Error writing document: " + error.message);
+            }
+        }
+    </script>
 </body>
 </html>
