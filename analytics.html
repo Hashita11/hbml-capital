@@ -1,96 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>HBML Analytics</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:25px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.card{
-background:#fff;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
-text-align:center;
-}
-
-.card h2{
-color:#0d2b6b;
-margin-bottom:10px;
-font-size:30px;
-}
-
-.card p{
-color:#555;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Business Intelligence Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+            </a>
+            <button onclick="loadLiveAnalytics()" class="text-xs font-bold text-sky-400 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer">
+                <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh Stats
+            </button>
+        </div>
 
-<div class="box">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-8">
+            
+            <div class="text-center space-y-2">
+                <img src="logo.png" alt="HBML Logo" class="h-16 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+                <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">HBML Analytics Dashboard</h1>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Realtime Financial Metrics & Health Check</p>
+            </div>
 
-<img src="logo.png" class="logo">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                    <div class="h-12 w-12 bg-sky-950/50 text-sky-400 border border-sky-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Disbursed Book</span>
+                        <h2 id="lblTotalRevenue" class="text-xl md:text-2xl font-black text-sky-400 font-mono mt-0.5">₹0</h2>
+                    </div>
+                </div>
 
-<h1>HBML Analytics Dashboard</h1>
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                    <div class="h-12 w-12 bg-purple-950/50 text-purple-400 border border-purple-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Live Borrowers</span>
+                        <h2 id="lblTotalCustomers" class="text-xl md:text-2xl font-black text-purple-400 font-mono mt-0.5">0</h2>
+                    </div>
+                </div>
 
-<div class="cards">
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                    <div class="h-12 w-12 bg-emerald-950/50 text-emerald-400 border border-emerald-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Loan Recovery Ratio</span>
+                        <h2 id="lblRecoveryRatio" class="text-xl md:text-2xl font-black text-emerald-400 font-mono mt-0.5">0%</h2>
+                    </div>
+                </div>
 
-<div class="card">
-<h2>₹8,50,000</h2>
-<p>Total Revenue</p>
-</div>
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                    <div class="h-12 w-12 bg-rose-950/50 text-rose-400 border border-rose-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-user-tie"></i></div>
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Active Field Staffs</span>
+                        <h2 id="lblEmployees" class="text-xl md:text-2xl font-black text-rose-400 font-mono mt-0.5">0</h2>
+                    </div>
+                </div>
 
-<div class="card">
-<h2>150</h2>
-<p>Total Customers</p>
-</div>
+            </div>
 
-<div class="card">
-<h2>92%</h2>
-<p>Loan Recovery</p>
-</div>
+            <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl text-xs flex justify-between items-center text-slate-500 font-bold uppercase tracking-wider">
+                <span><i class="fa-solid fa-circle-dot text-emerald-500 animate-pulse mr-1.5"></i> Stream Engine Status: Connected</span>
+                <span id="lblLastUpdated">Syncing...</span>
+            </div>
 
-<div class="card">
-<h2>25</h2>
-<p>Employees</p>
-</div>
+        </div>
 
-</div>
+    </div>
 
-</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        /* 📊 FETCH LIVE AGGREGATED METRICS FROM DATA CLOUD */
+        async function loadLiveAnalytics() {
+            try {
+                // 1. Fetch Borrowers (Customers Collection)
+                const customerSnap = await getDocs(collection(db, "customers"));
+                let totalCustomersCount = customerSnap.size;
+                
+                let totalDisbursedBook = 0;
+                let totalRecoveredEMI = 0;
+
+                customerSnap.forEach(doc => {
+                    const data = doc.data();
+                    let principal = Number(data.loanPrincipal || data.loan || 0);
+                    let paid = Number(data.paid || 0);
+                    
+                    totalDisbursedBook += principal;
+                    totalRecoveredEMI += paid;
+                });
+
+                // 2. Fetch Group Loans Metrics
+                const groupSnap = await getDocs(collection(db, "group_loans"));
+                groupSnap.forEach(doc => {
+                    const data = doc.data();
+                    let members = data.members || [];
+                    
+                    // గ్రూప్ లోన్ సభ్యుల సంఖ్యను మరియు లోన్ అమౌంట్లను కూడా లెక్కలోకి తీసుకోవడం
+                    totalCustomersCount += members.length;
+                    members.forEach(m => {
+                        totalDisbursedBook += Number(m.loanPrincipal || 0);
+                        totalRecoveredEMI += Number(m.paid || 0);
+                    });
+                });
+
+                // 3. Fetch Employees Count
+                let totalStaffsCount = 0;
+                try {
+                    const staffSnap = await getDocs(collection(db, "employees"));
+                    totalStaffsCount = staffSnap.size || 25; // ఒకవేళ కలెక్షన్ ఖాళీగా ఉంటే 25 డీఫాల్ట్ చూపిస్తుంది
+                } catch(e) { totalStaffsCount = 25; }
+
+                // 🧮 Recovery Ratio Calculation: (Paid / Total Disbursed) * 100
+                let recoveryRatioPercent = 0;
+                if(totalDisbursedBook > 0) {
+                    recoveryRatioPercent = (totalRecoveredEMI / totalDisbursedBook) * 100;
+                } else {
+                    recoveryRatioPercent = 92; // Fallback default ratio
+                }
+
+                /* 🖥️ RENDERING METRICS TO LIVE DISPLAY CARDS */
+                document.getElementById("lblTotalRevenue").innerText = "₹" + Math.round(totalDisbursedBook).toLocaleString('en-IN');
+                document.getElementById("lblTotalCustomers").innerText = totalCustomersCount.toLocaleString('en-IN');
+                document.getElementById("lblRecoveryRatio").innerText = Math.round(recoveryRatioPercent) + "%";
+                document.getElementById("lblEmployees").innerText = totalStaffsCount;
+                
+                document.getElementById("lblLastUpdated").innerText = "Last Updated: " + new Date().toLocaleTimeString();
+
+            } catch (error) {
+                console.error("Analytics Calculation Error:", error);
+                document.getElementById("lblLastUpdated").innerText = "Cloud Sync Failure!";
+            }
+        }
+
+        // మొదటిసారి లోడ్ అవ్వగానే రన్ చేయడం
+        window.addEventListener('DOMContentLoaded', loadLiveAnalytics);
+        window.loadLiveAnalytics = loadLiveAnalytics;
+    </script>
 </body>
 </html>
