@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Collect EMI Gateway</title>
+    <title>HBML Capital - Advanced Collection & Overdue Ledger</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4" id="body-root">
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-    <div class="w-full max-w-xl mb-4 flex justify-between items-center">
+    <!-- BACK TO DASHBOARD -->
+    <div class="w-full max-w-2xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
             <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
         </a>
     </div>
 
-    <div class="w-full max-w-xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-5">
+    <!-- MAIN BOX -->
+    <div class="w-full max-w-2xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-6">
         
         <div>
+            <!-- BRANDING LOGO -->
             <div class="flex justify-center mb-3">
                 <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
                 <div id="fallback-icon" class="h-16 w-16 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
             </div>
-            <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">Collect EMI</h1>
-            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Loan Recovery Ledger Update</p>
+            <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">Collect EMI & Default Charges</h1>
+            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Overdue Recovery Monitoring Desk</p>
         </div>
 
+        <!-- MANUAL SEARCH GATEWAY -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 text-left space-y-2">
             <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Manual Customer Search</label>
             <div class="flex gap-2">
@@ -34,44 +40,84 @@
             </div>
         </div>
 
+        <!-- DYNAMIC CUSTOMER INFO CARDS GRID -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-            
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 sm:col-span-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Customer Name</span>
-                <h2 id="name" class="text-base font-black text-slate-500">Enter Customer ID above to search...</h2>
+                <h2 id="name" class="text-base font-black text-slate-500">Enter ID above to pull breakdown...</h2>
             </div>
-
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Loan Amount</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Loan Principal Amount</span>
                 <h2 id="loan" class="text-base font-bold text-slate-900">₹0</h2>
             </div>
-
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Monthly EMI</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Monthly Base EMI</span>
                 <h2 id="emi" class="text-base font-bold text-slate-900">₹0</h2>
             </div>
-
-            <div class="bg-rose-50/40 p-4 rounded-xl border border-rose-100 sm:col-span-2">
-                <span class="text-xs font-bold text-rose-500 uppercase tracking-wider block mb-0.5">Remaining Balance</span>
-                <h2 id="balance" class="text-lg font-black text-rose-600 font-mono">₹0</h2>
-            </div>
-
         </div>
 
-        <div class="text-left text-sm space-y-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Enter EMI Amount to Collect</label>
-            <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
-                <input type="number" id="amount" placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+        <!-- SEPARATE PENALTY BREAKDOWN BREAK UP PANEL -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden text-left text-sm bg-slate-50/50">
+            <div class="p-3 bg-slate-100 font-black text-xs uppercase tracking-wider border-b border-slate-200 text-slate-500"><i class="fa-solid fa-calculator text-rose-500 mr-1.5"></i> Admin Penalty Breakdown & Verification</div>
+            <div class="p-4 space-y-3 font-medium text-slate-700">
+                <div class="flex justify-between items-center">
+                    <span>Check Bounce Charges <span class="text-xs text-slate-400">(₹1,000 / month)</span></span>
+                    <span id="lblBounce" class="font-mono font-bold text-slate-900">₹0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Not Paid in Time Fine <span class="text-xs text-slate-400">(Fixed ₹1,000)</span></span>
+                    <span id="lblInTimeFine" class="font-mono font-bold text-slate-900">₹0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Late Days Accumulation <span class="text-xs text-slate-400">(3% on Principal / Day)</span></span>
+                    <span id="lblDailyInterest" class="font-mono font-bold text-slate-900">₹0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span>Field Visit Charges <span class="text-xs text-slate-400">(₹500 + 18% GST = ₹590/visit)</span></span>
+                    <span id="lblVisitCharge" class="font-mono font-bold text-slate-900">₹0</span>
+                </div>
+                <div class="flex justify-between items-center border-b border-dashed border-slate-200 pb-2">
+                    <span>Legal / Court Penalty <span class="text-xs text-slate-400">(Triggered on 3+ Default EMIs)</span></span>
+                    <span id="lblCourtCharge" class="font-mono font-bold text-rose-600 font-black">₹0</span>
+                </div>
+                
+                <!-- TOTAL OVERDUE DISPLAY BACKGROUND -->
+                <div class="flex justify-between items-center bg-red-100 p-3 rounded-xl border border-red-200 mt-2">
+                    <strong class="text-red-800 text-xs font-black uppercase tracking-wider"><i class="fa-solid fa-circle-exclamation mr-1"></i> Total Overdue Amount (EMI + Fine)</strong>
+                    <strong id="totalOverdue" class="text-xl font-black text-red-600 font-mono">₹0</strong>
+                </div>
             </div>
         </div>
 
-        <button onclick="collectEMI()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wallet"></i> COLLECT EMI PAYMENT
+        <!-- COLLECTION ENTRY PACK FOR RECOVERY AGENT -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left space-y-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 border-b border-slate-200/60 pb-1.5"><i class="fa-solid fa-cash-register text-emerald-500 mr-1"></i> Register Collection Entry</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Base EMI Paid</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
+                        <input type="number" id="emiPaid" class="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-3 py-2 font-mono font-bold focus:outline-none focus:border-slate-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Total Penalties Paid</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
+                        <input type="number" id="penaltyPaid" value="0" class="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-3 py-2 font-mono font-bold focus:outline-none focus:border-slate-900">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECOVERY ACTION SUBMIT BUTTON -->
+        <button onclick="postAdvancedCollection()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> SUBMIT COLLECTION RECEIPT
         </button>
 
     </div>
 
+    <!-- FIREBASE AND ADVANCED RECOVERY COMPUTATION ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, addDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -92,108 +138,120 @@
         let activeDocId = params.get("id"); 
         let customer = {};
 
-        /* URL ద్వారా లోడ్ చేసే ఫంక్షన్ */
         async function loadCustomerByDocId(documentId){
             if(!documentId) return;
             try {
                 const ref = doc(db, "customers", documentId);
                 const snap = await getDoc(ref);
-                if(snap.exists()){
-                    renderCustomerData(snap.data(), snap.id);
-                }
-            } catch (error) {
-                console.error("Error: " + error.message);
-            }
+                if(snap.exists()) renderCustomerOverdueProfile(snap.data(), snap.id);
+            } catch (error) { console.error(error); }
         }
 
-        /* మ్యాన్యువల్ గా కంప్లీట్ ఐడీ ద్వారా వెతికే ఫంక్షన్ */
         window.searchCustomerManual = async function() {
             let searchId = document.getElementById("manualSearchId").value.trim().toUpperCase();
-            if(!searchId) {
-                alert("Please enter a Customer ID");
-                return;
-            }
+            if(!searchId) return alert("Please enter a Customer ID");
             try {
                 const q = query(collection(db, "customers"), where("customerId", "==", searchId));
                 const querySnapshot = await getDocs(q);
-                if(querySnapshot.empty) {
-                    alert("No active record found for ID: " + searchId);
-                    return;
-                }
-                querySnapshot.forEach((docRecord) => {
-                    renderCustomerData(docRecord.data(), docRecord.id);
-                });
-            } catch (error) {
-                alert("Search Error: " + error.message);
-            }
+                if(querySnapshot.empty) return alert("No record found for ID: " + searchId);
+                querySnapshot.forEach(docRecord => renderCustomerOverdueProfile(docRecord.data(), docRecord.id));
+            } catch (error) { alert("Error: " + error.message); }
         }
 
-        /* స్క్రీన్ పై డేటాను చూపించే ఫంక్షన్ */
-        function renderCustomerData(data, docId) {
+        /* 🧮 ADVANCED AUTOMATED PENALTY CALCULATOR ENGINE */
+        function renderCustomerOverdueProfile(data, docId) {
             customer = data;
             activeDocId = docId;
 
-            document.getElementById("name").innerHTML = customer.name || "Unknown Profile";
-            document.getElementById("name").classList.remove("text-slate-500");
-            document.getElementById("name").classList.add("text-slate-900");
-            
-            document.getElementById("loan").innerHTML = "₹" + Number(customer.loan || 0).toLocaleString('en-IN');
-            document.getElementById("emi").innerHTML = "₹" + Number(customer.emi || 0).toLocaleString('en-IN');
+            // Basic Text Node Binding
+            document.getElementById("name").innerText = customer.name || "N/A";
+            document.getElementById("loan").innerText = "₹" + Number(customer.loan || 0).toLocaleString('en-IN');
+            document.getElementById("emi").innerText = "₹" + Number(customer.emi || 0).toLocaleString('en-IN');
 
-            let paid = Number(customer.paid || 0);
-            let balance = Number(customer.loan || 0) - paid;
-            document.getElementById("balance").innerHTML = "₹" + balance.toLocaleString('en-IN');
-            document.getElementById("amount").value = customer.emi || "";
+            // 1. Inputs pulling from data rows or assuming defaults if not set in master sheet
+            let principal = Number(customer.loan || 0);
+            let baseEmi = Number(customer.emi || 0);
+            let totalMissedEmis = Number(customer.missedEmisCount || 1); // Default to 1 if overdue logged
+            let overdueDaysCount = Number(customer.lateDaysCount || 0);
+            let fieldVisitsCount = Number(customer.fieldVisitsCount || 0);
+            let isNextMonthDefault = customer.isNextMonthDefault || false; 
+
+            // 2. Base Rates Architecture
+            let rateBouncePerMonth = 1000;
+            let rateInTimeFine = 1000;
+            let rateDailyPrincipalPercent = 0.03; // 3% 
+            let rateFieldVisitWithGst = 590; // 500 + 18% GST
+
+            // 3. Double Penalties calculation if Next Month Default Flag is triggered
+            if (isNextMonthDefault) {
+                rateBouncePerMonth *= 2;
+                rateInTimeFine *= 2;
+                rateDailyPrincipalPercent *= 2;
+            }
+
+            // 4. Group Computations
+            let totalCheckBouncePenalty = totalMissedEmis * rateBouncePerMonth;
+            let totalInTimeFineApplied = rateInTimeFine;
+            let totalDailyAccumulatedPenalty = overdueDaysCount * (principal * (rateDailyPrincipalPercent / 100));
+            let totalVisitChargesCalculated = fieldVisitsCount * rateFieldVisitWithGst;
+            
+            // 5. 3+ Full Default Court Penalty Trigger
+            let courtPenaltyCharges = 0;
+            if (totalMissedEmis >= 3) {
+                courtPenaltyCharges = customer.courtPenaltyCharges || 5000; // Custom corporate trigger or flat 5000
+            }
+
+            // 6. Final Aggregate Addition
+            let combinedPenaltiesSum = totalCheckBouncePenalty + totalInTimeFineApplied + totalDailyAccumulatedPenalty + totalVisitChargesCalculated + courtPenaltyCharges;
+            let definitiveOverdueAggregate = baseEmi + combinedPenaltiesSum;
+
+            // UI Column Updates
+            document.getElementById("lblBounce").innerText = "₹" + totalCheckBouncePenalty.toLocaleString('en-IN');
+            document.getElementById("lblInTimeFine").innerText = "₹" + totalInTimeFineApplied.toLocaleString('en-IN');
+            document.getElementById("lblDailyInterest").innerText = "₹" + Math.round(totalDailyAccumulatedPenalty).toLocaleString('en-IN');
+            document.getElementById("lblVisitCharge").innerText = "₹" + totalVisitChargesCalculated.toLocaleString('en-IN');
+            document.getElementById("lblCourtCharge").innerText = "₹" + courtPenaltyCharges.toLocaleString('en-IN');
+            document.getElementById("totalOverdue").innerText = "₹" + Math.round(definitiveOverdueAggregate).toLocaleString('en-IN');
+
+            // Set default recovery values into agent entry rows
+            document.getElementById("emiPaid").value = baseEmi;
+            document.getElementById("penaltyPaid").value = Math.round(combinedPenaltiesSum);
         }
 
-        /* COLLECT EMI PAYMENT */
-        window.collectEMI = async function(){
-            if(!activeDocId){
-                alert("Please look up a customer profile first.");
-                return;
-            }
+        /* POST COLLECTION PAY-IN PACK TO LEDGER ROWS */
+        window.postAdvancedCollection = async function() {
+            if(!activeDocId) return alert("Please select or search an active profile first.");
+            
             try {
-                let amount = Number(document.getElementById("amount").value);
-                if(!amount || amount <= 0){
-                    alert("Please enter a valid EMI amount.");
-                    return;
-                }
+                let emiPayment = Number(document.getElementById("emiPaid").value || 0);
+                let penaltyPayment = Number(document.getElementById("penaltyPaid").value || 0);
 
-                let paid = Number(customer.paid || 0) + amount;
-                let balance = Number(customer.loan || 0) - paid;
+                if (emiPayment < 0 || penaltyPayment < 0) return alert("Values cannot be negative.");
 
-                if (balance < 0) {
-                    alert("Amount exceeds total pending loan balance.");
-                    return;
-                }
+                let historicPaid = Number(customer.paid || 0);
+                let historicPenaltyPaid = Number(customer.totalPenaltyPaid || 0);
 
                 await addDoc(collection(db, "emi_collections"), {
                     customerId: activeDocId,
                     customerName: customer.name,
-                    amount: amount,
+                    emiAmountPaid: emiPayment,
+                    penaltyAmountPaid: penaltyPayment,
                     date: new Date()
                 });
 
                 await updateDoc(doc(db, "customers", activeDocId), {
-                    paid: paid,
-                    balance: balance
+                    paid: historicPaid + emiPayment,
+                    balance: Number(customer.loan || 0) - (historicPaid + emiPayment),
+                    totalPenaltyPaid: historicPenaltyPaid + penaltyPayment
                 });
 
-                customer.paid = paid;
-                document.getElementById("balance").innerHTML = "₹" + balance.toLocaleString('en-IN');
-                document.getElementById("amount").value = "";
-                alert("EMI Collected and Ledger Updated Successfully!");
-            } catch(error) {
-                alert("Error recording payment: " + error.message);
-            }
+                alert("Recovery Collection Logged successfully into ledger rows!");
+                location.reload();
+
+            } catch (error) { alert("Database injection failure: " + error.message); }
         }
 
-        /* అలర్ట్ బాక్స్ రాకుండా ఇక్కడ చెక్ మార్చాను */
-        window.addEventListener('DOMContentLoaded', () => {
-            if(activeDocId) {
-                loadCustomerByDocId(activeDocId);
-            }
-        });
+        window.addEventListener('DOMContentLoaded', () => { if(activeDocId) loadCustomerByDocId(activeDocId); });
     </script>
 </body>
 </html>
