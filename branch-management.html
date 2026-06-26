@@ -1,71 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Branch Management</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-max-width:1000px;
-margin:auto;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-.branch{
-background:#f7f9fc;
-padding:20px;
-border-radius:15px;
-margin-bottom:15px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Branch Management Console</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+            </a>
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-wider bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl">
+                <i class="fa-solid fa-code-branch text-sky-400 mr-1.5"></i> Multi-Branch Infrastructure
+            </div>
+        </div>
 
-<div class="box">
+        <div class="text-center space-y-2 py-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Branch Operations System</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Regional Portfolios & Local Performance</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="branchesGrid">
+            
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-black text-white">Tanuku Branch</h3>
+                        <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-star text-amber-400 mr-1"></i> Headquarters</p>
+                    </div>
+                    <div class="h-9 w-9 bg-sky-950/40 text-sky-400 rounded-xl flex items-center justify-center text-sm border border-sky-900/30"><i class="fa-solid fa-building"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Borrowers</span>
+                        <span class="text-slate-200 font-black font-mono text-sm">120 Users</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Monthly Collection</span>
+                        <span class="text-emerald-400 font-black font-mono text-sm">₹8,50,000</span>
+                    </div>
+                </div>
+            </div>
 
-<h1>HBML Branch Management</h1>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-black text-white">Velpur Branch</h3>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
+                    </div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Borrowers</span>
+                        <span class="text-slate-200 font-black font-mono text-sm">45 Users</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Monthly Collection</span>
+                        <span class="text-emerald-400 font-black font-mono text-sm">₹2,80,000</span>
+                    </div>
+                </div>
+            </div>
 
-<div class="branch">
-<h3>Hyderabad Branch</h3>
-<p>Total Customers : 120</p>
-<p>Monthly Collection : ₹8,50,000</p>
-</div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-black text-white">Undrajavaram Branch</h3>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
+                    </div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Borrowers</span>
+                        <span class="text-slate-200 font-black font-mono text-sm">38 Users</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Monthly Collection</span>
+                        <span class="text-emerald-400 font-black font-mono text-sm">₹2,10,000</span>
+                    </div>
+                </div>
+            </div>
 
-<div class="branch">
-<h3>Vijayawada Branch</h3>
-<p>Total Customers : 90</p>
-<p>Monthly Collection : ₹5,20,000</p>
-</div>
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-black text-white">Relangi Branch</h3>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
+                    </div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Borrowers</span>
+                        <span class="text-slate-200 font-black font-mono text-sm">32 Users</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 block uppercase font-bold">Monthly Collection</span>
+                        <span class="text-emerald-400 font-black font-mono text-sm">₹1,95,000</span>
+                    </div>
+                </div>
+            </div>
 
-</div>
+        </div>
+
+    </div>
 
 </body>
 </html>
