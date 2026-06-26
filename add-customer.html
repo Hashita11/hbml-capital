@@ -4,24 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Add Customer</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-    <!-- BACK TO DASHBOARD BUTTON -->
     <div class="w-full max-w-xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
             <i class="fa-solid fa-arrow-left"></i> Dashboard 
         </a>
     </div>
 
-    <!-- MAIN FORM BOX -->
     <div class="w-full max-w-xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center">
         
-        <!-- BRANDING LOGO -->
         <div class="flex justify-center mb-4">
             <img src="logo.png" alt="HBML Logo" class="h-20 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-20 w-20 bg-slate-900 text-sky-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-md border border-slate-800 hidden">H</div>
@@ -30,10 +25,8 @@
         <h1 class="text-2xl font-black tracking-tight text-slate-900 uppercase">Add New Customer</h1>
         <p class="text-xs text-slate-400 font-bold mt-1 mb-6 uppercase tracking-wider">KYC & Financial Onboarding</p>
 
-        <!-- INPUT FIELDS -->
         <div class="space-y-4 text-left">
             
-            <!-- SYSTEM GENERATED CUSTOMER ID -->
             <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer ID (Auto-Generated)</label>
                 <div class="relative">
@@ -42,7 +35,6 @@
                 </div>
             </div>
 
-            <!-- CUSTOMER NAME & PHONE -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer Name</label>
@@ -60,7 +52,6 @@
                 </div>
             </div>
 
-            <!-- KYC SECTION: AADHAAR & PAN -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Aadhaar Number</label>
@@ -78,7 +69,6 @@
                 </div>
             </div>
 
-            <!-- FULL ADDRESS -->
             <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Permanent Address</label>
                 <div class="relative">
@@ -87,7 +77,6 @@
                 </div>
             </div>
 
-            <!-- FINANCIALS: LOAN & EMI -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Approved Loan Amount</label>
@@ -105,16 +94,26 @@
                 </div>
             </div>
 
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Monthly EMI Due Date</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-calendar-day"></i></span>
+                    <select id="dueDay" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition appearance-none cursor-pointer font-bold">
+                        <option value="2">Every Month 2nd (ప్రతి నెల 2వ తేదీ)</option>
+                        <option value="6">Every Month 6th (ప్రతి నెల 6వ తేదీ)</option>
+                    </select>
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 pointer-events-none text-xs"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+            </div>
+
         </div>
 
-        <!-- SAVE BUTTON -->
         <button onclick="saveCustomer()" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> SAVE CUSTOMER PROFILE
         </button>
 
     </div>
 
-    <!-- FIREBASE AND ID LOGIC MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -132,13 +131,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* UNIQUE CUSTOMER ID GENERATOR (HBML-XXXX फियाट) */
+        /* UNIQUE CUSTOMER ID GENERATOR */
         function generateCustomerID() {
-            const randomNumber = Math.floor(1000 + Math.random() * 9000); // Generates 4 digit unique code
+            const randomNumber = Math.floor(1000 + Math.random() * 9000); 
             document.getElementById("customerId").value = "HBML-" + randomNumber;
         }
 
-        // Generate ID immediately on page render
         window.addEventListener('DOMContentLoaded', generateCustomerID);
 
         /* SAVE DATA FUNCTION TO FIRESTORE */
@@ -152,10 +150,11 @@
                 let address = document.getElementById("address").value.trim();
                 let loan = document.getElementById("loan").value;
                 let emi = document.getElementById("emi").value;
+                let dueDay = document.getElementById("dueDay").value; // 👈 డేటా కలెక్ట్ చేసే కొత్త లైన్
 
                 /* COMPREHENSIVE VALIDATION */
-                if(!name || !phone || !aadhaar || !pan || !loan || !emi) {
-                    alert("Please fill in all mandatory fields, including Aadhaar and PAN.");
+                if(!name || !phone || !aadhaar || !pan || !loan || !emi || !dueDay) {
+                    alert("Please fill in all mandatory fields, including Due Date selection.");
                     return;
                 }
 
@@ -179,6 +178,7 @@
                     address: address,
                     loan: Number(loan),
                     emi: Number(emi),
+                    dueDay: Number(dueDay), // 👈 క్లౌడ్ లోకి 2 లేదా 6 అనేది నంబర్ లా సేవ్ అవుతుంది
                     paid: 0,
                     balance: Number(loan),
                     created: new Date()
@@ -194,6 +194,7 @@
                 document.getElementById("address").value = "";
                 document.getElementById("loan").value = "";
                 document.getElementById("emi").value = "";
+                document.getElementById("dueDay").value = "2"; // డ్రాప్‌డౌన్ రీసెట్ 2 కి
                 generateCustomerID();
 
             } catch(error) {
