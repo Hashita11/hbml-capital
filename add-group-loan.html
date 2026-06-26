@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Add Group Loan</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
+
+    <!-- BACK TO DASHBOARD BUTTON -->
+    <div class="w-full max-w-3xl mb-4 flex justify-between items-center">
+        <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
+            <i class="fa-solid fa-arrow-left"></i> Dashboard
+        </a>
+    </div>
+
+    <!-- MAIN FORM BOX -->
+    <div class="w-full max-w-3xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-6">
+        
+        <!-- BRANDING LOGO -->
+        <div class="flex justify-center">
+            <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-16 w-16 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
+        </div>
+
+        <div>
+            <h1 class="text-2xl font-black tracking-tight text-slate-900 uppercase">Add New Group Loan</h1>
+            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Joint Liability Group (JLG) Onboarding</p>
+        </div>
+
+        <!-- STEP 1: GROUP INFRASTRUCTURE -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left space-y-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-sky-600 border-b border-slate-200 pb-1.5"><i class="fa-solid fa-users-gear"></i> 1. Group Master Details</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Group Name (సంఘం పేరు)</label>
+                    <input type="text" id="groupName" placeholder="e.g. Sri Lakshmi Podupu Sangam" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 font-bold focus:outline-none focus:border-slate-900">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Monthly EMI Due Date</label>
+                    <select id="dueDay" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 font-bold cursor-pointer">
+                        <option value="2">Every Month 2nd (ప్రతి నెల 2వ తేదీ)</option>
+                        <option value="6">Every Month 6th (ప్రతి నెల 6వ తేదీ)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Interest Rate (Flat Per Annum)</label>
+                    <div class="relative">
+                        <input type="number" id="interestRate" oninput="calculateGroupTotal()" value="12" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 font-mono font-bold focus:outline-none focus:border-slate-900">
+                        <span class="absolute inset-y-0 right-3 flex items-center font-bold text-slate-400">%</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase">Tenure (Months)</label>
+                    <input type="number" id="tenure" oninput="calculateGroupTotal()" value="12" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 font-mono font-bold focus:outline-none focus:border-slate-900">
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: DYNAMIC MEMBERS GRID -->
+        <div class="text-left space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                <h3 class="text-xs font-black uppercase tracking-wider text-emerald-600"><i class="fa-solid fa-user-plus"></i> 2. Group Members Ledger</h3>
+                <button onclick="addMemberRow()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer">
+                    <i class="fa-solid fa-plus"></i> Add Member
+                </button>
+            </div>
+
+            <!-- DYNAMIC ROWS CONTAINER -->
+            <div id="membersContainer" class="space-y-3">
+                <!-- Rows will be injected here via JavaScript -->
+            </div>
+        </div>
+
+        <!-- STEP 3: FINANCIAL OVERVIEW SUMMARY -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-900 text-white p-5 rounded-xl text-left border border-slate-800 shadow-inner">
+            <div>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Total Group Principal</span>
+                <h2 id="lblTotalPrincipal" class="text-lg font-black font-mono text-sky-400">₹0</h2>
+            </div>
+            <div>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Total Group Payable</span>
+                <h2 id="lblTotalPayable" class="text-lg font-black font-mono text-amber-400">₹0</h2>
+            </div>
+            <div>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Total Group Monthly EMI</span>
+                <h2 id="lblTotalEMI" class="text-xl font-black font-mono text-emerald-400">₹0</h2>
+            </div>
+        </div>
+
+        <!-- MASTER SAVE ACTION -->
+        <button onclick="saveGroupLoan()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> DISBURSE & SAVE GROUP LOAN
+        </button>
+
+    </div>
+
+    <!-- FIREBASE AND DYNAMIC ENGINE ENGINE MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let memberCount = 0;
+
+        /* ➕ డైనమిక్ గా కొత్త మెంబర్ రోస్ యాడ్ చేసే లాజిక్ */
+        window.addMemberRow = function() {
+            memberCount++;
+            const container = document.getElementById("membersContainer");
+            
+            const rowHtml = `
+                <div id="row-${memberCount}" class="bg-slate-50 p-4 rounded-xl border border-slate-200 relative grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs items-end transition duration-200">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Member Name</label>
+                        <input type="text" class="member-name w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 font-bold" placeholder="Member Name">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Phone Number</label>
+                        <input type="text" maxlength="10" class="member-phone w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 font-mono" placeholder="10 Digits">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Aadhaar Number</label>
+                        <input type="text" maxlength="12" class="member-aadhaar w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 font-mono" placeholder="12 Digits">
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <div class="w-full">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase">Disbursed Principal</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-slate-400 font-bold">₹</span>
+                                <input type="number" oninput="calculateGroupTotal()" class="member-principal w-full bg-white border border-slate-200 rounded-lg pl-5 pr-2 py-2 font-mono font-bold" placeholder="0">
+                            </div>
+                        </div>
+                        <!-- DELETE ROW BUTTON -->
+                        <button onclick="removeMemberRow(${memberCount})" class="text-rose-500 hover:text-rose-700 p-2 mt-4 cursor-pointer" title="Remove Member">
+                            <i class="fa-solid fa-trash-can text-base"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', rowHtml);
+            calculateGroupTotal();
+        }
+
+        /* ❌ మెంబర్ ను లిస్ట్ నుండి తొలగించే ఫంక్షన్ */
+        window.removeMemberRow = function(id) {
+            const row = document.getElementById(`row-${id}`);
+            if(row) {
+                row.remove();
+                calculateGroupTotal();
+            }
+        }
+
+        /* 🧮 గ్రూప్ మొత్తానికి వడ్డీ మరియు ఈఎంఐ క్యాలిక్యులేట్ చేసే ఫంక్షన్ */
+        window.calculateGroupTotal = function() {
+            let annualRate = Number(document.getElementById("interestRate").value || 0);
+            let months = Number(document.getElementById("tenure").value || 1);
+            let totalGroupPrincipal = 0;
+
+            // అన్ని రోస్ లోని ఇండివిడ్యువల్ ప్రిన్సిపల్స్ ని కలపడం
+            const principalInputs = document.querySelectorAll(".member-principal");
+            principalInputs.forEach(input => {
+                totalGroupPrincipal += Number(input.value || 0);
+            });
+
+            if(totalGroupPrincipal > 0 && months > 0) {
+                let years = months / 12;
+                let totalInterest = totalGroupPrincipal * (annualRate / 100) * years;
+                let totalPayable = totalGroupPrincipal + totalInterest;
+                let monthlyEmi = totalPayable / months;
+
+                document.getElementById("lblTotalPrincipal").innerText = "₹" + Math.round(totalGroupPrincipal).toLocaleString('en-IN');
+                document.getElementById("lblTotalPayable").innerText = "₹" + Math.round(totalPayable).toLocaleString('en-IN');
+                document.getElementById("lblTotalEMI").innerText = "₹" + Math.round(monthlyEmi).toLocaleString('en-IN');
+            } else {
+                document.getElementById("lblTotalPrincipal").innerText = "₹0";
+                document.getElementById("lblTotalPayable").innerText = "₹0";
+                document.getElementById("lblTotalEMI").innerText = "₹0";
+            }
+        }
+
+        /* 💾 ఫైర్‌బేస్ క్లౌడ్ లోకి గ్రూప్ డేటాను పంపే మాస్టర్ లాజిక్ */
+        window.saveGroupLoan = async function() {
+            try {
+                let groupName = document.getElementById("groupName").value.trim();
+                let interestRate = Number(document.getElementById("interestRate").value);
+                let tenureMonths = Number(document.getElementById("tenure").value);
+                let dueDay = Number(document.getElementById("dueDay").value);
+
+                if(!groupName) return alert("Please enter the Group Name.");
+
+                // సభ్యుల వివరాలన్నింటినీ లిస్ట్ రూపంలో కలెక్ట్ చేయడం
+                let membersList = [];
+                const rows = document.getElementById("membersContainer").children;
+                
+                if(rows.length === 0) return alert("Please add at least one member to the group.");
+
+                for(let row of rows) {
+                    let name = row.querySelector(".member-name").value.trim();
+                    let phone = row.querySelector(".member-phone").value.trim();
+                    let aadhaar = row.querySelector(".member-aadhaar").value.trim();
+                    let principal = Number(row.querySelector(".member-principal").value || 0);
+
+                    if(!name || !phone || !aadhaar || principal <= 0) {
+                        return alert("Please fill all details for every group member with valid principal amount.");
+                    }
+                    if(phone.length !== 10) return alert(`Invalid 10-digit phone for member: ${name}`);
+                    if(aadhaar.length !== 12) return alert(`Invalid 12-digit Aadhaar for member: ${name}`);
+
+                    // ఇండివిడ్యువల్ మెంబర్ లెక్క (Flat Interest Basis)
+                    let memberPayable = principal + (principal * (interestRate / 100) * (tenureMonths / 12));
+                    let memberEmi = memberPayable / tenureMonths;
+
+                    membersList.push({
+                        name: name,
+                        phone: phone,
+                        aadhaar: aadhaar,
+                        loanPrincipal: principal,
+                        totalPayable: Math.round(memberPayable),
+                        emi: Math.round(memberEmi),
+                        paid: 0,
+                        balance: Math.round(memberPayable)
+                    });
+                }
+
+                // గ్రూప్ ఐడి జనరేషన్ (e.g. G-XXXX)
+                let groupId = "GRP-" + Math.floor(1000 + Math.random() * 9000);
+
+                /* FIRESTORE COLLECTION UPLOAD */
+                await addDoc(collection(db, "group_loans"), {
+                    groupId: groupId,
+                    groupName: groupName,
+                    interestRate: interestRate,
+                    tenureMonths: tenureMonths,
+                    dueDay: dueDay,
+                    members: membersList, // 👈 సభ్యులందరి లిస్ట్ ఒకే డాక్యుమెంట్ లోపల ఆబ్జెక్ట్ అర్రేలా సేవ్ అవుతుంది
+                    created: new Date()
+                });
+
+                alert(`Group Loan [ ${groupId} ] Disbursed and Dispatched Successfully!`);
+                location.reload();
+
+            } catch (error) {
+                alert("Database Injection Error: " + error.message);
+            }
+        }
+
+        // ప్రారంభంలో ఒక డీఫాల్ట్ మెంబర్ రో ను యాడ్ చేయడం
+        window.addEventListener('DOMContentLoaded', () => { addMemberRow(); });
+    </script>
+</body>
+</html>
