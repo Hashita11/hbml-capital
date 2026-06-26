@@ -160,9 +160,6 @@ onkeyup="searchCustomer()">
 </div>
 
 </div>
-<button class="btn" onclick="alert('Edit Page Coming Soon')">
-Edit Customer
-</button>
 <script type="module">
 
 import { initializeApp }
@@ -229,9 +226,11 @@ row.insertCell(3).innerHTML =
 
 row.insertCell(4).innerHTML =
 "₹" + (data.emi || 0);
-
 row.insertCell(5).innerHTML =
-`<button class="btn" onclick="location.href='customer-details.html?id=${doc.id}'">View</button>`;
+`<button class="btn"
+onclick="location.href='customer-details.html?id=${doc.id}'">
+View
+</button>`;
 });
 
 document.getElementById("totalCustomers").innerHTML =
