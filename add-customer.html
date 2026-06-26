@@ -3,30 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Add Customer</title>
+    <title>HBML Capital - Add Customer Onboarding</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
+    <!-- BACK TO DASHBOARD BUTTON -->
     <div class="w-full max-w-xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
-            <i class="fa-solid fa-arrow-left"></i> Dashboard 
+            <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
         </a>
     </div>
 
+    <!-- MAIN FORM BOX -->
     <div class="w-full max-w-xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center">
         
+        <!-- BRANDING LOGO -->
         <div class="flex justify-center mb-4">
             <img src="logo.png" alt="HBML Logo" class="h-20 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-20 w-20 bg-slate-900 text-sky-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-md border border-slate-800 hidden">H</div>
         </div>
 
         <h1 class="text-2xl font-black tracking-tight text-slate-900 uppercase">Add New Customer</h1>
-        <p class="text-xs text-slate-400 font-bold mt-1 mb-6 uppercase tracking-wider">KYC & Financial Onboarding</p>
+        <p class="text-xs text-slate-400 font-bold mt-1 mb-6 uppercase tracking-wider">KYC & Financial Onboarding Desk</p>
 
+        <!-- INPUT FIELDS FORM CONTAINER -->
         <div class="space-y-4 text-left">
             
+            <!-- SYSTEM GENERATED CUSTOMER ID -->
             <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer ID (Auto-Generated)</label>
                 <div class="relative">
@@ -35,6 +42,7 @@
                 </div>
             </div>
 
+            <!-- CUSTOMER NAME & PHONE -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Customer Name</label>
@@ -52,6 +60,7 @@
                 </div>
             </div>
 
+            <!-- KYC SECTION: AADHAAR & PAN -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200/60">
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Aadhaar Number</label>
@@ -69,6 +78,7 @@
                 </div>
             </div>
 
+            <!-- FULL ADDRESS -->
             <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Permanent Address</label>
                 <div class="relative">
@@ -77,23 +87,97 @@
                 </div>
             </div>
 
+            <!-- LOAN TYPE & INTEREST CALCULATION LOGIC SELECTION -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- 📁 LOAN TYPE ڈراپ ڈاؤن -->
                 <div>
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Approved Loan Amount</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Loan Type (లోన్ రకం)</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
-                        <input type="number" id="loan" placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-folder-open"></i></span>
+                        <select id="loanType" onchange="handleLoanTypeChange()" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 appearance-none cursor-pointer font-bold">
+                            <option value="Microfinance Loan">Microfinance Loan (మైక్రోఫైనాన్స్ లోన్)</option>
+                            <option value="Gold Loan">Gold Loan (బంగారు తాకట్టు లోన్)</option>
+                            <option value="Personal Loan">Personal Loan (వ్యक्तिగత లోన్)</option>
+                            <option value="Business Loan">Business Loan (వ్యాపార లోన్)</option>
+                            <option value="Vehicle Loan">Vehicle Loan (వాహన లోన్)</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 text-xs pointer-events-none"><i class="fa-solid fa-chevron-down"></i></span>
                     </div>
                 </div>
+                <!-- ⚙️ INTEREST LOGIC ڈراప్ ڈاؤن -->
                 <div>
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Fixed Monthly EMI</label>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Interest Method (వడ్డీ విధానం)</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
-                        <input type="number" id="emi" placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 transition font-mono font-bold">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-gears"></i></span>
+                        <select id="interestMethod" onchange="calculateAutoEMI()" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-slate-900 appearance-none cursor-pointer font-bold text-sky-700">
+                            <option value="Flat">Flat Interest Rate (స్థిర వడ్డీ)</option>
+                            <option value="Reducing">Reducing Balance Rate (తగ్గే అసలు వడ్డీ)</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 text-xs pointer-events-none"><i class="fa-solid fa-chevron-down"></i></span>
                     </div>
                 </div>
             </div>
 
+            <!-- 🪙 GOLD LOAN SPECIAL: REPAYMENT TERM OPTION (HIDDEN BY DEFAULT) -->
+            <div id="goldLoanTermBox" class="bg-amber-50/60 p-4 rounded-xl border border-amber-200 hidden">
+                <label class="text-xs font-black uppercase tracking-wider text-amber-700 block mb-1.5"><i class="fa-solid fa-coins"></i> Gold Loan Repayment Term (గోల్డ్ లోన్ గడువు విధానం)</label>
+                <div class="relative">
+                    <select id="goldRepaymentTerm" onchange="handleGoldRepaymentLogic()" class="w-full bg-white border border-amber-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 appearance-none cursor-pointer font-bold text-slate-800">
+                        <option value="EveryMonth">Every Month EMI (నెలనెలా వడ్డీ/EMI విధానం)</option>
+                        <option value="6Months">6 Months Bullet Payment (6 నెలల ఒకేసారి చెల్లింపు)</option>
+                        <option value="1Year">1 Year Bullet Payment (1 సంవత్సరం ఒకేసారి చెల్లింపు)</option>
+                    </select>
+                    <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 text-xs pointer-events-none"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+            </div>
+
+            <!-- FINANCIALS TERMS FIELDS -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 space-y-4">
+                <span class="text-xs font-black uppercase tracking-wider text-slate-500 block border-b border-slate-200/60 pb-1.5"><i class="fa-solid fa-calculator text-sky-500 mr-1"></i> Configure Loan Metrics</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Loan Principal</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
+                            <input type="number" id="loan" oninput="calculateAutoEMI()" placeholder="0" class="w-full bg-white border border-slate-200 rounded-xl pl-6 pr-2 py-2 text-sm font-mono font-bold focus:outline-none focus:border-slate-900">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Interest Rate (Annum)</label>
+                        <div class="relative">
+                            <input type="number" id="interestRate" oninput="calculateAutoEMI()" value="12" class="w-full bg-white border border-slate-200 rounded-xl pl-3 pr-6 py-2 text-sm font-mono font-bold focus:outline-none focus:border-slate-900">
+                            <span class="absolute inset-y-0 right-3 flex items-center text-slate-400 font-bold text-xs">%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-slate-400 block mb-1">Tenure (Months)</label>
+                        <div class="relative">
+                            <input type="number" id="tenure" oninput="calculateAutoEMI()" value="12" class="w-full bg-white border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-sm font-mono font-bold focus:outline-none focus:border-slate-900">
+                            <span class="absolute inset-y-0 right-2 flex items-center text-slate-400 text-[10px] font-bold">Months</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC RESULTS DISPLAY -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Total Payable (Principal + Int)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-600 text-sm font-bold">₹</span>
+                        <input type="number" id="totalPayable" class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-8 pr-4 py-3 text-sm font-mono font-bold text-slate-600 outline-none cursor-not-allowed" readonly>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Calculated Monthly EMI</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-600 text-sm font-bold">₹</span>
+                        <input type="number" id="emi" class="w-full bg-emerald-50/50 border border-emerald-200 rounded-xl pl-8 pr-4 py-3 text-sm font-mono font-black text-emerald-700 focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly EMI Due Date Dropdown -->
             <div>
                 <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Monthly EMI Due Date</label>
                 <div class="relative">
@@ -108,12 +192,14 @@
 
         </div>
 
+        <!-- SAVE BUTTON -->
         <button onclick="saveCustomer()" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> SAVE CUSTOMER PROFILE
         </button>
 
     </div>
 
+    <!-- FIREBASE AND ID LOGIC MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -137,6 +223,87 @@
             document.getElementById("customerId").value = "HBML-" + randomNumber;
         }
 
+        /* 🔄 લોન ટાઇપ ચેન્જ હેન્ડલર లాజిక్ */
+        window.handleLoanTypeChange = function() {
+            let loanType = document.getElementById("loanType").value;
+            let goldBox = document.getElementById("goldLoanTermBox");
+            let interestDropdown = document.getElementById("interestMethod");
+
+            if(loanType === "Gold Loan") {
+                goldBox.classList.remove("hidden");
+                // గోల్డ్ లోన్ వచ్చినప్పుడు వడ్డీ పద్ధతిని ఫ్లాట్ కి రీసెట్ చేయడం మంచిది
+                interestDropdown.value = "Flat";
+                handleGoldRepaymentLogic();
+            } else {
+                goldBox.classList.add("hidden");
+                // మిగతా లోన్లకి టెన్యూర్ ఎడిట్ చేసుకునే వీలు కల్పించడం
+                document.getElementById("tenure").removeAttribute("readonly");
+                document.getElementById("tenure").classList.remove("bg-slate-100", "text-slate-500");
+                calculateAutoEMI();
+            }
+        }
+
+        /* 🪙 గోల్డ్ లోన్ రీపేమెంట్ టర్మ్ మారినప్పుడు రన్ అయ్యే లాజిక్ */
+        window.handleGoldRepaymentLogic = function() {
+            let goldTerm = document.getElementById("goldRepaymentTerm").value;
+            let tenureInput = document.getElementById("tenure");
+
+            if(goldTerm === "6Months") {
+                tenureInput.value = 6;
+                tenureInput.setAttribute("readonly", "true");
+                tenureInput.classList.add("bg-slate-100", "text-slate-500");
+            } else if(goldTerm === "1Year") {
+                tenureInput.value = 12;
+                tenureInput.setAttribute("readonly", "true");
+                tenureInput.classList.add("bg-slate-100", "text-slate-500");
+            } else {
+                // EveryMonth అయితే టెన్యూర్ మాన్యువల్ గా మార్చుకోవచ్చు
+                tenureInput.removeAttribute("readonly");
+                tenureInput.classList.remove("bg-slate-100", "text-slate-500");
+            }
+            calculateAutoEMI();
+        }
+
+        /* 🧮 LIVE ADVANCED EMI ENGINE WITH DUAL LOGICS */
+        window.calculateAutoEMI = function() {
+            let principal = Number(document.getElementById("loan").value || 0);
+            let annualRate = Number(document.getElementById("interestRate").value || 0);
+            let months = Number(document.getElementById("tenure").value || 1);
+            let method = document.getElementById("interestMethod").value;
+            let loanType = document.getElementById("loanType").value;
+            let goldTerm = document.getElementById("goldRepaymentTerm").value;
+
+            if(principal > 0 && months > 0) {
+                let totalPayable = 0;
+                let monthlyEmi = 0;
+
+                // 🪙 గోల్డ్ లోన్ బులెట్ పేమెంట్ లాజిక్స్ (6 నెలలు లేదా 1 సంవత్సరం)
+                if(loanType === "Gold Loan" && (goldTerm === "6Months" || goldTerm === "1Year")) {
+                    let totalInterest = principal * (annualRate / 100) * (months / 12);
+                    totalPayable = principal + totalInterest;
+                    monthlyEmi = 0; // బులెట్ పేమెంట్ లో నెలవారీ EMI ఉండదు
+                } else {
+                    // 📊 సాధారణ లోన్ల క్యాలిక్యులేషన్ లాజిక్ (Flat / Reducing)
+                    if (method === "Flat") {
+                        let years = months / 12;
+                        let totalInterest = principal * (annualRate / 100) * years;
+                        totalPayable = principal + totalInterest;
+                        monthlyEmi = totalPayable / months;
+                    } else {
+                        let monthlyRate = (annualRate / 12) / 100;
+                        monthlyEmi = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+                        totalPayable = monthlyEmi * months;
+                    }
+                }
+
+                document.getElementById("totalPayable").value = Math.round(totalPayable);
+                document.getElementById("emi").value = Math.round(monthlyEmi);
+            } else {
+                document.getElementById("totalPayable").value = "";
+                document.getElementById("emi").value = "";
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', generateCustomerID);
 
         /* SAVE DATA FUNCTION TO FIRESTORE */
@@ -148,27 +315,27 @@
                 let aadhaar = document.getElementById("aadhaar").value.trim();
                 let pan = document.getElementById("pan").value.trim().toUpperCase();
                 let address = document.getElementById("address").value.trim();
-                let loan = document.getElementById("loan").value;
+                
+                let loanType = document.getElementById("loanType").value;
+                let interestMethod = document.getElementById("interestMethod").value;
+                let goldRepaymentTerm = (loanType === "Gold Loan") ? document.getElementById("goldRepaymentTerm").value : "N/A";
+                
+                let loanPrincipal = document.getElementById("loan").value;
+                let interestRate = document.getElementById("interestRate").value;
+                let tenureMonths = document.getElementById("tenure").value;
+                let totalPayable = document.getElementById("totalPayable").value;
                 let emi = document.getElementById("emi").value;
-                let dueDay = document.getElementById("dueDay").value; // 👈 డేటా కలెక్ట్ చేసే కొత్త లైన్
+                let dueDay = document.getElementById("dueDay").value;
 
-                /* COMPREHENSIVE VALIDATION */
-                if(!name || !phone || !aadhaar || !pan || !loan || !emi || !dueDay) {
-                    alert("Please fill in all mandatory fields, including Due Date selection.");
+                if(!name || !phone || !aadhaar || !pan || !loanPrincipal || !dueDay) {
+                    alert("Please fill in all mandatory fields.");
                     return;
                 }
 
-                if(phone.length !== 10) {
-                    alert("Please enter a valid 10-digit mobile number.");
-                    return;
-                }
+                if(phone.length !== 10) return alert("Please enter a valid 10-digit mobile number.");
+                if(aadhaar.length !== 12) return alert("Aadhaar Number must be exactly 12 digits.");
 
-                if(aadhaar.length !== 12) {
-                    alert("Aadhaar Number must be exactly 12 digits.");
-                    return;
-                }
-
-                /* FIRESTORE UPLOAD PAYLOAD */
+                /* FIRESTORE STRUCTURAL UPLOAD */
                 await addDoc(collection(db, "customers"), {
                     customerId: customerId,
                     name: name,
@@ -176,29 +343,34 @@
                     aadhaar: aadhaar,
                     pan: pan,
                     address: address,
-                    loan: Number(loan),
+                    loanType: loanType,
+                    interestMethod: interestMethod,
+                    goldRepaymentTerm: goldRepaymentTerm,
+                    loanPrincipal: Number(loanPrincipal),
+                    interestRate: Number(interestRate),
+                    tenureMonths: Number(tenureMonths),
+                    loan: Number(totalPayable),      
                     emi: Number(emi),
-                    dueDay: Number(dueDay), // 👈 క్లౌడ్ లోకి 2 లేదా 6 అనేది నంబర్ లా సేవ్ అవుతుంది
+                    dueDay: Number(dueDay),
                     paid: 0,
-                    balance: Number(loan),
+                    balance: Number(totalPayable),   
                     created: new Date()
                 });
 
                 alert("Customer Profile [ " + customerId + " ] Saved Successfully!");
 
-                /* CLEAR ENTRIES AND REGENERATE NEXT RELEVANT ID */
+                /* CLEAR ENTRIES */
                 document.getElementById("name").value = "";
                 document.getElementById("phone").value = "";
                 document.getElementById("aadhaar").value = "";
                 document.getElementById("pan").value = "";
                 document.getElementById("address").value = "";
                 document.getElementById("loan").value = "";
+                document.getElementById("totalPayable").value = "";
                 document.getElementById("emi").value = "";
-                document.getElementById("dueDay").value = "2"; // డ్రాప్‌డౌన్ రీసెట్ 2 కి
                 generateCustomerID();
 
             } catch(error) {
-                console.error(error);
                 alert("Error writing document: " + error.message);
             }
         }
