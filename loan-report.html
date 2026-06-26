@@ -114,7 +114,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -147,24 +147,20 @@
             }
         }
 
-        /* ⚡ LIVE AUDIT REFRESH ACTION (బటన్ పనిచేసే లాజిక్) */
+        /* ⚡ LIVE AUDIT REFRESH ACTION */
         window.triggerLiveAudit = async function() {
             const icon = document.getElementById("auditIcon");
             const btn = document.getElementById("btnAudit");
             
-            // బటన్ తిరిగే యానిమేషన్ యాడ్ చేయడం
             icon.classList.add("animate-spin");
             btn.classList.add("opacity-60");
             
-            // టేబుల్స్ లో లోడింగ్ టెక్స్ట్ చూపించడం
             document.getElementById("tblSingleBody").innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> Auditing Live Ledger...</td></tr>`;
             document.getElementById("tblGroupBody").innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-2 text-emerald-400"></i> Auditing Group Ledger...</td></tr>`;
 
-            // డేటాను మళ్లీ ఫ్రెష్ గా లోడ్ చేయడం
             await loadIndividualReports();
             await loadGroupReports();
 
-            // యానిమేషన్ స్టాప్ చేయడం
             setTimeout(() => {
                 icon.classList.remove("animate-spin");
                 btn.classList.remove("opacity-60");
@@ -178,8 +174,8 @@
             let totalBalance = 0;
 
             try {
-                const q = query(collection(db, "customers"), orderBy("created", "desc"));
-                const snap = await getDocs(q);
+                // 🛠️ ఇండెక్స్ సమస్య రాకుండా ఉండటానికి orderBy తీసేసి డైరెక్ట్ కలెక్షన్ తెచ్చుకుంటున్నాం
+                const snap = await getDocs(collection(db, "customers"));
                 let html = "";
 
                 if(snap.empty) {
@@ -187,8 +183,12 @@
                     return;
                 }
 
-                snap.forEach((docRecord) => {
-                    const data = docRecord.data();
+                // రికార్డులను లోకల్ గా సార్ట్ చేయడం
+                let records = [];
+                snap.forEach(doc => records.push(doc.data()));
+                records.sort((a, b) => (b.created?.seconds || 0) - (a.created?.seconds || 0));
+
+                records.forEach((data) => {
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let paid = Number(data.paid || 0);
                     let balance = Number(data.balance || 0);
@@ -221,6 +221,7 @@
                 document.getElementById("statTotalBalance").innerText = "₹" + Math.round(totalBalance).toLocaleString('en-IN');
 
             } catch (error) {
+                console.error("Firestore Error:", error);
                 tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading data.</td></tr>`;
             }
         }
