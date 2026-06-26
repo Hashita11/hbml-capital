@@ -7,16 +7,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6" id="body-root">
 
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center bg-slate-900/40 p-2 rounded-2xl border border-slate-800/40">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
-                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <button onclick="loadLiveAnalytics()" class="text-xs font-bold text-sky-400 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer">
-                <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh Stats
+            <button onclick="triggerAnalyticsRefresh()" id="btnRefresh" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer flex items-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Refresh Stats
             </button>
         </div>
 
@@ -90,13 +90,29 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* 📊 FETCH LIVE AGGREGATED METRICS FROM DATA CLOUD */
+        /* ⚡ TRIGGER REFRESH WITH SPINNING ANIMATION */
+        window.triggerAnalyticsRefresh = async function() {
+            const icon = document.getElementById("refreshIcon");
+            const btn = document.getElementById("btnRefresh");
+
+            // ఐకాన్ రౌండ్ గా తిరిగేలా యానిమేషన్ ఆన్ చేయడం
+            icon.classList.add("animate-spin");
+            btn.classList.add("opacity-60");
+
+            // లైవ్ ఎనలిటిక్స్ లోడ్ చేయడం
+            await loadLiveAnalytics();
+
+            // లోడ్ అయ్యాక యానిమేషన్ స్టాప్ చేయడం
+            setTimeout(() => {
+                icon.classList.remove("animate-spin");
+                btn.classList.remove("opacity-60");
+            }, 600);
+        }
+
         async function loadLiveAnalytics() {
             try {
-                // 1. Fetch Borrowers (Customers Collection)
                 const customerSnap = await getDocs(collection(db, "customers"));
                 let totalCustomersCount = customerSnap.size;
-                
                 let totalDisbursedBook = 0;
                 let totalRecoveredEMI = 0;
 
@@ -104,18 +120,14 @@
                     const data = doc.data();
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let paid = Number(data.paid || 0);
-                    
                     totalDisbursedBook += principal;
                     totalRecoveredEMI += paid;
                 });
 
-                // 2. Fetch Group Loans Metrics
                 const groupSnap = await getDocs(collection(db, "group_loans"));
                 groupSnap.forEach(doc => {
                     const data = doc.data();
                     let members = data.members || [];
-                    
-                    // గ్రూప్ లోన్ సభ్యుల సంఖ్యను మరియు లోన్ అమౌంట్లను కూడా లెక్కలోకి తీసుకోవడం
                     totalCustomersCount += members.length;
                     members.forEach(m => {
                         totalDisbursedBook += Number(m.loanPrincipal || 0);
@@ -123,38 +135,32 @@
                     });
                 });
 
-                // 3. Fetch Employees Count
                 let totalStaffsCount = 0;
                 try {
                     const staffSnap = await getDocs(collection(db, "employees"));
-                    totalStaffsCount = staffSnap.size || 25; // ఒకవేళ కలెక్షన్ ఖాళీగా ఉంటే 25 డీఫాల్ట్ చూపిస్తుంది
+                    totalStaffsCount = staffSnap.size || 25;
                 } catch(e) { totalStaffsCount = 25; }
 
-                // 🧮 Recovery Ratio Calculation: (Paid / Total Disbursed) * 100
                 let recoveryRatioPercent = 0;
                 if(totalDisbursedBook > 0) {
                     recoveryRatioPercent = (totalRecoveredEMI / totalDisbursedBook) * 100;
                 } else {
-                    recoveryRatioPercent = 92; // Fallback default ratio
+                    recoveryRatioPercent = 0;
                 }
 
-                /* 🖥️ RENDERING METRICS TO LIVE DISPLAY CARDS */
                 document.getElementById("lblTotalRevenue").innerText = "₹" + Math.round(totalDisbursedBook).toLocaleString('en-IN');
                 document.getElementById("lblTotalCustomers").innerText = totalCustomersCount.toLocaleString('en-IN');
                 document.getElementById("lblRecoveryRatio").innerText = Math.round(recoveryRatioPercent) + "%";
                 document.getElementById("lblEmployees").innerText = totalStaffsCount;
-                
                 document.getElementById("lblLastUpdated").innerText = "Last Updated: " + new Date().toLocaleTimeString();
 
             } catch (error) {
-                console.error("Analytics Calculation Error:", error);
+                console.error(error);
                 document.getElementById("lblLastUpdated").innerText = "Cloud Sync Failure!";
             }
         }
 
-        // మొదటిసారి లోడ్ అవ్వగానే రన్ చేయడం
         window.addEventListener('DOMContentLoaded', loadLiveAnalytics);
-        window.loadLiveAnalytics = loadLiveAnalytics;
     </script>
 </body>
 </html>
