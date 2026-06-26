@@ -1,120 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Employee Attendance</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-max-width:700px;
-margin:auto;
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:12px;
-}
-
-table td{
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.btn{
-padding:10px 15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Attendance Manager</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- BACK TO DASHBOARD -->
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
+            </a>
+            <div id="liveDate" class="text-xs font-mono font-bold text-sky-400 bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl">
+                Loading Date...
+            </div>
+        </div>
 
-<div class="box">
+        <!-- MAIN ATTENDANCE BOX -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+            
+            <!-- BRANDING HEADER -->
+            <div class="text-center space-y-2">
+                <img src="logo.png" alt="HBML Logo" class="h-16 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+                <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">Staff Attendance Manager</h1>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Daily Attendance Logging Desk</p>
+            </div>
 
-<img src="logo.png" class="logo">
+            <!-- ATTENDANCE TABLE ROSTER -->
+            <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/40 shadow-inner">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="p-4">Employee ID & Name</th>
+                                <th class="p-4">Designation</th>
+                                <th class="p-4">Attendance Status</th>
+                                <th class="p-4 text-right">Action Gateways</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceRosterBody" class="divide-y divide-slate-800/60 font-medium text-slate-300">
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-slate-500 font-bold">
+                                    <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400 text-lg"></i> ఫైర్‌బేస్ నుండి స్టాఫ్ లిస్ట్ లోడ్ అవుతోంది...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<h1>Employee Attendance</h1>
+        </div>
 
-<table>
+    </div>
 
-<tr>
-<th>Employee</th>
-<th>Date</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
+    <!-- FIREBASE ARCHITECTURE MODULE INTEGRATION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<tr>
-<td>Ravi</td>
-<td>30-05-2026</td>
-<td>Present</td>
-<td>
-<button class="btn"
-onclick="markAttendance()">
-Update
-</button>
-</td>
-</tr>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</table>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-</div>
+        // సెట్ లైవ్ కరెంట్ డేట్
+        function setLiveDate() {
+            const now = new Date();
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            document.getElementById("liveDate").innerHTML = `<i class="fa-solid fa-calendar-day mr-1"></i> Date: ` + now.toLocaleDateString('en-IN', options);
+        }
 
-<script>
+        /* 📉 FETCH REGISTERED EMPLOYEES & RENDER ROSTER ROWS */
+        async function fetchStaffRoster() {
+            const tbody = document.getElementById("attendanceRosterBody");
+            
+            try {
+                const querySnapshot = await getDocs(collection(db, "employees"));
+                let html = "";
 
-window.markAttendance = async function(){
+                if(querySnapshot.empty) {
+                    // ఒకవేళ డేటాబేస్ లో ఎంప్లాయ్స్ లేకపోతే డెమో కోసం స్టాండర్డ్ రికార్డులు చూపిస్తుంది
+                    const defaultStaff = [
+                        { empId: "EMP-1001", name: "Ravi Kumar", role: "Field Collection Agent" },
+                        { empId: "EMP-1002", name: "Suresh Rao", role: "Loan Verification Officer" }
+                    ];
+                    
+                    renderTableRows(defaultStaff, tbody);
+                    return;
+                }
 
-let employee =
-document.getElementById("employee").value;
+                let staffList = [];
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    staffList.push({
+                        empId: data.employeeId || doc.id,
+                        name: data.name || "Unknown Staff",
+                        role: data.role || data.designation || "Field Agent"
+                    });
+                });
 
-await addDoc(collection(db,"attendance"),{
+                renderTableRows(staffList, tbody);
 
-employee:employee,
-date:new Date(),
-status:"Present"
+            } catch (error) {
+                console.error("Staff Loading Failure: ", error);
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500 font-bold">Error connecting to data cloud.</td></tr>`;
+            }
+        }
 
-});
+        function renderTableRows(staffArray, targetTbody) {
+            let html = "";
+            staffArray.forEach((staff) => {
+                html += `
+                    <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60" id="row-${staff.empId}">
+                        <td class="p-4">
+                            <div class="font-black text-white text-sm">${staff.name}</div>
+                            <div class="text-[10px] text-sky-400 font-mono mt-0.5">${staff.empId}</div>
+                        </td>
+                        <td class="p-4">
+                            <span class="bg-slate-800 text-slate-400 px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border border-slate-700/40">${staff.role}</span>
+                        </td>
+                        <td class="p-4" id="status-${staff.empId}">
+                            <span class="bg-slate-950 text-slate-500 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wider uppercase border border-slate-800">Unmarked</span>
+                        </td>
+                        <td class="p-4 text-right flex justify-end gap-2 items-center">
+                            <button onclick="markStaffAttendance('${staff.empId}', '${staff.name}', 'Present')" class="bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-800/40 font-bold text-[11px] py-1.5 px-3 rounded-xl transition cursor-pointer active:scale-95">
+                                <i class="fa-solid fa-circle-check"></i> Present
+                            </button>
+                            <button onclick="markStaffAttendance('${staff.empId}', '${staff.name}', 'Absent')" class="bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-800/40 font-bold text-[11px] py-1.5 px-3 rounded-xl transition cursor-pointer active:scale-95">
+                                <i class="fa-solid fa-circle-xmark"></i> Absent
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            targetTbody.innerHTML = html;
+        }
 
-alert("Attendance Saved");
+        /* 💾 CLOUD DISPATCH: MARK AND TRANSMIT ATTENDANCE LOG */
+        window.markStaffAttendance = async function(empId, name, statusValue) {
+            const statusCell = document.getElementById(`status-${empId}`);
+            
+            try {
+                // 1. Save data to Firestore attendance collection
+                await addDoc(collection(db, "attendance"), {
+                    employeeId: empId,
+                    name: name,
+                    date: new Date(),
+                    status: statusValue,
+                    timestamp: new Date().getTime()
+                });
 
-}
+                // 2. Update UI indicators upon success
+                if(statusValue === 'Present') {
+                    statusCell.innerHTML = `<span class="bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md text-[11px] font-bold border border-emerald-500/20 shadow-xs"><i class="fa-solid fa-check mr-1"></i> Present</span>`;
+                } else {
+                    statusCell.innerHTML = `<span class="bg-rose-500/10 text-rose-400 px-2.5 py-1 rounded-md text-[11px] font-bold border border-rose-500/20 shadow-xs"><i class="fa-solid fa-xmark mr-1"></i> Absent</span>`;
+                }
 
-</script>
+            } catch (error) {
+                alert("Database Sync Failed: " + error.message);
+            }
+        }
 
+        window.addEventListener('DOMContentLoaded', () => {
+            setLiveDate();
+            fetchStaffRoster();
+        });
+    </script>
 </body>
 </html>
