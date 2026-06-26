@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Admin Panel</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Custom scrollbar for sidebar elements */
@@ -17,17 +19,22 @@
 
     <div class="flex h-screen overflow-hidden">
         
-        <!-- SIDEBAR (DESKTOP) -->
+        <!-- ========================================== -->
+        <!-- 1. ఎడమ వైపు సైడ్‌బార్ (Sidebar Navigation) -->
+        <!-- ========================================== -->
         <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800">
             <div class="p-5 overflow-y-auto flex-1">
+                <!-- బ్రాండింగ్ లోగో -->
                 <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto">
+                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto" onerror="this.style.display='none'; document.getElementById('txt-logo').classList.remove('hidden')">
+                    <div id="txt-logo" class="h-9 w-9 bg-sky-600 rounded-lg flex items-center justify-center font-bold text-white hidden">H</div>
                     <div>
                         <h2 class="text-base font-black tracking-wider text-sky-400 leading-tight">HBML CAPITAL</h2>
                         <span class="text-xs text-slate-400">Management Panel</span>
                     </div>
                 </div>
 
+                <!-- సైడ్‌బార్ మెనూ లింకులు (Mapping Repository Files) -->
                 <nav class="space-y-1 text-sm">
                     <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Core Navigation</p>
                     <a href="admin.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 rounded-lg text-white font-medium shadow-xs"><i class="fa-solid fa-chart-pie w-5 text-center"></i> 🏠 Dashboard</a>
@@ -43,6 +50,7 @@
                 </nav>
             </div>
             
+            <!-- లాగౌట్ బటన్ -->
             <div class="p-4 border-t border-slate-800 bg-slate-950/40">
                 <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-rose-400 hover:bg-rose-950/30 rounded-lg transition font-medium cursor-pointer">
                     <i class="fa-solid fa-right-from-bracket w-5 text-center"></i> 🚪 Logout
@@ -50,16 +58,19 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- ========================================== -->
+        <!-- 2. కుడి వైపు మెయిన్ కంటెంట్ ప్యానెల్ (Topbar & Body) -->
+        <!-- ========================================== -->
         <main class="flex-1 flex flex-col overflow-y-auto">
             
-            <!-- GLOBAL TOPBAR (Logo Added Here for Mobile Visibility) -->
+            <!-- టాప్ హెడర్ బార్ (మొబైల్ లోగోతో సహా) -->
             <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
                 <div class="flex items-center gap-2.5">
-                    <!-- Mobile Logo Indicator -->
+                    <!-- Mobile View Logo -->
                     <img src="logo.png" alt="HBML Logo" class="h-8 w-auto lg:hidden block">
                     <h1 class="text-base md:text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
                 </div>
+                <!-- రైట్ సైడ్ టూల్స్ (Clock & Theme Toggle) -->
                 <div class="flex items-center gap-3">
                     <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition" title="Toggle Mode">
                         <i class="fa-solid fa-moon dark:hidden text-lg"></i>
@@ -70,9 +81,10 @@
                 </div>
             </header>
 
+            <!-- మెయిన్ కంటెంట్ ఏరియా -->
             <div class="p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
                 
-                <!-- PROFILE BANNER -->
+                <!-- వెల్‌కమ్ బ్యానర్ -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-5 rounded-2xl shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="flex items-center gap-4">
                         <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">
@@ -88,7 +100,7 @@
                     </button>
                 </div>
 
-                <!-- CARDS -->
+                <!-- అనలిటిక్స్ కార్డ్స్ -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
                         <div>
@@ -123,7 +135,7 @@
                     </div>
                 </div>
 
-                <!-- ACTIONS -->
+                <!-- క్విక్ యాక్షన్స్ బటన్స్ (Direct Links Attached) -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()">
                         <i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer
@@ -139,7 +151,7 @@
                     </button>
                 </div>
 
-                <!-- DYNAMIC TABLE -->
+                <!-- ఫైర్‌బేస్ లైవ్ డేటా టేబుల్ -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
                     <div class="p-5 border-b border-slate-100 dark:border-slate-800">
                         <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent Finance Activity</h3>
@@ -167,11 +179,15 @@
         </main>
     </div>
 
-    <!-- FIREBASE MODULE & LOGIC SCRIPT -->
+    <!-- ========================================== -->
+    <!-- 3. ఫైర్‌బేస్ మరియు మోడ్యూల్ జావాస్క్రిప్ట్ లాజిక్ -->
+    <!-- ========================================== -->
     <script type="module">
+        /* FIREBASE IMPORTS */
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+        /* FIREBASE CONFIG */
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
             authDomain: "hbml-capital.firebaseapp.com",
@@ -184,6 +200,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        /* FETCH LIVE LOGINS FROM FIRESTORE */
         async function fetchRecentLogins() {
             const tableBody = document.getElementById("recent-activity-body");
             
@@ -224,6 +241,7 @@
             }
         }
 
+        /* INITIALIZATION */
         window.addEventListener('DOMContentLoaded', () => {
             fetchRecentLogins();
             if (localStorage.getItem('admin-dark-mode') === 'enabled') {
@@ -231,6 +249,7 @@
             }
         });
 
+        /* GLOBAL ROUTING FUNCTIONS */
         window.toggleDarkMode = function() {
             const bodyRoot = document.getElementById('body-root');
             bodyRoot.classList.toggle('dark');
