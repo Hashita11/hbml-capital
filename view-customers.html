@@ -1,282 +1,162 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>View Customers</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-max-width:1100px;
-margin:auto;
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-.summary{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-justify-content:center;
-margin-bottom:20px;
-}
-
-.card{
-padding:15px 25px;
-border-radius:10px;
-color:white;
-font-weight:bold;
-}
-
-.blue{
-background:#0d2b6b;
-}
-
-.green{
-background:green;
-}
-
-.search{
-width:100%;
-padding:14px;
-border:1px solid #ccc;
-border-radius:10px;
-margin-bottom:20px;
-font-size:16px;
-}
-
-.table-box{
-overflow:auto;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-table td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.btn{
-padding:10px 15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-.btn:hover{
-background:#163c91;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Registered Borrowers Directory</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="flex justify-between items-center gap-2">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            <div class="flex gap-2 text-[10px] font-mono font-black uppercase">
+                <span class="bg-slate-900 text-sky-400 px-2.5 py-1.5 rounded-xl border border-slate-800">Total Users: <span id="totalCustomers">0</span></span>
+                <span class="bg-slate-900 text-emerald-400 px-2.5 py-1.5 rounded-xl border border-slate-800">Total Book: <span id="totalLoan">₹0</span></span>
+            </div>
+        </div>
 
-<div class="box">
+        <div class="text-center space-y-2 py-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Borrowers Directory</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Search active profiles or view financial statements</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl shadow-md">
+            <div class="relative">
+                <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id="search" onkeyup="searchCustomer()" placeholder="Search borrower by name or phone number..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+            </div>
+        </div>
 
-<h1>HBML Customer Database</h1>
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800">
+                <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-address-book text-sky-500 mr-1.5"></i> Active Borrower Ledgers</span>
+            </div>
+            
+            <div id="customerListContainer" class="divide-y divide-slate-800/60 font-medium">
+                <div class="p-8 text-center text-slate-500 font-bold animate-pulse">
+                    <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> ఫైర్‌బేస్ నుండి కస్టమర్ల డేటా లోడ్ అవుతోంది...
+                </div>
+            </div>
+        </div>
 
-<div class="summary">
+    </div>
 
-<div class="card blue">
-Total Customers:
-<span id="totalCustomers">0</span>
-</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<div class="card green">
-Total Loan:
-<span id="totalLoan">₹0</span>
-</div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</div>
-  
-<input
-type="text"
-class="search"
-id="search"
-placeholder="Search Customer..."
-onkeyup="searchCustomer()">
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<div class="table-box">
+        /* 📉 STREAM ALL REGISTERED BORROWERS FROM FIRESTORE CLOUD */
+        async function loadBorrowersDirectory() {
+            const container = document.getElementById("customerListContainer");
+            try {
+                const snap = await getDocs(collection(db, "customers"));
+                
+                if(snap.empty) {
+                    container.innerHTML = `<div class="p-8 text-center text-slate-600 font-bold">No active borrower records detected in database.</div>`;
+                    return;
+                }
 
-<table id="customerTable">
+                let html = "";
+                let totalCustomers = 0;
+                let totalLoanAmountSum = 0;
+                
+                snap.forEach((docRecord) => {
+                    const data = docRecord.data();
+                    const docId = docRecord.id; // 👑 ఫైర్‌బేస్ ఆటో-జనరేటెడ్ మాస్టర్ ఐడీ
+                    const cleanName = data.name || "Unknown Borrower";
+                    
+                    let principal = Number(data.loanPrincipal || data.loan || 0);
+                    let paid = Number(data.paid || 0);
+                    let balance = principal - paid;
+                    if(balance < 0) balance = 0;
 
-<tr>
-<th>Name</th>
-<th>Phone</th>
-<th>Address</th>
-<th>Loan</th>
-<th>EMI</th>
-<th>Action</th>
-</tr>
+                    totalCustomers++;
+                    totalLoanAmountSum += principal;
 
-</table>
+                    let displayUID = data.customerId || "HBML-" + docId.substring(0, 5).toUpperCase();
 
-</div>
+                    // 👑 కుడివైపు బటన్ నొక్కినప్పుడు వంద శాతం కరెక్ట్ 'docId' వెళ్ళేలా లింక్ అమర్చాను
+                    html += `
+                        <div class="p-4 flex justify-between items-center bg-slate-900/40 hover:bg-slate-900 transition gap-4 client-row-item" data-name="${cleanName.toLowerCase()}" data-phone="${(data.phone || '').toLowerCase()}">
+                            <div class="space-y-0.5">
+                                <div class="font-black text-white text-sm uppercase">${cleanName}</div>
+                                <div class="flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] font-mono font-bold text-slate-500 uppercase">
+                                    <span class="text-sky-400">${displayUID}</span>
+                                    <span>•</span>
+                                    <span>${data.phone || 'No Phone'}</span>
+                                    <span>•</span>
+                                    <span class="text-slate-400">${data.address || 'Tanuku'}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3">
+                                <div class="hidden sm:block text-right">
+                                    <div class="text-[9px] font-bold text-slate-500 uppercase">Outstanding</div>
+                                    <div class="text-xs font-mono font-black text-amber-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
+                                </div>
+                                <button onclick="openCustomerStatement('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
+                                    Statement <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
 
-</div>
-<script type="module">
+                container.innerHTML = html;
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+                // పై కౌంటర్ల అప్‌డేట్
+                document.getElementById("totalCustomers").innerText = totalCustomers;
+                document.getElementById("totalLoan").innerText = "₹" + totalLoanAmountSum.toLocaleString('en-IN');
 
-import {
-getFirestore,
-collection,
-getDocs
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = `<div class="p-8 text-center text-rose-500 font-bold">Cloud fetch failed. Check connection link.</div>`;
+            }
+        }
 
-const firebaseConfig = {
+        // 👑 కరెక్ట్ ఐడీ రూటింగ్ ఫంక్షన్
+        window.openCustomerStatement = function(docId) {
+            window.location.href = "customer-details.html?id=" + docId;
+        }
 
-apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+        /* 🔍 లైవ్ సెర్చ్ ఫిల్టర్ ఫంక్షన్ - పాత కోడ్ లోని 'searchCustomer' పేరుతోనే సింక్ చేశాను */
+        window.searchCustomer = function() {
+            let filter = document.getElementById("search").value.toLowerCase().trim();
+            let rows = document.getElementsByClassName("client-row-item");
 
-authDomain: "hbml-capital.firebaseapp.com",
+            for (let i = 0; i < rows.length; i++) {
+                let nameAttr = rows[i].getAttribute("data-name") || "";
+                let phoneAttr = rows[i].getAttribute("data-phone") || "";
 
-projectId: "hbml-capital",
+                if (nameAttr.includes(filter) || phoneAttr.includes(filter)) {
+                    rows[i].style.setProperty("display", "flex", "important");
+                } else {
+                    rows[i].style.setProperty("display", "none", "important");
+                }
+            }
+        }
 
-storageBucket: "hbml-capital.firebasestorage.app",
-
-messagingSenderId: "893969951538",
-
-appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-async function loadCustomers(){
-
-const querySnapshot =
-await getDocs(collection(db,"customers"));
-
-const table =
-document.getElementById("customerTable");
-
-let totalCustomers = 0;
-let totalLoan = 0;
-
-querySnapshot.forEach((doc)=>{
-
-const data = doc.data();
-
-totalCustomers++;
-totalLoan += Number(data.loan || 0);
-
-let row = table.insertRow();
-
-row.insertCell(0).innerHTML =
-data.name || "";
-
-row.insertCell(1).innerHTML =
-data.phone || "";
-
-row.insertCell(2).innerHTML =
-data.address || "";
-
-row.insertCell(3).innerHTML =
-"₹" + (data.loan || 0);
-
-row.insertCell(4).innerHTML =
-"₹" + (data.emi || 0);
-row.insertCell(5).innerHTML =
-`<button class="btn"
-onclick="location.href='customer-details.html?id=${doc.id}'">
-View
-</button>`;
-});
-
-document.getElementById("totalCustomers").innerHTML =
-totalCustomers;
-
-document.getElementById("totalLoan").innerHTML =
-"₹" + totalLoan.toLocaleString();
-
-}
-
-loadCustomers();
-
-window.searchCustomer = function(){
-
-let input =
-document.getElementById("search")
-.value.toLowerCase();
-
-let table =
-document.getElementById("customerTable");
-
-let tr =
-table.getElementsByTagName("tr");
-
-for(let i=1;i<tr.length;i++){
-
-let td =
-tr[i].getElementsByTagName("td")[0];
-
-if(td){
-
-let txt =
-td.textContent || td.innerText;
-
-tr[i].style.display =
-txt.toLowerCase().indexOf(input)>-1
-? ""
-: "none";
-
-}
-
-}
-
-}
-
-</script>
-
+        window.addEventListener('DOMContentLoaded', loadBorrowersDirectory);
+    </script>
 </body>
 </html>
