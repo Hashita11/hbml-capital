@@ -3,35 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Secure Collection & Overdue Ledger</title>
-    <!-- Modern Tailwind CSS V4 -->
+    <title>HBML Capital - Fully Automated Overdue Gateway</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-    <!-- BACK TO DASHBOARD -->
     <div class="w-full max-w-2xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
-            <i class="fa-solid fa-arrow-left"></i> Dashboard
+            <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
         </a>
     </div>
 
-    <!-- MAIN BOX -->
     <div class="w-full max-w-2xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-6">
         
         <div>
-            <!-- BRANDING LOGO -->
             <div class="flex justify-center mb-3">
                 <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
                 <div id="fallback-icon" class="h-16 w-16 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
             </div>
             <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">Collect EMI & Default Charges</h1>
-            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Secure Overdue Recovery Desk</p>
+            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Fully Automated Overdue Gateway</p>
         </div>
 
-        <!-- MANUAL SEARCH GATEWAY -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 text-left space-y-2">
             <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Manual Customer Search</label>
             <div class="flex gap-2">
@@ -40,7 +34,6 @@
             </div>
         </div>
 
-        <!-- DYNAMIC CUSTOMER INFO CARDS GRID -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 sm:col-span-2">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Customer Name</span>
@@ -54,20 +47,25 @@
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Monthly Base EMI</span>
                 <h2 id="emi" class="text-base font-bold text-slate-900">₹0</h2>
             </div>
+            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-0.5"><i class="fa-solid fa-calendar-days"></i> EMI Due Date</span>
+                <h2 id="lblDueDateText" class="text-base font-black text-slate-800">—</h2>
+            </div>
+            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-0.5"><i class="fa-solid fa-clock"></i> Days Overdue (Auto)</span>
+                <h2 id="lblLateDaysCount" class="text-base font-black text-amber-700 font-mono">0 Days</h2>
+            </div>
         </div>
 
-        <!-- SECURE PENALTY PANEL -->
         <div class="border border-slate-200 rounded-xl overflow-hidden text-left text-sm bg-slate-50/50">
             <div class="p-3 bg-slate-100 font-black text-xs uppercase tracking-wider border-b border-slate-200 text-slate-500 flex justify-between items-center">
                 <span><i class="fa-solid fa-shield-halved text-rose-500 mr-1.5"></i> Penalty Breakdown (Locked for Agents)</span>
-                <!-- ADMIN UNLOCK BUTTON -->
                 <button onclick="unlockAdminPenalties()" id="unlockBtn" class="text-[11px] bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded font-bold transition cursor-pointer flex items-center gap-1">
                     <i class="fa-solid fa-lock"></i> Admin Unlock
                 </button>
             </div>
             <div class="p-4 space-y-4 font-medium text-slate-700">
                 
-                <!-- 1. Check Bounce -->
                 <div class="flex justify-between items-center gap-4">
                     <span class="w-2/3">Check Bounce Charges <span class="text-xs text-slate-400 block">(₹1,000 / month)</span></span>
                     <div class="relative w-1/3">
@@ -76,7 +74,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Not Paid Fine -->
                 <div class="flex justify-between items-center gap-4">
                     <span class="w-2/3">Not Paid in Time Fine <span class="text-xs text-slate-400 block">(Fixed ₹1,000)</span></span>
                     <div class="relative w-1/3">
@@ -85,16 +82,14 @@
                     </div>
                 </div>
 
-                <!-- 3. Late Days Accumulation -->
                 <div class="flex justify-between items-center gap-4">
-                    <span class="w-2/3">Late Days Accumulation <span class="text-xs text-slate-400 block">(3% on Principal / Day)</span></span>
+                    <span class="w-2/3">Late Days Accumulation <span class="text-xs text-slate-400 block" id="lblDailyCalculationRule">(3% on Principal / Day)</span></span>
                     <div class="relative w-1/3">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
                         <input type="number" id="txtDailyInterest" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-slate-500" disabled>
                     </div>
                 </div>
 
-                <!-- 4. Field Visit -->
                 <div class="flex justify-between items-center gap-4">
                     <span class="w-2/3">Field Visit Charges <span class="text-xs text-slate-400 block">(₹500 + 18% GST = ₹590)</span></span>
                     <div class="relative w-1/3">
@@ -103,7 +98,6 @@
                     </div>
                 </div>
 
-                <!-- 5. Court Penalty -->
                 <div class="flex justify-between items-center gap-4 border-b border-dashed border-slate-200 pb-3">
                     <span class="w-2/3">Legal / Court Penalty <span class="text-xs text-slate-400 block">(Triggered on 3+ Defaults)</span></span>
                     <div class="relative w-1/3">
@@ -112,7 +106,6 @@
                     </div>
                 </div>
                 
-                <!-- LIVE AUTOMATED TOTAL OVERDUE DISPLAY -->
                 <div class="flex justify-between items-center bg-red-100 p-3 rounded-xl border border-red-200 mt-2">
                     <strong class="text-red-800 text-xs font-black uppercase tracking-wider"><i class="fa-solid fa-circle-exclamation mr-1"></i> Net Overdue Amount (EMI + Current Fines)</strong>
                     <strong id="totalOverdue" class="text-xl font-black text-red-600 font-mono">₹0</strong>
@@ -120,7 +113,6 @@
             </div>
         </div>
 
-        <!-- COLLECTION ENTRY PACK FOR RECOVERY AGENT -->
         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left space-y-4">
             <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 border-b border-slate-200/60 pb-1.5"><i class="fa-solid fa-cash-register text-emerald-500 mr-1"></i> Register Collection Entry</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
@@ -135,21 +127,18 @@
                     <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Total Penalties Paid</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
-                        <!-- పెనాల్టీ కలెక్షన్ బాక్స్ కూడా ఏజెంట్ల కోసం కేవలం చూసేలా లాక్ చేయబడింది (అడ్మిన్ అన్‌లాక్ చేస్తేనే మారుతుంది) -->
                         <input type="number" id="penaltyPaid" class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-7 pr-3 py-2 font-mono font-bold text-slate-500 cursor-not-allowed" disabled>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- RECOVERY ACTION SUBMIT BUTTON -->
         <button onclick="postAdvancedCollection()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> SUBMIT COLLECTION RECEIPT
         </button>
 
     </div>
 
-    <!-- FIREBASE AND RECOVERY COMPUTATION ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, addDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -169,7 +158,6 @@
         const params = new URLSearchParams(window.location.search);
         let activeDocId = params.get("id"); 
         let customer = {};
-        let isAdminUnlocked = false; // సెక్యూరిటీ ఫ్లాగ్
 
         async function loadCustomerByDocId(documentId){
             if(!documentId) return;
@@ -191,6 +179,7 @@
             } catch (error) { alert("Error: " + error.message); }
         }
 
+        /* 🧮 AUTOMATED DUE DATE & PENALTY ENGINE */
         function renderCustomerOverdueProfile(data, docId) {
             customer = data;
             activeDocId = docId;
@@ -201,10 +190,32 @@
 
             let principal = Number(customer.loan || 0);
             let totalMissedEmis = Number(customer.missedEmisCount || 1); 
-            let overdueDaysCount = Number(customer.lateDaysCount || 0);
             let fieldVisitsCount = Number(customer.fieldVisitsCount || 0);
             let isNextMonthDefault = customer.isNextMonthDefault || false; 
 
+            // 📅 ఆటోమేటిక్ డేస్ కాలిక్యులేషన్ లాజిక్ (Due Date vs Today)
+            let overdueDaysCount = 0;
+            if (customer.dueDate) {
+                let dueDateObj = new Date(customer.dueDate); // 'YYYY-MM-DD' ఫార్మాట్ లో ఉండాలి
+                let todayObj = new Date();
+                
+                // టైమ్ తీసేసి కేవలం డేట్స్ మాత్రమే కంపేర్ చేయడానికి
+                dueDateObj.setHours(0,0,0,0);
+                todayObj.setHours(0,0,0,0);
+
+                if (todayObj > dueDateObj) {
+                    let timeDiff = todayObj.getTime() - dueDateObj.getTime();
+                    overdueDaysCount = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // మిల్లీ సెకన్లను రోజుల్లోకి మార్చడం
+                }
+                document.getElementById("lblDueDateText").innerText = new Date(customer.dueDate).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'});
+            } else {
+                document.getElementById("lblDueDateText").innerText = "Not Set";
+                overdueDaysCount = Number(customer.lateDaysCount || 0); // ఒకవేళ dueDate లేకపోతే పాత బాక్స్ రన్ అవుతుంది
+            }
+
+            document.getElementById("lblLateDaysCount").innerText = overdueDaysCount + " Days";
+
+            // రేట్స్ స్ట్రక్చర్
             let rateBouncePerMonth = 1000;
             let rateInTimeFine = 1000;
             let rateDailyPrincipalPercent = 0.03; 
@@ -226,6 +237,7 @@
                 courtPenaltyCharges = customer.courtPenaltyCharges || 5000; 
             }
 
+            // బాక్సుల్లోకి వాల్యూస్ పంపడం
             document.getElementById("txtBounce").value = totalCheckBouncePenalty;
             document.getElementById("txtInTimeFine").value = totalInTimeFineApplied;
             document.getElementById("txtDailyInterest").value = totalDailyAccumulatedPenalty;
@@ -253,16 +265,11 @@
             document.getElementById("penaltyPaid").value = Math.round(totalFinesSum);
         }
 
-        /* 🔐 అడ్మిన్ సెక్యూర్ అన్‌లాక్ ఫంక్షన్ */
+        /* 🔐 అడ్మిన్ అన్‌లాక్ ఫంక్షన్ */
         window.unlockAdminPenalties = function() {
-            // మీ ఇష్టం వచ్చిన అడ్మిన్ పిన్ నంబర్ ఇక్కడ సెట్ చేసుకోవచ్చు (ఉదాహరణకు: 9000)
             let password = prompt("Enter Admin Secret Key to Unlock Penalties:");
-            
             if(password === "9000") {
-                isAdminUnlocked = true;
                 alert("Access Granted. Admin Mode Active.");
-
-                // అన్ని బాక్సులను అన్‌లాక్ చేయడం
                 const inputs = ["txtBounce", "txtInTimeFine", "txtDailyInterest", "txtVisitCharge", "txtCourtCharge", "penaltyPaid"];
                 inputs.forEach(id => {
                     let el = document.getElementById(id);
@@ -270,22 +277,19 @@
                     el.classList.remove("bg-slate-100", "cursor-not-allowed", "text-slate-500");
                     el.classList.add("bg-white");
                 });
-
-                // బటన్ రూపాన్ని మార్చడం
                 let btn = document.getElementById("unlockBtn");
                 btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Unlocked`;
                 btn.classList.remove("bg-red-600", "hover:bg-red-700");
                 btn.classList.add("bg-emerald-600");
                 btn.setAttribute("disabled", "true");
             } else {
-                alert("Incorrect Admin Key! Access Denied.");
+                alert("Incorrect Admin Key!");
             }
         }
 
-        /* POST COLLECTION PAY-IN PACK TO LEDGER ROWS */
+        /* POST COLLECTION PAY-IN PACK */
         window.postAdvancedCollection = async function() {
             if(!activeDocId) return alert("Please select or search an active profile first.");
-            
             try {
                 let emiPayment = Number(document.getElementById("emiPaid").value || 0);
                 let penaltyPayment = Number(document.getElementById("penaltyPaid").value || 0);
@@ -309,10 +313,10 @@
                     totalPenaltyPaid: historicPenaltyPaid + penaltyPayment
                 });
 
-                alert("Recovery Collection Logged successfully into ledger rows!");
+                alert("Recovery Collection Logged successfully!");
                 location.reload();
 
-            } catch (error) { alert("Database injection failure: " + error.message); }
+            } catch (error) { alert("Database error: " + error.message); }
         }
 
         window.addEventListener('DOMContentLoaded', () => { if(activeDocId) loadCustomerByDocId(activeDocId); });
