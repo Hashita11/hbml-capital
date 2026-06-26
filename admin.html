@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Admin Panel</title>
-    <!-- Modern Tailwind CSS V4 -->
+    <title>HBML Admin Panel - Master System</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Custom scrollbar for sidebar elements */
@@ -19,58 +17,71 @@
 
     <div class="flex h-screen overflow-hidden">
         
-        <!-- ========================================== -->
-        <!-- 1. ఎడమ వైపు సైడ్‌బార్ (Sidebar Navigation) -->
-        <!-- ========================================== -->
-        <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800">
+        <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden lg:flex border-r border-slate-800 shrink-0">
             <div class="p-5 overflow-y-auto flex-1">
-                <!-- బ్రాండింగ్ లోగో -->
                 <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto" onerror="this.style.display='none'; document.getElementById('txt-logo').classList.remove('hidden')">
-                    <div id="txt-logo" class="h-9 w-9 bg-sky-600 rounded-lg flex items-center justify-center font-bold text-white hidden">H</div>
+                    <img src="logo.png" alt="HBML Logo" class="h-9 w-auto">
                     <div>
                         <h2 class="text-base font-black tracking-wider text-sky-400 leading-tight">HBML CAPITAL</h2>
                         <span class="text-xs text-slate-400">Management Panel</span>
                     </div>
                 </div>
 
-                <!-- సైడ్‌బార్ మెనూ లింకులు (Mapping Repository Files) -->
                 <nav class="space-y-1 text-sm">
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Core Navigation</p>
-                    <a href="admin.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 rounded-lg text-white font-medium shadow-xs"><i class="fa-solid fa-chart-pie w-5 text-center"></i> 🏠 Dashboard</a>
-                    <a href="customer-search.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users w-5 text-center"></i> 👥 Customers</a>
-                    <a href="view-employees.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-tie w-5 text-center"></i> 👨‍💼 Employees</a>
-                    <a href="collect-emi.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-money-bill-transfer w-5 text-center"></i> 💰 EMI Collection</a>
-                    <a href="loan-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> 📄 Loan Reports</a>
-                    <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-line w-5 text-center"></i> 📊 Analytics</a>
-                    
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Extra Tools</p>
-                    <a href="dsashboard-charts.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-bar w-5 text-center"></i> 📈 Charts Integration</a>
-                    <a href="whatsapp-reminder.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp w-5 text-center text-green-400"></i> 📱 WhatsApp Alerts</a>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 mb-2">Core Dashboard</p>
+                    <a href="admin.html" class="flex items-center gap-3 px-3 py-2.5 bg-sky-600 rounded-lg text-white font-medium shadow-xs"><i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard</a>
+                    <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-line w-5 text-center"></i> Analytics Panel</a>
+                    <a href="dsashboard-charts.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-bar w-5 text-center"></i> Dashboard Charts</a>
+
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Customer Section</p>
+                    <a href="add-customer.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-plus w-5 text-center"></i> Add New Customer</a>
+                    <a href="customer-search.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-magnifying-glass w-5 text-center"></i> Search Customer</a>
+                    <a href="view-customers.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users w-5 text-center"></i> View All Customers</a>
+                    <a href="customer-details.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-address-card w-5 text-center"></i> Customer Details</a>
+                    <a href="customer.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-shield w-5 text-center"></i> Customer Portal</a>
+
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">EMI & Loans</p>
+                    <a href="collect-emi.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-money-bill-transfer w-5 text-center text-emerald-400"></i> Collect EMI</a>
+                    <a href="emi-collection.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-hand-holding-dollar w-5 text-center"></i> EMI Collection View</a>
+                    <a href="emi-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-calendar-days w-5 text-center"></i> EMI Dashboard</a>
+                    <a href="emi-calculator.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-calculator w-5 text-center"></i> EMI Calculator</a>
+                    <a href="emi-receipt.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-receipt w-5 text-center"></i> Print EMI Receipt</a>
+                    <a href="loan-approval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-check-double w-5 text-center text-amber-400"></i> Loan Approvals</a>
+                    <a href="payment-history.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-timeline w-5 text-center"></i> Payment History</a>
+
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Staff & HR Module</p>
+                    <a href="add-employee.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-gear w-5 text-center"></i> Add Employee</a>
+                    <a href="view-employees.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users-gear w-5 text-center"></i> View Employees</a>
+                    <a href="employee.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-id-badge w-5 text-center"></i> Employee Portal</a>
+                    <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-clipboard-user w-5 text-center"></i> Attendance Manager</a>
+                    <a href="staff-salary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-wallet w-5 text-center"></i> Staff Salary Board</a>
+                    <a href="gps-tracking.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-red-400"></i> GPS Field Tracking</a>
+
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Reports & Automation</p>
+                    <a href="loan-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i> Loan Reports</a>
+                    <a href="audit-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-shield w-5 text-center"></i> Audit Reports</a>
+                    <a href="pdf-report.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-file-pdf w-5 text-center text-rose-400"></i> Export PDF Report</a>
+                    <a href="whatsapp-reminder.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-brands fa-whatsapp w-5 text-center text-green-400"></i> WhatsApp Reminder</a>
+                    <a href="notifications.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-bell w-5 text-center"></i> System Notifications</a>
                 </nav>
             </div>
             
-            <!-- లాగౌట్ బటన్ -->
-            <div class="p-4 border-t border-slate-800 bg-slate-950/40">
-                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-rose-400 hover:bg-rose-950/30 rounded-lg transition font-medium cursor-pointer">
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i> 🚪 Logout
+            <div class="p-4 border-t border-slate-800 bg-slate-950/40 space-y-1 text-sm">
+                <a href="settings.html" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-sliders w-5 text-center"></i> Settings System</a>
+                <a href="backup-data.html" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition"><i class="fa-solid fa-database w-5 text-center text-amber-500"></i> Backup Data Log</a>
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 text-rose-400 hover:bg-rose-950/30 rounded-lg transition font-medium cursor-pointer mt-2">
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i> Logout (`index.html`)
                 </button>
             </div>
         </aside>
 
-        <!-- ========================================== -->
-        <!-- 2. కుడి వైపు మెయిన్ కంటెంట్ ప్యానెల్ (Topbar & Body) -->
-        <!-- ========================================== -->
         <main class="flex-1 flex flex-col overflow-y-auto">
             
-            <!-- టాప్ హెడర్ బార్ (మొబైల్ లోగోతో సహా) -->
             <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3.5 flex justify-between items-center sticky top-0 z-10 dark:bg-slate-900 dark:border-slate-800 shadow-xs">
                 <div class="flex items-center gap-2.5">
-                    <!-- Mobile View Logo -->
                     <img src="logo.png" alt="HBML Logo" class="h-8 w-auto lg:hidden block">
                     <h1 class="text-base md:text-xl font-black tracking-tight text-slate-800 dark:text-white">Admin Dashboard</h1>
                 </div>
-                <!-- రైట్ సైడ్ టూల్స్ (Clock & Theme Toggle) -->
                 <div class="flex items-center gap-3">
                     <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition" title="Toggle Mode">
                         <i class="fa-solid fa-moon dark:hidden text-lg"></i>
@@ -81,26 +92,23 @@
                 </div>
             </header>
 
-            <!-- మెయిన్ కంటెంట్ ఏరియా -->
             <div class="p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
                 
-                <!-- వెల్‌కమ్ బ్యానర్ -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 p-5 rounded-2xl shadow-xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">
-                            A
-                        </div>
+                        <div class="h-14 w-14 bg-slate-900 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-xl font-black shadow-md">A</div>
                         <div>
                             <h2 class="text-lg font-black text-slate-900 dark:text-white">Welcome Admin</h2>
-                            <p class="text-xs font-medium text-slate-400">HBML Capital Management Panel</p>
+                            <p class="text-xs font-medium text-slate-400">HBML Capital System Controller</p>
                         </div>
                     </div>
-                    <button class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition cursor-pointer" onclick="openReports()">
-                        <i class="fa-solid fa-folder-open mr-1.5"></i> Open Reports
-                    </button>
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button class="flex-1 sm:flex-none bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition cursor-pointer" onclick="openReports()">
+                            <i class="fa-solid fa-folder-open mr-1.5"></i> Open Reports
+                        </button>
+                    </div>
                 </div>
 
-                <!-- అనలిటిక్స్ కార్డ్స్ -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
                         <div>
@@ -135,35 +143,33 @@
                     </div>
                 </div>
 
-                <!-- క్విక్ యాక్షన్స్ బటన్స్ (Direct Links Attached) -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()">
-                        <i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer
-                    </button>
-                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addEmployee()">
-                        <i class="fa-solid fa-user-tie text-purple-400"></i> Add Employee
-                    </button>
-                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="loanReports()">
-                        <i class="fa-solid fa-file-invoice text-amber-400"></i> Loan Reports
-                    </button>
-                    <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="viewAnalytics()">
-                        <i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics
-                    </button>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-xs">
+                    <h3 class="text-sm font-black uppercase tracking-wider text-slate-400 mb-4"><i class="fa-solid fa-circle-nodes text-sky-500 mr-2"></i> Quick Action Grid System</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()"><i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer</button>
+                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addEmployee()"><i class="fa-solid fa-user-tie text-purple-400"></i> Add Employee</button>
+                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="loanReports()"><i class="fa-solid fa-file-invoice text-amber-400"></i> Loan Reports</button>
+                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="viewAnalytics()"><i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics</button>
+                        
+                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='collect-emi.html'"><i class="fa-solid fa-cash-register text-emerald-500"></i> Collect EMI</button>
+                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='customer-search.html'"><i class="fa-solid fa-search text-sky-500"></i> Search Profiles</button>
+                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='whatsapp-reminder.html'"><i class="fa-brands fa-whatsapp text-green-500"></i> Reminders</button>
+                        <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='gps-tracking.html'"><i class="fa-solid fa-location-crosshairs text-red-500"></i> GPS Tracking</button>
+                    </div>
                 </div>
 
-                <!-- ఫైర్‌బేస్ లైవ్ డేటా టేబుల్ -->
                 <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
                     <div class="p-5 border-b border-slate-100 dark:border-slate-800">
-                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent Finance Activity</h3>
+                        <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent System Activity</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm border-collapse">
                             <thead class="bg-slate-50 dark:bg-slate-800/40 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
                                 <tr>
-                                    <th class="p-4">Customer</th>
-                                    <th class="p-4">Loan Amount</th>
-                                    <th class="p-4">Status</th>
-                                    <th class="p-4 text-right">EMI Status / Time</th>
+                                    <th class="p-4">User Details</th>
+                                    <th class="p-4">Project Core</th>
+                                    <th class="p-4">Access Role</th>
+                                    <th class="p-4 text-right">Login Timestamp</th>
                                 </tr>
                             </thead>
                             <tbody id="recent-activity-body" class="divide-y divide-slate-100 dark:divide-slate-800 font-medium">
@@ -179,15 +185,11 @@
         </main>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 3. ఫైర్‌బేస్ మరియు మోడ్యూల్ జావాస్క్రిప్ట్ లాజిక్ -->
-    <!-- ========================================== -->
     <script type="module">
-        /* FIREBASE IMPORTS */
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        /* FIREBASE CONFIG */
+        /* FIREBASE CONFIGURATION */
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
             authDomain: "hbml-capital.firebaseapp.com",
@@ -200,7 +202,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* FETCH LIVE LOGINS FROM FIRESTORE */
+        /* FETCH FIRESTORE REALTIME RECORDS */
         async function fetchRecentLogins() {
             const tableBody = document.getElementById("recent-activity-body");
             
@@ -227,7 +229,7 @@
                                 <div>${data.name || 'Unknown'}</div>
                                 <div class="text-xs text-slate-400 font-normal">${data.email || 'N/A'}</div>
                             </td>
-                            <td class="p-4 font-mono text-xs text-slate-500">—</td>
+                            <td class="p-4 font-mono text-xs text-slate-500">firebase-config.js</td>
                             <td class="p-4">${statusBadge}</td>
                             <td class="p-4 text-right text-xs text-slate-500 font-mono">${data.loginTime ? new Date(data.loginTime.seconds * 1000).toLocaleTimeString() : 'N/A'}</td>
                         </tr>
@@ -241,7 +243,6 @@
             }
         }
 
-        /* INITIALIZATION */
         window.addEventListener('DOMContentLoaded', () => {
             fetchRecentLogins();
             if (localStorage.getItem('admin-dark-mode') === 'enabled') {
@@ -249,7 +250,6 @@
             }
         });
 
-        /* GLOBAL ROUTING FUNCTIONS */
         window.toggleDarkMode = function() {
             const bodyRoot = document.getElementById('body-root');
             bodyRoot.classList.toggle('dark');
@@ -257,6 +257,7 @@
             localStorage.setItem('admin-dark-mode', isDark ? 'enabled' : 'disabled');
         }
 
+        /* ALL CONTROLLER ROUTING METHODS */
         window.addCustomer = () => window.location.href = "add-customer.html";
         window.addEmployee = () => window.location.href = "add-employee.html";
         window.loanReports = () => window.location.href = "loan-report.html";
@@ -264,7 +265,7 @@
         window.logout = () => window.location.href = "index.html";
         window.openReports = () => window.location.href = "loan-report.html";
 
-        /* LIVE CLOCK */
+        /* LIVE CLOCK SOURCE */
         function updateClock(){
             const now = new Date();
             const clockEl = document.getElementById("clock");
