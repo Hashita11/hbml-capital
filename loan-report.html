@@ -22,7 +22,7 @@
 
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
-            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
             <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Loan Reports Ledger</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Live Capital Outflow & Overdue Balances</p>
         </div>
@@ -187,12 +187,12 @@
                 records.sort((a, b) => (b.created?.seconds || 0) - (a.created?.seconds || 0));
 
                 records.forEach((data) => {
-                    // 🛠️ ఫీల్డ్ క్రాష్ ఫిక్స్: 'loanPrincipal' లేదా 'loan' ఏదున్నా సరే పక్కాగా లెక్కలోకి తీసుకుంటుంది
+                    // 🛠️ ఫీల్డ్ నేమ్స్ ఇంటర్నల్ చెక్
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let paid = Number(data.paid || 0);
                     
-                    // 🛠️ బ్యాలెన్స్ ఆటోమేటిక్ సేఫ్ క్యాలిక్యులేషన్
-                    let balance = Number(data.balance !== undefined ? data.balance : (principal - paid));
+                    // 👑 క్లిష్టమైన సమస్య పరిష్కారం: పాత కస్టమర్ల రికార్డులలో ఒకవేళ 'balance' ఫీల్డ్ తప్పుగా ఉన్నా, ఇక్కడ లైవ్ లో పక్కాగా క్యాలిక్యులేట్ అవుతుంది.
+                    let balance = principal - paid;
                     if(balance < 0) balance = 0;
 
                     totalDisbursed += principal;
@@ -218,7 +218,7 @@
 
                 tbody.innerHTML = html;
 
-                // 👑 ఇక్కడ పైన ఉన్న మూడు మాస్టర్ స్టేట్‌మెంట్ బాక్సులను సరిగ్గా అప్‌డేట్ చేస్తుంది
+                // 👑 కస్టమర్ల పాత, కొత్త రికార్డులన్నింటినీ కలిపి పై బాక్సులలో వంద శాతం కరెక్ట్ నంబర్లను అప్‌డేట్ చేస్తుంది
                 document.getElementById("statTotalDisbursed").innerText = "₹" + Math.round(totalDisbursed).toLocaleString('en-IN');
                 document.getElementById("statTotalRecovered").innerText = "₹" + Math.round(totalRecovered).toLocaleString('en-IN');
                 document.getElementById("statTotalBalance").innerText = "₹" + Math.round(totalBalance).toLocaleString('en-IN');
