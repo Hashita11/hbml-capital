@@ -258,11 +258,9 @@ Monthly EMI
 
 <div class="actions">
 
-<button class="btn"
-onclick="location.href='collect-emi.html?id=' + id">
+<button class="collect">
 Collect EMI
 </button>
-
 <button class="edit">
 Edit Customer
 </button>
@@ -352,11 +350,12 @@ const db = getFirestore(app);
 const params = new URLSearchParams(window.location.search);
 const customerId = params.get("id");
 
-if(customerId){
+if(!customerId){
+    alert("Customer ID Missing");
+    throw new Error("Customer ID Missing");
+}
 
 loadCustomer(customerId);
-
-}
 
 /* LOAD CUSTOMER */
 
