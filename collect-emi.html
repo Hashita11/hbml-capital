@@ -3,142 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Fully Automated Overdue Gateway</title>
+    <title>HBML Capital - Collect EMI & Overdue Gateway</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-center items-center p-4">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
-    <div class="w-full max-w-2xl mb-4 flex justify-between items-center">
-        <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-xs transition">
-            <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
-        </a>
-    </div>
-
-    <div class="w-full max-w-2xl bg-white rounded-2xl p-6 md:p-8 shadow-xl border border-slate-200/60 text-center space-y-6">
+    <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
         
-        <div>
-            <div class="flex justify-center mb-3">
-                <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
-                <div id="fallback-icon" class="h-16 w-16 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
-            </div>
-            <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">Collect EMI & Default Charges</h1>
-            <p class="text-xs text-slate-400 font-bold mt-1 uppercase tracking-wider">Fully Automated Overdue Gateway</p>
+        <!-- BACK TO DASHBOARD -->
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">Automated Overdue Gateway</span>
         </div>
 
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 text-left space-y-2">
-            <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Manual Customer Search</label>
+        <!-- BRANDING HEADER -->
+        <div class="text-center space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-12 w-12 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 mx-auto hidden">H</div>
+            <h1 class="text-lg font-black tracking-tight uppercase text-white">Collect EMI & Fines</h1>
+        </div>
+
+        <!-- MANUAL SEARCH DOCK -->
+        <div class="bg-slate-950/40 p-3 rounded-2xl border border-slate-800/80 text-left space-y-1.5">
+            <label class="text-[10px] font-black text-slate-500 uppercase tracking-wider block">Manual Customer Ledger Search</label>
             <div class="flex gap-2">
-                <input type="text" id="manualSearchId" placeholder="Enter Customer ID (e.g. HBML-3728)" class="w-full text-sm bg-white border border-slate-200 rounded-xl px-3 py-2 font-mono font-bold uppercase focus:outline-none focus:border-slate-900 transition">
-                <button onclick="searchCustomerManual()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 rounded-xl transition shadow-xs cursor-pointer"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                <input type="text" id="manualSearchId" placeholder="Enter Customer ID (e.g. HBML-1001)" class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 font-mono font-bold uppercase text-white focus:outline-hidden focus:border-sky-500 transition">
+                <button onclick="searchCustomerManual()" class="bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs px-4 rounded-xl transition shadow-md cursor-pointer flex items-center gap-1.5 shrink-0"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60 sm:col-span-2">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Customer Name</span>
-                <h2 id="name" class="text-base font-black text-slate-500">Enter ID above to pull breakdown...</h2>
+        <!-- PROFILE AND PARAMETER BOARD -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60 sm:col-span-2">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Customer Name</span>
+                <h2 id="name" class="text-sm font-black text-slate-400 mt-0.5">Enter Reference ID to sync breakdown...</h2>
             </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Loan Principal Amount</span>
-                <h2 id="loan" class="text-base font-bold text-slate-900">₹0</h2>
+            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Loan Book Principal</span>
+                <h2 id="loan" class="text-sm font-black text-white font-mono mt-0.5">₹0</h2>
             </div>
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/60">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-0.5">Monthly Base EMI</span>
-                <h2 id="emi" class="text-base font-bold text-slate-900">₹0</h2>
+            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Monthly Base EMI</span>
+                <h2 id="emi" class="text-sm font-black text-white font-mono mt-0.5">₹0</h2>
             </div>
-            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-0.5"><i class="fa-solid fa-calendar-days"></i> EMI Due Date</span>
-                <h2 id="lblDueDateText" class="text-base font-black text-slate-800">—</h2>
+            <div class="bg-amber-950/20 p-3.5 rounded-xl border border-amber-900/30">
+                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block"><i class="fa-solid fa-calendar-days text-[11px] mr-1"></i> EMI Due Date</span>
+                <h2 id="lblDueDateText" class="text-sm font-black text-slate-300 mt-0.5">—</h2>
             </div>
-            <div class="bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-0.5"><i class="fa-solid fa-clock"></i> Days Overdue (Auto)</span>
-                <h2 id="lblLateDaysCount" class="text-base font-black text-amber-700 font-mono">0 Days</h2>
+            <div class="bg-rose-950/20 p-3.5 rounded-xl border border-rose-900/30">
+                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider block"><i class="fa-solid fa-clock text-[11px] mr-1"></i> Days Overdue (Auto)</span>
+                <h2 id="lblLateDaysCount" class="text-sm font-black text-rose-400 font-mono mt-0.5">0 Days</h2>
             </div>
         </div>
 
-        <div class="border border-slate-200 rounded-xl overflow-hidden text-left text-sm bg-slate-50/50">
-            <div class="p-3 bg-slate-100 font-black text-xs uppercase tracking-wider border-b border-slate-200 text-slate-500 flex justify-between items-center">
-                <span><i class="fa-solid fa-shield-halved text-rose-500 mr-1.5"></i> Penalty Breakdown (Locked for Agents)</span>
-                <button onclick="unlockAdminPenalties()" id="unlockBtn" class="text-[11px] bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded font-bold transition cursor-pointer flex items-center gap-1">
+        <!-- PENALTY SLATE LOCKBOX -->
+        <div class="border border-slate-800 rounded-2xl overflow-hidden text-left text-xs bg-slate-950/40">
+            <div class="p-3 bg-slate-950 font-black uppercase tracking-wider border-b border-slate-800 text-slate-400 flex justify-between items-center">
+                <span><i class="fa-solid fa-shield-halved text-rose-500 mr-1.5"></i> Fine Matrix Breakdown</span>
+                <button onclick="unlockAdminPenalties()" id="unlockBtn" class="text-[10px] bg-rose-900/40 hover:bg-rose-900 text-rose-400 hover:text-white border border-rose-800 px-2.5 py-1 rounded-lg font-bold transition cursor-pointer flex items-center gap-1">
                     <i class="fa-solid fa-lock"></i> Admin Unlock
                 </button>
             </div>
-            <div class="p-4 space-y-4 font-medium text-slate-700">
+            <div class="p-4 space-y-3.5 font-medium text-slate-300">
                 
                 <div class="flex justify-between items-center gap-4">
-                    <span class="w-2/3">Check Bounce Charges <span class="text-xs text-slate-400 block">(₹1,000 / month)</span></span>
+                    <span class="w-2/3">Check Bounce Charges <span class="text-[10px] text-slate-500 block">(₹1,000 / month)</span></span>
                     <div class="relative w-1/3">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
-                        <input type="number" id="txtBounce" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-slate-500" disabled>
+                        <span class="absolute left-2.5 top-1.5 text-[11px] font-bold text-slate-500">₹</span>
+                        <input type="number" id="txtBounce" oninput="recalculateTotalOverdue()" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold cursor-not-allowed text-slate-500 text-xs" disabled>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center gap-4">
-                    <span class="w-2/3">Not Paid in Time Fine <span class="text-xs text-slate-400 block">(Fixed ₹1,000)</span></span>
+                    <span class="w-2/3">Not Paid in Time Fine <span class="text-[10px] text-slate-500 block">(Fixed ₹1,000)</span></span>
                     <div class="relative w-1/3">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
-                        <input type="number" id="txtInTimeFine" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-slate-500" disabled>
+                        <span class="absolute left-2.5 top-1.5 text-[11px] font-bold text-slate-500">₹</span>
+                        <input type="number" id="txtInTimeFine" oninput="recalculateTotalOverdue()" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold cursor-not-allowed text-slate-500 text-xs" disabled>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center gap-4">
-                    <span class="w-2/3">Late Days Accumulation <span class="text-xs text-slate-400 block" id="lblDailyCalculationRule">(3% on Principal / Day)</span></span>
+                    <span class="w-2/3">Late Days Accumulation <span class="text-[10px] text-slate-500 block" id="lblDailyCalculationRule">(3% on Principal / Day)</span></span>
                     <div class="relative w-1/3">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
-                        <input type="number" id="txtDailyInterest" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-slate-500" disabled>
+                        <span class="absolute left-2.5 top-1.5 text-[11px] font-bold text-slate-500">₹</span>
+                        <input type="number" id="txtDailyInterest" oninput="recalculateTotalOverdue()" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold cursor-not-allowed text-slate-500 text-xs" disabled>
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center gap-4">
-                    <span class="w-2/3">Field Visit Charges <span class="text-xs text-slate-400 block">(₹500 + 18% GST = ₹590)</span></span>
+                    <span class="w-2/3">Field Visit Charges <span class="text-[10px] text-slate-500 block">(₹500 + 18% GST = ₹590)</span></span>
                     <div class="relative w-1/3">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
-                        <input type="number" id="txtVisitCharge" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-slate-500" disabled>
+                        <span class="absolute left-2.5 top-1.5 text-[11px] font-bold text-slate-500">₹</span>
+                        <input type="number" id="txtVisitCharge" oninput="recalculateTotalOverdue()" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold cursor-not-allowed text-slate-500 text-xs" disabled>
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center gap-4 border-b border-dashed border-slate-200 pb-3">
-                    <span class="w-2/3">Legal / Court Penalty <span class="text-xs text-slate-400 block">(Triggered on 3+ Defaults)</span></span>
+                <div class="flex justify-between items-center gap-4 border-b border-dashed border-slate-800 pb-3.5">
+                    <span class="w-2/3">Legal / Court Penalty <span class="text-[10px] text-slate-500 block">(Triggered on 3+ Defaults)</span></span>
                     <div class="relative w-1/3">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-xs font-bold text-slate-400">₹</span>
-                        <input type="number" id="txtCourtCharge" oninput="recalculateTotalOverdue()" class="w-full bg-slate-100 border border-slate-200 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold text-sm cursor-not-allowed text-rose-400" disabled>
+                        <span class="absolute left-2.5 top-1.5 text-[11px] font-bold text-slate-500">₹</span>
+                        <input type="number" id="txtCourtCharge" oninput="recalculateTotalOverdue()" class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-5 pr-2 py-1 text-right font-mono font-bold cursor-not-allowed text-rose-400 text-xs" disabled>
                     </div>
                 </div>
                 
-                <div class="flex justify-between items-center bg-red-100 p-3 rounded-xl border border-red-200 mt-2">
-                    <strong class="text-red-800 text-xs font-black uppercase tracking-wider"><i class="fa-solid fa-circle-exclamation mr-1"></i> Net Overdue Amount (EMI + Current Fines)</strong>
-                    <strong id="totalOverdue" class="text-xl font-black text-red-600 font-mono">₹0</strong>
+                <div class="flex justify-between items-center bg-rose-950/30 p-3 rounded-xl border border-rose-900/40 mt-1">
+                    <strong class="text-rose-400 text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-circle-exclamation mr-1"></i> Net Overdue (EMI + Fines)</strong>
+                    <strong id="totalOverdue" class="text-lg font-black text-rose-400 font-mono">₹0</strong>
                 </div>
             </div>
         </div>
 
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left space-y-4">
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 border-b border-slate-200/60 pb-1.5"><i class="fa-solid fa-cash-register text-emerald-500 mr-1"></i> Register Collection Entry</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Base EMI Paid</label>
+        <!-- COLLECTION LEDGER TICKET -->
+        <div class="bg-slate-950/30 p-4 rounded-xl border border-slate-800 text-left space-y-4">
+            <h3 class="text-[11px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-2 flex items-center gap-1.5"><i class="fa-solid fa-cash-register text-emerald-400"></i> Register Collection Entry</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Base EMI Paid</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
-                        <input type="number" id="emiPaid" class="w-full bg-white border border-slate-200 rounded-xl pl-7 pr-3 py-2 font-mono font-bold focus:outline-none focus:border-slate-900">
+                        <span class="absolute left-3 top-2.5 text-slate-500 font-bold">₹</span>
+                        <input type="number" id="emiPaid" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-7 pr-3 py-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-emerald-500">
                     </div>
                 </div>
-                <div>
-                    <label class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Total Penalties Paid</label>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Penalties Paid</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 font-bold">₹</span>
-                        <input type="number" id="penaltyPaid" class="w-full bg-slate-100 border border-slate-200 rounded-xl pl-7 pr-3 py-2 font-mono font-bold text-slate-500 cursor-not-allowed" disabled>
+                        <span class="absolute left-3 top-2.5 text-slate-500 font-bold">₹</span>
+                        <input type="number" id="penaltyPaid" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-7 pr-3 py-2.5 font-mono font-bold text-slate-400 cursor-not-allowed" disabled>
                     </div>
                 </div>
             </div>
+            
+            <div class="space-y-1">
+                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Payment Channel</label>
+                <select id="ddlMode" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-bold focus:outline-hidden text-xs text-slate-300">
+                    <option value="Cash">Cash (నగదు)</option>
+                    <option value="UPI / PhonePe">UPI / PhonePe / GPay</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
         </div>
 
-        <button onclick="postAdvancedCollection()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-sm cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> SUBMIT COLLECTION RECEIPT
+        <!-- MASTER DISPATCH TRIGGER -->
+        <button onclick="postAdvancedCollection()" id="btnSubmit" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-cloud-arrow-up" id="submitIcon"></i> SUBMIT COLLECTION RECEIPT
         </button>
 
     </div>
 
+    <!-- FIREBASE BUSINESS ENGINE DATA ARCHITECTURE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, addDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -185,37 +202,34 @@
             activeDocId = docId;
 
             document.getElementById("name").innerText = customer.name || "N/A";
-            document.getElementById("loan").innerText = "₹" + Number(customer.loan || 0).toLocaleString('en-IN');
+            document.getElementById("loan").innerText = "₹" + Number(customer.loanPrincipal || customer.loan || 0).toLocaleString('en-IN');
             document.getElementById("emi").innerText = "₹" + Number(customer.emi || 0).toLocaleString('en-IN');
 
-            let principal = Number(customer.loan || 0);
+            let principal = Number(customer.loanPrincipal || customer.loan || 0);
             let totalMissedEmis = Number(customer.missedEmisCount || 1); 
             let fieldVisitsCount = Number(customer.fieldVisitsCount || 0);
             let isNextMonthDefault = customer.isNextMonthDefault || false; 
 
-            // 📅 ఆటోమేటిక్ డేస్ కాలిక్యులేషన్ లాజిక్ (Due Date vs Today)
             let overdueDaysCount = 0;
             if (customer.dueDate) {
-                let dueDateObj = new Date(customer.dueDate); // 'YYYY-MM-DD' ఫార్మాట్ లో ఉండాలి
+                let dueDateObj = new Date(customer.dueDate);
                 let todayObj = new Date();
                 
-                // టైమ్ తీసేసి కేవలం డేట్స్ మాత్రమే కంపేర్ చేయడానికి
                 dueDateObj.setHours(0,0,0,0);
                 todayObj.setHours(0,0,0,0);
 
                 if (todayObj > dueDateObj) {
                     let timeDiff = todayObj.getTime() - dueDateObj.getTime();
-                    overdueDaysCount = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // మిల్లీ సెకన్లను రోజుల్లోకి మార్చడం
+                    overdueDaysCount = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
                 }
                 document.getElementById("lblDueDateText").innerText = new Date(customer.dueDate).toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'});
             } else {
                 document.getElementById("lblDueDateText").innerText = "Not Set";
-                overdueDaysCount = Number(customer.lateDaysCount || 0); // ఒకవేళ dueDate లేకపోతే పాత బాక్స్ రన్ అవుతుంది
+                overdueDaysCount = Number(customer.lateDaysCount || 0);
             }
 
             document.getElementById("lblLateDaysCount").innerText = overdueDaysCount + " Days";
 
-            // రేట్స్ స్ట్రక్చర్
             let rateBouncePerMonth = 1000;
             let rateInTimeFine = 1000;
             let rateDailyPrincipalPercent = 0.03; 
@@ -237,7 +251,6 @@
                 courtPenaltyCharges = customer.courtPenaltyCharges || 5000; 
             }
 
-            // బాక్సుల్లోకి వాల్యూస్ పంపడం
             document.getElementById("txtBounce").value = totalCheckBouncePenalty;
             document.getElementById("txtInTimeFine").value = totalInTimeFineApplied;
             document.getElementById("txtDailyInterest").value = totalDailyAccumulatedPenalty;
@@ -265,7 +278,7 @@
             document.getElementById("penaltyPaid").value = Math.round(totalFinesSum);
         }
 
-        /* 🔐 అడ్మిన్ అన్‌లాక్ ఫంక్షన్ */
+        /* 🔐 ADMIN UNLOCK SWITCH */
         window.unlockAdminPenalties = function() {
             let password = prompt("Enter Admin Secret Key to Unlock Penalties:");
             if(password === "9000") {
@@ -274,49 +287,85 @@
                 inputs.forEach(id => {
                     let el = document.getElementById(id);
                     el.removeAttribute("disabled");
-                    el.classList.remove("bg-slate-100", "cursor-not-allowed", "text-slate-500");
-                    el.classList.add("bg-white");
+                    el.classList.remove("cursor-not-allowed", "text-slate-500");
+                    el.classList.add("bg-slate-950");
                 });
                 let btn = document.getElementById("unlockBtn");
                 btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Unlocked`;
-                btn.classList.remove("bg-red-600", "hover:bg-red-700");
-                btn.classList.add("bg-emerald-600");
+                btn.classList.remove("bg-rose-900/40", "hover:bg-rose-900");
+                btn.classList.add("bg-emerald-600", "text-white");
                 btn.setAttribute("disabled", "true");
             } else {
                 alert("Incorrect Admin Key!");
             }
         }
 
-        /* POST COLLECTION PAY-IN PACK */
+        /* 💾 CLOUD COMMIT WRITEWAY & LEDGER SUM ENGINE */
         window.postAdvancedCollection = async function() {
             if(!activeDocId) return alert("Please select or search an active profile first.");
+            
+            let emiPayment = Number(document.getElementById("emiPaid").value || 0);
+            let penaltyPayment = Number(document.getElementById("penaltyPaid").value || 0);
+            let mode = document.getElementById("ddlMode").value;
+
+            if (emiPayment < 0 || penaltyPayment < 0) return alert("Values cannot be negative.");
+            if (emiPayment === 0 && penaltyPayment === 0) return alert("Please enter the collection amount before submitting.");
+
+            const btn = document.getElementById("btnSubmit");
+            const icon = document.getElementById("submitIcon");
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
+
             try {
-                let emiPayment = Number(document.getElementById("emiPaid").value || 0);
-                let penaltyPayment = Number(document.getElementById("penaltyPaid").value || 0);
-
-                if (emiPayment < 0 || penaltyPayment < 0) return alert("Values cannot be negative.");
-
                 let historicPaid = Number(customer.paid || 0);
                 let historicPenaltyPaid = Number(customer.totalPenaltyPaid || 0);
+                let loanPrincipal = Number(customer.loanPrincipal || customer.loan || 0);
 
-                await addDoc(collection(db, "emi_collections"), {
-                    customerId: activeDocId,
-                    customerName: customer.name,
-                    emiAmountPaid: emiPayment,
-                    penaltyAmountPaid: penaltyPayment,
-                    date: new Date()
+                const today = new Date();
+                const formattedDate = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+
+                // 1. Write Log directly to subcollection inside the unique customer block
+                await addDoc(collection(db, "customers", activeDocId, "payments"), {
+                    amount: emiPayment,
+                    penaltyPaid: penaltyPayment,
+                    mode: mode,
+                    date: formattedDate,
+                    timestamp: today.getTime()
                 });
 
+                // Also backup into global collection block
+                await addDoc(collection(db, "emi_collections"), {
+                    customerId: activeDocId,
+                    customerName: customer.name || "N/A",
+                    emiAmountPaid: emiPayment,
+                    penaltyAmountPaid: penaltyPayment,
+                    mode: mode,
+                    date: today
+                });
+
+                // 2. 👑 UPDATE CORE LEDGER DOCUMENT - Crucial Calculation Step
+                let newPaidTotal = historicPaid + emiPayment;
+                let newBalance = loanPrincipal - newPaidTotal;
+                if (newBalance < 0) newBalance = 0;
+
                 await updateDoc(doc(db, "customers", activeDocId), {
-                    paid: historicPaid + emiPayment,
-                    balance: Number(customer.loan || 0) - (historicPaid + emiPayment),
+                    paid: newPaidTotal,
+                    balance: newBalance,
                     totalPenaltyPaid: historicPenaltyPaid + penaltyPayment
                 });
 
-                alert("Recovery Collection Logged successfully!");
-                location.reload();
+                alert("Recovery Collection Logged and Customer Ledger Figures Updated!");
+                
+                // 3. Auto Redirect to Customer Profile Details screen directly
+                window.location.href = "customer-details.html?id=" + activeDocId;
 
-            } catch (error) { alert("Database error: " + error.message); }
+            } catch (error) { 
+                alert("Database write error: " + error.message); 
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+                icon.className = "fa-solid fa-cloud-arrow-up";
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => { if(activeDocId) loadCustomerByDocId(activeDocId); });
