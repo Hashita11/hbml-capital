@@ -150,10 +150,9 @@
         </div>
 
     </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         /* FIREBASE CONFIGURATION */
         const firebaseConfig = {
@@ -174,11 +173,12 @@
             document.getElementById("employeeId").value = "HBML-EMP-" + token;
         }
 
-        /* FETCH LIVE EMPLOYEES */
+        /* FETCH LIVE EMPLOYEES (ఇండెక్స్ అవసరం లేని సింపుల్ క్వెరీ) */
         async function fetchEmployees() {
             const tableBody = document.getElementById("employee-table-body");
             try {
-                const q = query(collection(db, "employees"), orderBy("created", "desc"));
+                // ఇండెక్స్ ఎర్రర్ రాకుండా orderBy ని తీసేశాను
+                const q = query(collection(db, "employees"));
                 const querySnapshot = await getDocs(q);
                 let tableHTML = "";
 
@@ -187,8 +187,11 @@
                     return;
                 }
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                // కొత్తవి పైకి రావడానికి రివర్స్ లో లూప్ తిప్పుతున్నాం
+                let docsArray = [];
+                querySnapshot.forEach(doc => docsArray.unshift(doc.data()));
+
+                docsArray.forEach((data) => {
                     let roleStyle = "bg-slate-100 text-slate-700 border-slate-200";
                     if(data.role === "Manager") roleStyle = "bg-purple-50 text-purple-700 border-purple-200/60";
                     if(data.role === "Field Officer") roleStyle = "bg-amber-50 text-amber-700 border-amber-200/60";
@@ -284,7 +287,7 @@
                 document.getElementById("address").value = "";
                 
                 generateEmployeeID();
-                fetchEmployees();
+                fetchEmployees(); // వెంటనే లిస్ట్ లో కనిపిస్తుంది
 
             } catch(error) {
                 console.error(error);
@@ -292,5 +295,6 @@
             }
         }
     </script>
+
 </body>
 </html>
