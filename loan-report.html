@@ -58,7 +58,7 @@
                 <i class="fa-solid fa-user"></i> Individual Loans (సింగిల్)
             </button>
             <button id="tabGroup" onclick="switchReportTab('group')" class="w-1/2 sm:w-auto px-5 py-3 border-b-2 border-transparent text-slate-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-2">
-                <i class="fa-solid fa-users"></i> Group Loans (సంఘాలు)
+                <i class="fa-solid fa-users"></i> Group Loans (సంਘాలు)
             </button>
         </div>
 
@@ -67,7 +67,7 @@
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-table-list text-sky-500 mr-1"></i> Individual Ledger Rows</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
+                <table class="w-full text-left text-xs border-collapse min-w-[500px]">
                     <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="p-4">Customer ID & Name</th>
@@ -91,7 +91,7 @@
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-users-viewfinder text-emerald-500 mr-1"></i> Joint Liability Groups Rowset</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
+                <table class="w-full text-left text-xs border-collapse min-w-[500px]">
                     <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="p-4">Group ID & Name</th>
@@ -174,7 +174,6 @@
             let totalBalance = 0;
 
             try {
-                // 🛠️ ఇండెక్స్ సమస్య రాకుండా ఉండటానికి orderBy తీసేసి డైరెక్ట్ కలెక్షన్ తెచ్చుకుంటున్నాం
                 const snap = await getDocs(collection(db, "customers"));
                 let html = "";
 
@@ -183,15 +182,18 @@
                     return;
                 }
 
-                // రికార్డులను లోకల్ గా సార్ట్ చేయడం
                 let records = [];
                 snap.forEach(doc => records.push(doc.data()));
                 records.sort((a, b) => (b.created?.seconds || 0) - (a.created?.seconds || 0));
 
                 records.forEach((data) => {
+                    // 🛠️ ఫీల్డ్ క్రాష్ ఫిక్స్: 'loanPrincipal' లేదా 'loan' ఏదున్నా సరే పక్కాగా లెక్కలోకి తీసుకుంటుంది
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let paid = Number(data.paid || 0);
-                    let balance = Number(data.balance || 0);
+                    
+                    // 🛠️ బ్యాలెన్స్ ఆటోమేటిక్ సేఫ్ క్యాలిక్యులేషన్
+                    let balance = Number(data.balance !== undefined ? data.balance : (principal - paid));
+                    if(balance < 0) balance = 0;
 
                     totalDisbursed += principal;
                     totalRecovered += paid;
@@ -216,12 +218,13 @@
 
                 tbody.innerHTML = html;
 
+                // 👑 ఇక్కడ పైన ఉన్న మూడు మాస్టర్ స్టేట్‌మెంట్ బాక్సులను సరిగ్గా అప్‌డేట్ చేస్తుంది
                 document.getElementById("statTotalDisbursed").innerText = "₹" + Math.round(totalDisbursed).toLocaleString('en-IN');
                 document.getElementById("statTotalRecovered").innerText = "₹" + Math.round(totalRecovered).toLocaleString('en-IN');
                 document.getElementById("statTotalBalance").innerText = "₹" + Math.round(totalBalance).toLocaleString('en-IN');
 
             } catch (error) {
-                console.error("Firestore Error:", error);
+                console.error(error);
                 tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading data.</td></tr>`;
             }
         }
@@ -245,7 +248,7 @@
                     let groupEmi = 0;
                     
                     members.forEach(m => {
-                        groupPrincipal += Number(m.loanPrincipal || 0);
+                        groupPrincipal += Number(m.loanPrincipal || m.loan || 0);
                         groupPayable += Number(m.totalPayable || 0);
                         groupEmi += Number(m.emi || 0);
                     });
@@ -268,7 +271,7 @@
                 });
                 tbody.innerHTML = html;
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading group data.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500">Error loading group data.</td></tr>`;
             }
         }
 
