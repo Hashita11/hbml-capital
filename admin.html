@@ -33,8 +33,9 @@
                     <a href="analytics.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-line w-5 text-center"></i> Analytics Panel</a>
                     <a href="dsashboard-charts.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-chart-bar w-5 text-center"></i> Dashboard Charts</a>
 
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Customer Section</p>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wider px-3 pt-4 mb-2">Customer & Groups</p>
                     <a href="add-customer.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-user-plus w-5 text-center"></i> Add New Customer</a>
+                    <a href="add-group-loan.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-emerald-400 hover:text-emerald-300 transition font-bold"><i class="fa-solid fa-users w-5 text-center"></i> Add Group Loan</a>
                     <a href="customer-search.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-magnifying-glass w-5 text-center"></i> Search Customer</a>
                     <a href="view-customers.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-users w-5 text-center"></i> View All Customers</a>
                     <a href="customer-details.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition"><i class="fa-solid fa-address-card w-5 text-center"></i> Customer Details</a>
@@ -109,6 +110,32 @@
                     </div>
                 </div>
 
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-xs space-y-3">
+                    <span class="text-xs font-black uppercase tracking-wider text-slate-400 block"><i class="fa-solid fa-layer-group text-sky-500 mr-1.5"></i> Loan Management Onboarding Gateways</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <a href="add-customer.html" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 p-4 rounded-xl hover:border-slate-900 dark:hover:border-sky-400 transition group text-left">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 bg-sky-50 dark:bg-sky-950 text-sky-600 dark:text-sky-400 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-user-plus"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Add Customer</h4>
+                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">సింగిల్ కస్టమర్ లోన్</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 dark:group-hover:text-sky-400 transition"></i>
+                        </a>
+                        <a href="add-group-loan.html" class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 p-4 rounded-xl hover:border-slate-900 dark:hover:border-emerald-400 transition group text-left">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-lg flex items-center justify-center text-lg"><i class="fa-solid fa-users"></i></div>
+                                <div>
+                                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Add Group Loan</h4>
+                                    <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">పొదుపు సంఘాల లోన్</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 dark:group-hover:text-emerald-400 transition"></i>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-5 rounded-2xl border border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-xs flex items-center justify-between">
                         <div>
@@ -147,9 +174,9 @@
                     <h3 class="text-sm font-black uppercase tracking-wider text-slate-400 mb-4"><i class="fa-solid fa-circle-nodes text-sky-500 mr-2"></i> Quick Action Grid System</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addCustomer()"><i class="fa-solid fa-user-plus text-sky-400"></i> Add Customer</button>
+                        <button class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='add-group-loan.html'"><i class="fa-solid fa-users text-emerald-300"></i> Add Group Loan</button>
                         <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="addEmployee()"><i class="fa-solid fa-user-tie text-purple-400"></i> Add Employee</button>
                         <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="loanReports()"><i class="fa-solid fa-file-invoice text-amber-400"></i> Loan Reports</button>
-                        <button class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="viewAnalytics()"><i class="fa-solid fa-chart-line text-emerald-400"></i> Analytics</button>
                         
                         <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='collect-emi.html'"><i class="fa-solid fa-cash-register text-emerald-500"></i> Collect EMI</button>
                         <button class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-2" onclick="location.href='customer-search.html'"><i class="fa-solid fa-search text-sky-500"></i> Search Profiles</button>
