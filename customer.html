@@ -1,54 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>HBML Customer Dashboard</title>
-
-<style>
-
-body{
-    font-family:Arial;
-    background:#f2f4f8;
-    padding:30px;
-    text-align:center;
-}
-
-.box{
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.1);
-    max-width:400px;
-    margin:auto;
-}
-
-.logo{
-    width:120px;
-    height:120px;
-    object-fit:contain;
-    margin-bottom:15px;
-}
-
-h1{
-    color:#0d2b6b;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Customer Self Ledger Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
 
-<body>
+    <div class="w-full max-w-xl space-y-6">
 
-<div class="box">
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-3">
+            <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
+            <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
+            
+            <div class="space-y-1">
+                <h1 class="text-xl font-black text-slate-900 tracking-tight uppercase">HBML Customer Panel</h1>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Welcome to your Personal Loan Dashboard</p>
+            </div>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 flex items-center gap-4">
+            <div id="custAvatar" class="h-14 w-14 bg-[#0b2964] text-white rounded-full flex items-center justify-center text-2xl font-black uppercase shadow-inner">
+                -
+            </div>
+            <div class="space-y-0.5">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Account Holder</div>
+                <h2 id="custName" class="text-lg font-black text-slate-900 uppercase">Loading Profile...</h2>
+                <div class="flex gap-2 text-[9px] font-mono font-bold uppercase">
+                    <span id="custUID" class="text-sky-600 bg-sky-50 px-2 py-0.5 rounded">UID: Syncing...</span>
+                    <span id="custLoanType" class="text-slate-500 bg-slate-100 px-2 py-0.5 rounded">MICROFINANCE LOAN</span>
+                </div>
+            </div>
+        </div>
 
-<h1>HBML CUSTOMER PANEL</h1>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white border border-slate-100 p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] space-y-1">
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block"><i class="fa-solid fa-wallet text-slate-400 mr-1"></i> Total Loan (+ Int)</span>
+                <h3 id="lblTotalLoan" class="text-lg font-black font-mono text-slate-900">₹0</h3>
+            </div>
+            <div class="bg-purple-50/40 border border-purple-100/60 p-4 rounded-2xl space-y-1">
+                <span class="text-[10px] font-bold text-purple-600 uppercase tracking-wider block"><i class="fa-solid fa-calendar-days text-purple-400 mr-1"></i> Monthly EMI</span>
+                <h3 id="lblEMI" class="text-lg font-black font-mono text-purple-700">₹0</h3>
+            </div>
+            <div class="bg-emerald-50/40 border border-emerald-100/60 p-4 rounded-2xl space-y-1">
+                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Total Paid</span>
+                <h3 id="lblTotalPaid" class="text-lg font-black font-mono text-emerald-600">₹0</h3>
+            </div>
+            <div class="bg-amber-50/40 border border-amber-100/60 p-4 rounded-2xl space-y-1">
+                <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider block"><i class="fa-solid fa-scale-unbalanced text-amber-500 mr-1"></i> Outstanding</span>
+                <h3 id="lblOutstanding" class="text-lg font-black font-mono text-amber-600">₹0</h3>
+            </div>
+        </div>
 
-<h2>Welcome Customer</h2>
+        <div class="bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 overflow-hidden">
+            <div class="p-4 bg-slate-50/60 border-b border-slate-100 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-500 tracking-wider"><i class="fa-solid fa-history text-slate-400 mr-1.5"></i> My Payment Logs</span>
+                <span class="text-[10px] bg-slate-200/60 text-slate-600 font-mono font-bold px-2 py-0.5 rounded-full uppercase" id="lblDueDay">Due: Day 2</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="p-4">Payment Date</th>
+                            <th class="p-4">Amount Paid</th>
+                            <th class="p-4 text-right">Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerPaymentTable" class="divide-y divide-slate-50 font-medium text-slate-600">
+                        <tr>
+                            <td colspan="3" class="p-6 text-center text-slate-400 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-sky-500"></i>  వివరాలు సేకరిస్తున్నాము...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<p>HBML Capital Customer Dashboard</p>
+        <p class="text-[10px] text-center text-slate-400 font-medium px-6">
+            <i class="fa-solid fa-shield-halved mr-1 text-slate-300"></i> This is a secure digital ledger copy generated by HBML Capital node. For errors, contact your collection desk agent.
+        </p>
 
-</div>
+    </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initCustomerSelfPanel() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let id = params.get("id");
+
+                // సేఫ్ బ్యాకప్ మెమరీ రూట్ చెక్
+                if(!id) {
+                    id = localStorage.getItem("last_viewed_customer_id");
+                } else {
+                    localStorage.setItem("last_viewed_customer_id", id);
+                }
+
+                if(!id) {
+                    document.body.innerHTML = `
+                        <div class="bg-white p-8 rounded-3xl shadow-xl text-center max-w-sm border border-slate-100 space-y-4 m-auto mt-20">
+                            <div class="h-12 w-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-key"></i></div>
+                            <h2 class="text-lg font-black text-slate-900">Access Link Invalid</h2>
+                            <p class="text-xs text-slate-500 font-medium px-4">దయచేసి మీ లోన్ అకౌంట్ లింక్ ద్వారా లాగిన్ అవ్వండి.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const docRef = doc(db, "customers", id);
+                const snap = await getDoc(docRef);
+
+                if(!snap.exists()) {
+                    document.getElementById("custName").innerText = "Account Broken";
+                    return;
+                }
+
+                const data = snap.data();
+                const cleanName = data.name || "Valued Customer";
+
+                // 1. హెడర్ డీటెయిల్స్ ఇన్జెక్షన్
+                document.getElementById("custName").innerText = cleanName;
+                document.getElementById("custAvatar").innerText = cleanName.charAt(0).toUpperCase();
+                
+                let displayUID = data.customerId || "HBML-" + id.substring(0, 5).toUpperCase();
+                document.getElementById("custUID").innerText = "UID: " + displayUID;
+                
+                if(data.loanType) document.getElementById("custLoanType").innerText = data.loanType.toUpperCase();
+                document.getElementById("lblDueDay").innerText = "Due: Every Month " + (data.dueDay || "2") + "nd";
+
+                // 2. 🧮 స్మార్ట్ వడ్డీ + టెన్యూర్‌ క్యాలిక్యులేటర్ ఇంజిన్
+                let emiValue = Number(data.emi || 0);
+                let tenure = 12;
+                if (data.tenureMonths !== undefined && Number(data.tenureMonths) > 0) {
+                    tenure = Number(data.tenureMonths);
+                } else if (data.months !== undefined && Number(data.months) > 0) {
+                    tenure = Number(data.months);
+                }
+
+                let totalLoanAmount = emiValue * tenure;
+                if (totalLoanAmount <= 0) {
+                    totalLoanAmount = Number(data.loanPrincipal || data.loan || 0);
+                }
+
+                // 3. సబ్‌కలెక్షన్ హిస్టరీ సమగ్రత చెక్
+                let totalPaidCalculated = 0;
+                const tbody = document.getElementById("customerPaymentTable");
+                tbody.innerHTML = "";
+
+                const paymentSnap = await getDocs(collection(db, "customers", id, "payments"));
+                paymentSnap.forEach((pDoc) => {
+                    const p = pDoc.data();
+                    let amt = Number(p.amount || 0);
+                    totalPaidCalculated += amt;
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-50">
+                            <td class="p-4 font-mono font-bold text-slate-500">${p.date || 'N/A'}</td>
+                            <td class="p-4 font-mono font-black text-slate-800">₹${amt.toLocaleString('en-IN')}</td>
+                            <td class="p-4 text-right"><span class="bg-slate-100 px-2 py-0.5 rounded text-[10px] text-slate-500 font-bold uppercase">${p.mode || 'Cash'}</span></td>
+                        </tr>
+                    `;
+                });
+
+                if(tbody.innerHTML === "") {
+                    tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-400 font-bold">No payment entries recorded yet.</td></tr>`;
+                }
+
+                let finalOutstanding = totalLoanAmount - totalPaidCalculated;
+                if(finalOutstanding < 0) finalOutstanding = 0;
+
+                // 4. ఫైనల్ కార్డ్ కౌంటర్స్ లోడింగ్
+                document.getElementById("lblTotalLoan").innerText = "₹" + totalLoanAmount.toLocaleString('en-IN');
+                document.getElementById("lblEMI").innerText = "₹" + emiValue.toLocaleString('en-IN');
+                document.getElementById("lblTotalPaid").innerText = "₹" + totalPaidCalculated.toLocaleString('en-IN');
+                document.getElementById("lblOutstanding").innerText = "₹" + Math.round(finalOutstanding).toLocaleString('en-IN');
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initCustomerSelfPanel);
+        } else {
+            initCustomerSelfPanel();
+        }
+    </script>
 </body>
 </html>
