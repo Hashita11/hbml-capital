@@ -187,11 +187,9 @@
                 records.sort((a, b) => (b.created?.seconds || 0) - (a.created?.seconds || 0));
 
                 records.forEach((data) => {
-                    // 🛠️ ఫీల్డ్ నేమ్స్ ఇంటర్నల్ చెక్
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let paid = Number(data.paid || 0);
                     
-                    // 👑 క్లిష్టమైన సమస్య పరిష్కారం: పాత కస్టమర్ల రికార్డులలో ఒకవేళ 'balance' ఫీల్డ్ తప్పుగా ఉన్నా, ఇక్కడ లైవ్ లో పక్కాగా క్యాలిక్యులేట్ అవుతుంది.
                     let balance = principal - paid;
                     if(balance < 0) balance = 0;
 
@@ -218,7 +216,6 @@
 
                 tbody.innerHTML = html;
 
-                // 👑 కస్టమర్ల పాత, కొత్త రికార్డులన్నింటినీ కలిపి పై బాక్సులలో వంద శాతం కరెక్ట్ నంబర్లను అప్‌డేట్ చేస్తుంది
                 document.getElementById("statTotalDisbursed").innerText = "₹" + Math.round(totalDisbursed).toLocaleString('en-IN');
                 document.getElementById("statTotalRecovered").innerText = "₹" + Math.round(totalRecovered).toLocaleString('en-IN');
                 document.getElementById("statTotalBalance").innerText = "₹" + Math.round(totalBalance).toLocaleString('en-IN');
@@ -271,7 +268,7 @@
                 });
                 tbody.innerHTML = html;
             } catch (error) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500">Error loading group data.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500">Error loading group data.</td></tr>`;
             }
         }
 
