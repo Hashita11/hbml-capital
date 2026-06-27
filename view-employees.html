@@ -1,252 +1,147 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>View Employees</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f2f4f8;
-padding:20px;
-}
-
-/* MAIN BOX */
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-max-width:1100px;
-margin:auto;
-}
-
-/* LOGO */
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-/* TITLE */
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-/* SEARCH */
-
-.search{
-width:100%;
-padding:14px;
-border:1px solid #ccc;
-border-radius:10px;
-margin-bottom:20px;
-font-size:16px;
-}
-
-/* TABLE */
-
-.table-box{
-overflow:auto;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-table td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-/* BUTTON */
-
-.btn{
-padding:10px 15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-.btn:hover{
-background:#163c91;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - View Employees</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- TOP CONTROL NAVIGATION -->
+        <div class="flex justify-between items-center gap-2">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            <span class="text-[10px] font-black uppercase bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-md border border-sky-500/20 shadow-xs tracking-wider">
+                HR Records Node
+            </span>
+        </div>
 
-<div class="box">
+        <!-- BRANDING HEADER -->
+        <div class="text-center space-y-2 py-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Employee Database</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Internal Staff Directory & Roles Management</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <!-- 🔍 SEARCH BOX CONTAINER -->
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800/80">
+            <div class="relative">
+                <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id="search" onkeyup="searchEmployee()" placeholder="Search employee name or role..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-white">
+            </div>
+        </div>
 
-<h1>HBML Employee Database</h1>
+        <!-- 📑 EMPLOYEES DIRECTORY TABLE -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
+                    <i class="fa-solid fa-users text-sky-500 mr-1.5"></i> Registered Staff Members List
+                </span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse min-w-[550px]">
+                    <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                        <tr>
+                            <th class="p-4">Employee Name</th>
+                            <th class="p-4">Phone Number</th>
+                            <th class="p-4">Email Address</th>
+                            <th class="p-4 text-right">Designated Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody" class="divide-y divide-slate-800 font-medium text-slate-300">
+                        <tr>
+                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold">
+                                <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> ఫైర్‌బేస్ నుండి స్టాఫ్ వివరాలను లోడ్ చేస్తున్నాము...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<input type="text"
-class="search"
-id="search"
-placeholder="Search Employee..."
-onkeyup="searchEmployee()">
+    </div>
 
-<div class="table-box">
+    <!-- FIREBASE PLATFORM DATA ARCHITECTURE MODULES -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<table id="employeeTable">
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<tr>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<th>Name</th>
-<th>Phone</th>
-<th>Email</th>
-<th>Role</th>
+        async function loadEmployees() {
+            const tbody = document.getElementById("employeeTableBody");
+            try {
+                const querySnapshot = await getDocs(collection(db, "employees"));
+                
+                if(querySnapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center font-bold text-slate-500"><i class="fa-solid fa-user-slash mr-1"></i> No registered employees found in the cloud node.</td></tr>`;
+                    return;
+                }
 
-</tr>
+                let html = "";
 
-</table>
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let name = data.name || "N/A";
+                    let phone = data.phone || "—";
+                    let email = data.email || "—";
+                    let role = data.role || data.designation || "Field Agent";
 
-</div>
+                    html += `
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 employee-row" data-search="${name.toLowerCase()} ${role.toLowerCase()}">
+                            <td class="p-4 font-black text-white uppercase text-sm">${name}</td>
+                            <td class="p-4 font-mono font-bold text-slate-400">${phone}</td>
+                            <td class="p-4 font-mono text-slate-400">${email}</td>
+                            <td class="p-4 text-right">
+                                <span class="bg-slate-800 text-sky-400 border border-slate-700 text-[10px] font-bold uppercase px-2.5 py-1 rounded-md tracking-wider">${role}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-</div>
+                tbody.innerHTML = html;
 
-<!-- FIREBASE -->
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500 font-bold">Error connecting to database node.</td></tr>`;
+            }
+        }
 
-<script type="module">
+        /* 🔍 LIVE TEXT SEARCH FILTER */
+        window.searchEmployee = function() {
+            let input = document.getElementById("search").value.toLowerCase().trim();
+            let rows = document.getElementsByClassName("employee-row");
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+            for (let i = 0; i < rows.length; i++) {
+                let searchContent = rows[i].getAttribute("data-search") || "";
+                if (searchContent.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
 
-import {
-
-getFirestore,
-collection,
-getDocs
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-
-authDomain: "hbml-capital.firebaseapp.com",
-
-projectId: "hbml-capital",
-
-storageBucket: "hbml-capital.firebasestorage.app",
-
-messagingSenderId: "893969951538",
-
-appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-
-};
-
-/* INIT */
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-/* LOAD EMPLOYEES */
-
-async function loadEmployees(){
-
-const querySnapshot =
-await getDocs(collection(db,"employees"));
-
-const table =
-document.getElementById("employeeTable");
-
-querySnapshot.forEach((doc)=>{
-
-const data = doc.data();
-
-let row = table.insertRow();
-
-row.insertCell(0).innerHTML =
-data.name || "";
-
-row.insertCell(1).innerHTML =
-data.phone || "";
-
-row.insertCell(2).innerHTML =
-data.email || "";
-
-row.insertCell(3).innerHTML =
-data.role || "";
-
-});
-
-}
-
-loadEmployees();
-
-/* SEARCH */
-
-window.searchEmployee = function(){
-
-let input =
-document.getElementById("search")
-.value.toLowerCase();
-
-let table =
-document.getElementById("employeeTable");
-
-let tr =
-table.getElementsByTagName("tr");
-
-for(let i=1;i<tr.length;i++){
-
-let td =
-tr[i].getElementsByTagName("td")[0];
-
-if(td){
-
-let txt =
-td.textContent || td.innerText;
-
-tr[i].style.display =
-txt.toLowerCase().indexOf(input)>-1
-? ""
-: "none";
-
-}
-
-}
-
-}
-
-</script>
-
+        window.addEventListener('DOMContentLoaded', loadEmployees);
+    </script>
 </body>
 </html>
