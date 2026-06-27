@@ -1,273 +1,192 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>HBML EMI Receipt</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f2f4f8;
-padding:20px;
-}
-
-/* RECEIPT BOX */
-
-.receipt{
-max-width:700px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-/* HEADER */
-
-.header{
-text-align:center;
-margin-bottom:25px;
-}
-
-.logo{
-width:100px;
-margin-bottom:10px;
-}
-
-.header h1{
-color:#0d2b6b;
-margin-bottom:5px;
-}
-
-.header p{
-color:gray;
-}
-
-/* DETAILS */
-
-.details{
-margin-top:20px;
-}
-
-.row{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid #ddd;
-flex-wrap:wrap;
-gap:10px;
-}
-
-.label{
-font-weight:bold;
-color:#0d2b6b;
-}
-
-.value{
-color:#333;
-}
-
-/* AMOUNT */
-
-.amount-box{
-margin-top:25px;
-background:#0d2b6b;
-color:white;
-padding:20px;
-border-radius:15px;
-text-align:center;
-}
-
-.amount-box h2{
-font-size:35px;
-margin-top:10px;
-}
-
-/* BUTTONS */
-
-.buttons{
-margin-top:25px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.btn{
-padding:15px;
-border:none;
-border-radius:12px;
-background:#0d2b6b;
-color:white;
-font-size:16px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.btn:hover{
-background:#163c91;
-}
-
-/* FOOTER */
-
-.footer{
-margin-top:30px;
-text-align:center;
-color:gray;
-font-size:14px;
-}
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-.buttons{
-grid-template-columns:1fr;
-}
-
-.row{
-flex-direction:column;
-}
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML - EMI Payment Receipt</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .receipt-box { border: none; shadow: none; max-width: 100%; padding: 10px; }
+        }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
-<body>
+    <!-- TOP CONTROL NAVIGATION BAR -->
+    <div class="w-full max-w-md flex justify-between items-center mb-4 no-print">
+        <button onclick="goToCollector()" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs transition cursor-pointer">
+            <i class="fa-solid fa-arrow-left"></i> Back Desk
+        </button>
+        <button onclick="window.print()" class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-xl shadow-md transition cursor-pointer">
+            <i class="fa-solid fa-print"></i> Print Receipt
+        </button>
+    </div>
 
-<div class="receipt">
+    <!-- 📄 DIGITAL RECEIPT BOX -->
+    <div class="w-full max-w-md bg-white border border-slate-100 rounded-3xl p-6 shadow-2xl space-y-6 receipt-box text-left">
+        
+        <!-- HEADER BRANDING -->
+        <div class="text-center space-y-2 border-b border-dashed border-slate-100 pb-4">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none';">
+            <div class="space-y-0.5">
+                <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">HBML CAPITAL</h1>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Trusted Financial Solutions</p>
+            </div>
+        </div>
 
-<!-- HEADER -->
+        <!-- TRANSACTION STATUS BADGE -->
+        <div class="text-center space-y-1">
+            <div class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">
+                <i class="fa-solid fa-circle-check text-xs"></i> Transaction Successful
+            </div>
+            <h2 id="lblDisplayPaid" class="text-3xl font-black text-slate-900 font-mono pt-1">₹0</h2>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Recovery Amount Paid</p>
+        </div>
 
-<div class="header">
+        <!-- METADATA INFORMATION BLOCK -->
+        <div class="bg-slate-50 border border-slate-100/80 rounded-2xl p-4 space-y-2.5 text-xs font-medium text-slate-600">
+            <div class="flex justify-between">
+                <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Customer Name</span>
+                <strong id="lblCustName" class="text-slate-900 uppercase">Loading Name...</strong>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Customer UID</span>
+                <strong id="lblCustUID" class="text-slate-900 font-mono">Syncing...</strong>
+            </div>
+            <div class="flex justify-between border-t border-slate-200/40 pt-2.5">
+                <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Payment Date</span>
+                <strong id="lblPayDate" class="text-slate-900 font-mono">—</strong>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Payment Channel</span>
+                <strong id="lblPayMode" class="text-slate-900 uppercase">—</strong>
+            </div>
+        </div>
 
-<img src="logo.png" class="logo">
+        <!-- BREAKDOWN LEDGER CHARGES -->
+        <div class="space-y-2.5 text-xs border-t border-slate-100 pt-4 font-medium">
+            <h3 class="text-[10px] font-black uppercase text-slate-400 tracking-wider mb-2"><i class="fa-solid fa-receipt text-[#0b2964] mr-1"></i> Receipt Breakdown</h3>
+            <div class="flex justify-between text-slate-600">
+                <span>Base EMI Amount</span>
+                <span id="lblBaseEmiPaid" class="font-mono font-bold text-slate-800">₹0</span>
+            </div>
+            <div class="flex justify-between text-slate-600 border-b border-dashed border-slate-100 pb-3">
+                <span>Total Penalties / Fines Paid</span>
+                <span id="lblPenaltyPaid" class="font-mono font-bold text-slate-800">₹0</span>
+            </div>
+            <div class="flex justify-between text-sm pt-1">
+                <strong class="text-slate-900 uppercase font-black tracking-tight">Net Outstanding Balance</strong>
+                <strong id="lblNewBalance" class="font-mono font-black text-rose-600">₹0</strong>
+            </div>
+        </div>
 
-<h1>HBML CAPITAL</h1>
+        <!-- COMPLIANCE SECURITY FOOTER -->
+        <div class="text-center pt-2 border-t border-slate-100 space-y-1">
+            <p class="text-[9px] text-slate-400 font-semibold leading-relaxed">
+                This is a computer-generated digital receipt node valid under HBML Capital microfinance protocols. No physical signature required.
+            </p>
+            <div class="text-[8px] font-mono text-slate-300 font-bold" id="lblDocUID">SECURE-TXNID: —</div>
+        </div>
 
-<p>EMI Payment Receipt</p>
+    </div>
 
-</div>
+    <!-- FIREBASE ARCHITECTURE ENGINE MODULES -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<!-- DETAILS -->
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<div class="details">
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<div class="row">
-<div class="label">Receipt No</div>
-<div class="value">
-HBML2026001
-</div>
-</div>
+        async function extractLatestReceiptInfo() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                let customerDocId = params.get("id");
 
-<div class="row">
-<div class="label">Customer Name</div>
-<div class="value">
-Ramesh
-</div>
-</div>
+                if(!customerDocId) {
+                    customerDocId = localStorage.getItem("last_viewed_customer_id");
+                }
 
-<div class="row">
-<div class="label">Loan Amount</div>
-<div class="value">
-₹50,000
-</div>
-</div>
+                if(!customerDocId) {
+                    alert("Error: No customer token reference found.");
+                    return;
+                }
 
-<div class="row">
-<div class="label">Monthly EMI</div>
-<div class="value">
-₹5,000
-</div>
-</div>
+                // 1. కస్టమర్ మాస్టర్ డేటా మరియు కరెంట్ బ్యాలెన్స్ లోడింగ్
+                const custRef = doc(db, "customers", customerDocId);
+                const custSnap = await getDoc(custRef);
 
-<div class="row">
-<div class="label">Payment Date</div>
-<div class="value" id="date">
-30-05-2026
-</div>
-</div>
+                if(!custSnap.exists()) {
+                    alert("Customer document not active.");
+                    return;
+                }
+                const custData = custSnap.data();
 
-<div class="row">
-<div class="label">Collected By</div>
-<div class="value">
-HBML Employee
-</div>
-</div>
+                // 2. సబ్‌కలెక్షన్ లోని అత్యంత లేటెస్ట్ పేమెంట్ రికార్డ్ లాగడం
+                const pRef = collection(db, "customers", customerDocId, "payments");
+                const q = query(pRef, orderBy("timestamp", "desc"), limit(1));
+                const pSnap = await getDocs(q);
 
-</div>
+                let emiAmount = 0;
+                let penaltyAmount = 0;
+                let pMode = "Cash";
+                let pDate = new Date().toLocaleDateString('en-IN');
+                let txnId = "HBML-TXN-" + customerDocId.substring(0,4).toUpperCase();
 
-<!-- AMOUNT -->
+                pSnap.forEach((pDoc) => {
+                    const pData = pDoc.data();
+                    emiAmount = Number(pData.amount || 0);
+                    penaltyAmount = Number(pData.penaltyPaid || 0);
+                    pMode = pData.mode || "Cash";
+                    pDate = pData.date || pDate;
+                    txnId = "TXN-" + pDoc.id.toUpperCase();
+                });
 
-<div class="amount-box">
+                let netTotalPaid = emiAmount + penaltyAmount;
 
-<p>EMI Amount Paid</p>
+                // 3. UI స్క్రీన్ లోపలికి లైవ్ డేటా ఇంజెక్షన్
+                document.getElementById("lblCustName").innerText = custData.name || "Valued Borrower";
+                document.getElementById("lblCustUID").innerText = custData.customerId || "HBML-" + customerDocId.substring(0,5).toUpperCase();
+                
+                document.getElementById("lblDisplayPaid").innerText = "₹" + netTotalPaid.toLocaleString('en-IN');
+                document.getElementById("lblBaseEmiPaid").innerText = "₹" + emiAmount.toLocaleString('en-IN');
+                document.getElementById("lblPenaltyPaid").innerText = "₹" + penaltyAmount.toLocaleString('en-IN');
+                
+                let currentBalance = Number(custData.balance !== undefined ? custData.balance : (custData.loanPrincipal || 0));
+                document.getElementById("lblNewBalance").innerText = "₹" + Math.round(currentBalance).toLocaleString('en-IN');
+                
+                document.getElementById("lblPayDate").innerText = pDate;
+                document.getElementById("lblPayMode").innerText = pMode;
+                document.getElementById("lblDocUID").innerText = "SECURE-ID: " + txnId;
 
-<h2>₹5,000</h2>
+            } catch (error) {
+                console.error("Receipt generation timeout: ", error);
+            }
+        }
 
-</div>
+        window.goToCollector = function() {
+            let backupId = localStorage.getItem("last_viewed_customer_id");
+            window.location.href = "collect-emi.html?id=" + backupId;
+        }
 
-<!-- BUTTONS -->
-
-<div class="buttons">
-
-<button class="btn"
-onclick="window.print()">
-
-Print Receipt
-
-</button>
-
-<button class="btn"
-onclick="goBack()">
-
-Back
-
-</button>
-
-</div>
-
-<!-- FOOTER -->
-
-<div class="footer">
-
-Thank You For Choosing HBML CAPITAL
-
-</div>
-
-</div>
-
-<script>
-
-/* TODAY DATE */
-
-let today = new Date();
-
-document.getElementById("date")
-.innerHTML =
-today.toLocaleDateString();
-
-/* BACK */
-
-function goBack(){
-
-window.history.back();
-
-}
-
-</script>
-
+        window.addEventListener('DOMContentLoaded', extractLatestReceiptInfo);
+    </script>
 </body>
 </html>
