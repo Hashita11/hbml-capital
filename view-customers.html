@@ -25,7 +25,7 @@
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
             <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Borrowers Directory</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Search active profiles or view financial statements</p>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Search active profiles or view digital profile cards</p>
         </div>
 
         <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl shadow-md">
@@ -82,20 +82,28 @@
                 
                 snap.forEach((docRecord) => {
                     const data = docRecord.data();
-                    const docId = docRecord.id; // 👑 ఫైర్‌బేస్ ఆటో-జనరేటెడ్ మాస్టర్ ఐడీ
+                    const docId = docRecord.id; 
                     const cleanName = data.name || "Unknown Borrower";
                     
-                    let principal = Number(data.loanPrincipal || data.loan || 0);
+                    // 🛠️ డైనమిక్ టెన్యూర్‌ను బట్టి వడ్డీతో కూడిన టోటల్ లోన్ క్యాలిక్యులేషన్ సింక్
+                    let emiValue = Number(data.emi || 0);
+                    let tenure = Number(data.tenureMonths || data.months || 12);
+                    let totalLoanWithInterest = emiValue * tenure;
+
+                    if (totalLoanWithInterest <= 0) {
+                        totalLoanWithInterest = Number(data.loanPrincipal || data.loan || 0);
+                    }
+
+                    // ఔట్‌స్టాండింగ్ బ్యాలెన్స్ లెక్క
                     let paid = Number(data.paid || 0);
-                    let balance = principal - paid;
+                    let balance = totalLoanWithInterest - paid;
                     if(balance < 0) balance = 0;
 
                     totalCustomers++;
-                    totalLoanAmountSum += principal;
+                    totalLoanAmountSum += Number(data.loanPrincipal || 0);
 
                     let displayUID = data.customerId || "HBML-" + docId.substring(0, 5).toUpperCase();
 
-                    // 👑 కుడివైపు బటన్ నొక్కినప్పుడు వంద శాతం కరెక్ట్ 'docId' వెళ్ళేలా లింక్ అమర్చాను
                     html += `
                         <div class="p-4 flex justify-between items-center bg-slate-900/40 hover:bg-slate-900 transition gap-4 client-row-item" data-name="${cleanName.toLowerCase()}" data-phone="${(data.phone || '').toLowerCase()}">
                             <div class="space-y-0.5">
@@ -114,8 +122,8 @@
                                     <div class="text-[9px] font-bold text-slate-500 uppercase">Outstanding</div>
                                     <div class="text-xs font-mono font-black text-amber-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
                                 </div>
-                                <button onclick="openCustomerStatement('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
-                                    Statement <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                                <button onclick="openCustomerProfileCard('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
+                                    Profile Card <i class="fa-solid fa-chevron-right text-[10px]"></i>
                                 </button>
                             </div>
                         </div>
@@ -124,7 +132,6 @@
 
                 container.innerHTML = html;
 
-                // పై కౌంటర్ల అప్‌డేట్
                 document.getElementById("totalCustomers").innerText = totalCustomers;
                 document.getElementById("totalLoan").innerText = "₹" + totalLoanAmountSum.toLocaleString('en-IN');
 
@@ -134,12 +141,12 @@
             }
         }
 
-        // 👑 కరెక్ట్ ఐడీ రూటింగ్ ఫంక్షన్
-        window.openCustomerStatement = function(docId) {
-            window.location.href = "customer-details.html?id=" + docId;
+        // 👑 సరికొత్త డిజిటల్ కార్డు ప్రొఫైల్ రూటింగ్ గేట్‌వే లైన్
+        window.openCustomerProfileCard = function(docId) {
+            window.location.href = "customer-profile.html?id=" + docId;
         }
 
-        /* 🔍 లైవ్ సెర్చ్ ఫిల్టర్ ఫంక్షన్ - పాత కోడ్ లోని 'searchCustomer' పేరుతోనే సింక్ చేశాను */
+        /* 🔍 లైవ్ సెర్చ్ ఫిల్టర్ ఫంక్షన్ */
         window.searchCustomer = function() {
             let filter = document.getElementById("search").value.toLowerCase().trim();
             let rows = document.getElementsByClassName("client-row-item");
