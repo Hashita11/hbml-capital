@@ -4,24 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Add Customer Onboarding</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-    <!-- BACK TO DASHBOARD BUTTON -->
     <div class="w-full max-w-xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
             <i class="fa-solid fa-arrow-left"></i> Dashboard కి తిరిగి వెళ్ళు
         </a>
     </div>
 
-    <!-- MAIN FORM BOX -->
     <div class="w-full max-w-xl bg-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-800 text-center">
         
-        <!-- BRANDING LOGO -->
         <div class="flex justify-center mb-4">
             <img src="logo.png" alt="HBML Logo" class="h-16 w-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-sky-400 rounded-2xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden">H</div>
@@ -30,10 +25,8 @@
         <h1 class="text-xl font-black tracking-tight text-white uppercase">Add New Customer</h1>
         <p class="text-xs text-slate-500 font-bold mt-1 mb-6 uppercase tracking-wider">KYC & Financial Onboarding Desk</p>
 
-        <!-- INPUT FIELDS FORM CONTAINER -->
         <div class="space-y-4 text-left">
             
-            <!-- SYSTEM GENERATED CUSTOMER ID -->
             <div>
                 <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Customer ID (Auto-Generated)</label>
                 <div class="relative">
@@ -42,7 +35,6 @@
                 </div>
             </div>
 
-            <!-- CUSTOMER NAME & PHONE -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Customer Name</label>
@@ -60,7 +52,6 @@
                 </div>
             </div>
 
-            <!-- KYC SECTION: AADHAAR & PAN -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Aadhaar Number</label>
@@ -78,7 +69,6 @@
                 </div>
             </div>
 
-            <!-- FULL ADDRESS -->
             <div>
                 <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Permanent Address</label>
                 <div class="relative">
@@ -87,7 +77,6 @@
                 </div>
             </div>
 
-            <!-- LOAN TYPE & INTEREST CALCULATION LOGIC SELECTION -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Loan Type (లోన్ రకం)</label>
@@ -95,7 +84,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-folder-open"></i></span>
                         <select id="loanType" onchange="handleLoanTypeChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-hidden focus:border-sky-500 appearance-none cursor-pointer font-bold text-slate-300">
                             <option value="Microfinance Loan">Microfinance Loan (మైక్రోఫైనాన్స్ లోన్)</option>
-                            <option value="Gold Loan">Gold Loan (బంగారు తాకట్టు లోన్)</option>
+                            <option value="Gold Loan">Gold Loan (బಂಗారు తాకట్టు లోన్)</option>
                             <option value="Personal Loan">Personal Loan (వ్యక్తిగత లోన్)</option>
                             <option value="Business Loan">Business Loan (వ్యాపార లోన్)</option>
                             <option value="Vehicle Loan">Vehicle Loan (వాహన లోన్)</option>
@@ -104,7 +93,7 @@
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Interest Method (వడ్డీ విధానం)</label>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Interest Method (වడ్డీ విధానం)</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-gears"></i></span>
                         <select id="interestMethod" onchange="calculateAutoEMI()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-hidden focus:border-sky-500 appearance-none cursor-pointer font-bold text-sky-400">
@@ -116,12 +105,11 @@
                 </div>
             </div>
 
-            <!-- GOLD LOAN SPECIAL BOX (HIDDEN BY DEFAULT) -->
             <div id="goldLoanTermBox" class="bg-amber-950/20 p-4 rounded-xl border border-amber-900/30 hidden">
                 <label class="text-[10px] font-black uppercase tracking-wider text-amber-400 block mb-1.5"><i class="fa-solid fa-coins"></i> Gold Loan Repayment Term</label>
                 <div class="relative">
                     <select id="goldRepaymentTerm" onchange="handleGoldRepaymentLogic()" class="w-full bg-slate-950 border border-amber-900/30 rounded-xl px-3 py-2.5 text-xs focus:outline-hidden focus:border-amber-500 appearance-none cursor-pointer font-bold text-slate-200">
-                        <option value="EveryMonth">Every Month EMI (నెలనెలా వడ్డీ/EMI విధానం)</option>
+                        <option value="EveryMonth">Every Month EMI (నెలనెలా వڈడీ/EMI విధానం)</option>
                         <option value="6Months">6 Months Bullet Payment (6 నెలల ఒకేసారి చెల్లింపు)</option>
                         <option value="1Year">1 Year Bullet Payment (1 సంవత్సరం ఒకేసారి చెల్లింపు)</option>
                     </select>
@@ -129,7 +117,6 @@
                 </div>
             </div>
 
-            <!-- FINANCIALS TERMS FIELDS -->
             <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800 space-y-4">
                 <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 block border-b border-slate-800 pb-1.5"><i class="fa-solid fa-calculator text-sky-400 mr-1"></i> Configure Loan Metrics</span>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -157,7 +144,6 @@
                 </div>
             </div>
 
-            <!-- DYNAMIC RESULTS DISPLAY -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Total Payable (Principal + Int)</label>
@@ -170,12 +156,11 @@
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Calculated Monthly EMI</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-400 text-xs font-bold">₹</span>
-                        <input type="number" id="emi" class="w-full bg-emerald-950/20 border border-emerald-900/30 rounded-xl pl-8 pr-4 py-3 text-xs font-mono font-black text-emerald-400 focus:outline-hidden focus:border-emerald-500">
+                        <input type="number" id="emi" oninput="handleManualEMIChange()" class="w-full bg-emerald-950/20 border border-emerald-900/30 rounded-xl pl-8 pr-4 py-3 text-xs font-mono font-black text-emerald-400 focus:outline-hidden focus:border-emerald-500">
                     </div>
                 </div>
             </div>
 
-            <!-- Monthly EMI Due Date Dropdown -->
             <div>
                 <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Monthly EMI Due Date</label>
                 <div class="relative">
@@ -190,14 +175,12 @@
 
         </div>
 
-        <!-- SAVE BUTTON -->
         <button onclick="saveCustomer()" class="w-full mt-6 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-xs cursor-pointer flex items-center justify-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> SAVE CUSTOMER PROFILE
         </button>
 
     </div>
 
-    <!-- FIREBASE AND ID LOGIC MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -292,6 +275,18 @@
             }
         }
 
+        // 👑 ఏజెంట్లు ఒకవేళ మాన్యువల్‌గా EMI ని ఎడిట్ చేస్తే టోటల్ పేయబుల్‌ను రీ-క్యాలిక్యులేట్ చేసే సేఫ్ లాజిక్
+        window.handleManualEMIChange = function() {
+            let manualEmi = Number(document.getElementById("emi").value || 0);
+            let months = Number(document.getElementById("tenure").value || 1);
+            let loanType = document.getElementById("loanType").value;
+            
+            if(manualEmi > 0 && loanType !== "Gold Loan") {
+                let totalPayableCalculated = manualEmi * months;
+                document.getElementById("totalPayable").value = Math.round(totalPayableCalculated);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', generateCustomerID);
 
         window.saveCustomer = async function() {
@@ -322,16 +317,10 @@
                 if(phone.length !== 10) return alert("Please enter a valid 10-digit mobile number.");
                 if(aadhaar.length !== 12) return alert("Aadhaar Number must be exactly 12 digits.");
 
+                // 👑 👑 మాస్టర్ ఫిక్స్: ఫామ్‌లో ఏ వివరాలు కనిపిస్తున్నాయో (Screen Values), వాటిని మాత్రమే క్లౌడ్‌లోకి పంపుతుంది.
                 let finalEmi = Number(emi);
                 let finalTenure = Number(tenureMonths);
-                let computedLoanWithInterest = finalEmi * finalTenure;
-
-                if(finalEmi === 0 || computedLoanWithInterest <= 0) {
-                    computedLoanWithInterest = Number(totalPayable);
-                }
-
-                // 👑 🛠️ మిస్సింగ్ లైన్ ఫిక్స్: క్లౌడ్ లో లోడ్ అయ్యే వడ్డీతో కూడిన మొత్తాన్ని ఇన్‌పుట్ బాక్స్‌ లోపలికి కూడా రిఫ్లెక్ట్ చేశాను
-                document.getElementById("totalPayable").value = computedLoanWithInterest;
+                let finalLoanAmountValue = Number(totalPayable);
 
                 await addDoc(collection(db, "customers"), {
                     customerId: customerId,
@@ -346,11 +335,11 @@
                     loanPrincipal: Number(loanPrincipal),
                     interestRate: Number(interestRate),
                     tenureMonths: finalTenure,
-                    loan: computedLoanWithInterest, 
+                    loan: finalLoanAmountValue, // ఫామ్ లో ఉన్న వాల్యూ వెళ్తుంది
                     emi: finalEmi,
                     dueDay: Number(dueDay),
                     paid: 0,
-                    balance: computedLoanWithInterest, 
+                    balance: finalLoanAmountValue, // ఆటోమేటిక్ ప్రారంభ ఔట్‌స్టాండింగ్
                     created: new Date()
                 });
 
