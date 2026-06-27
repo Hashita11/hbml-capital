@@ -1,153 +1,177 @@
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>Customer Profile</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:700px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-.profile{
-text-align:center;
-margin-bottom:25px;
-}
-
-.avatar{
-width:100px;
-height:100px;
-border-radius:50%;
-background:#0d2b6b;
-color:white;
-font-size:40px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:auto;
-margin-bottom:10px;
-}
-
-.row{
-display:flex;
-justify-content:space-between;
-padding:14px 0;
-border-bottom:1px solid #ddd;
-}
-
-.label{
-font-weight:bold;
-color:#0d2b6b;
-}
-
-.value{
-color:#333;
-}
-
-.btn{
-width:100%;
-padding:15px;
-margin-top:20px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:16px;
-cursor:pointer;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Customer Digital Profile Card</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-center items-center p-4">
 
-<body>
+    <div class="w-full max-w-md bg-white rounded-3xl p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 text-center space-y-6 relative">
+        
+        <div class="space-y-1">
+            <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
+            <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Trusted Financial Solutions</p>
+        </div>
 
-<div class="box">
+        <div class="pt-2">
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Customer Profile</h1>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="flex justify-center">
+            <div id="avatarCircle" class="h-28 w-28 bg-[#0b2964] text-white rounded-full flex items-center justify-center text-4xl font-bold shadow-lg uppercase">
+                -
+            </div>
+        </div>
 
-<h1>Customer Profile</h1>
+        <div class="space-y-1">
+            <h2 id="txtName" class="text-2xl font-black text-slate-900 uppercase tracking-tight">Loading Name...</h2>
+            <span class="inline-block bg-slate-100 text-slate-500 font-mono font-bold text-[10px] tracking-wider px-2.5 py-1 rounded-full uppercase" id="lblCustId">
+                UID: Syncing...
+            </span>
+        </div>
 
-<div class="profile">
+        <div class="text-left divide-y divide-slate-100 text-sm font-medium pt-2">
+            
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-phone text-slate-400 mr-2 w-4"></i>Phone</span>
+                <span id="txtPhone" class="text-slate-900 font-bold font-mono">---</span>
+            </div>
 
-<div class="avatar">
-R
-</div>
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-location-dot text-slate-400 mr-2 w-4"></i>Address</span>
+                <span id="txtAddress" class="text-slate-900 font-bold">---</span>
+            </div>
 
-<h2>Ramesh</h2>
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-wallet text-slate-400 mr-2 w-4"></i>Loan Amount</span>
+                <span id="txtLoan" class="text-slate-900 font-black font-mono">₹0</span>
+            </div>
 
-<p>HBML Customer</p>
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-calendar-check text-slate-400 mr-2 w-4"></i>Monthly EMI</span>
+                <span id="txtEmi" class="text-slate-900 font-black font-mono">₹0</span>
+            </div>
 
-</div>
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-money-bill-1-wave text-slate-400 mr-2 w-4"></i>Paid Amount</span>
+                <span id="txtPaid" class="text-emerald-600 font-black font-mono">₹0</span>
+            </div>
+            
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-scale-unbalanced text-slate-400 mr-2 w-4"></i>Outstanding</span>
+                <span id="txtBalance" class="text-amber-600 font-black font-mono">₹0</span>
+            </div>
 
-<div class="row">
-<div class="label">Phone</div>
-<div class="value">9876543210</div>
-</div>
+        </div>
 
-<div class="row">
-<div class="label">Address</div>
-<div class="value">Hyderabad</div>
-</div>
+        <div class="pt-4 flex gap-2 no-print">
+            <button onclick="history.back()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs py-3 px-4 rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <button onclick="window.print()" class="w-1/2 bg-[#0b2964] hover:bg-[#123985] text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-md cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-print"></i> Print Profile
+            </button>
+        </div>
 
-<div class="row">
-<div class="label">Loan Amount</div>
-<div class="value">₹50,000</div>
-</div>
+    </div>
 
-<div class="row">
-<div class="label">Monthly EMI</div>
-<div class="value">₹5,000</div>
-</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<div class="row">
-<div class="label">Paid Amount</div>
-<div class="value">₹20,000</div>
-</div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<div class="row">
-<div class="label">Pending Balance</div>
-<div class="value">₹30,000</div>
-</div>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<button class="btn"
-onclick="window.print()">
+        const params = new URLSearchParams(window.location.search);
+        const customerId = params.get("id");
 
-Print Profile
+        if(!customerId){
+            document.body.innerHTML = `<div class="bg-white p-6 rounded-2xl shadow-md font-bold text-red-500">Error: Customer URL ID is missing!</div>`;
+            throw new Error("Missing ID Parameter.");
+        }
 
-</button>
+        async function streamDigitalProfileCard(id) {
+            try {
+                const docRef = doc(db, "customers", id);
+                const snap = await getDoc(docRef);
 
-</div>
+                if(!snap.exists()) {
+                    document.getElementById("txtName").innerText = "Profile Not Found";
+                    return;
+                }
 
+                const data = snap.data();
+                const cleanName = data.name || "HBML Customer";
+
+                // 1. సెట్ ప్రొఫైల్ నేమ్ & అవతార్ అక్షరం
+                document.getElementById("txtName").innerText = cleanName;
+                document.getElementById("avatarCircle").innerText = cleanName.charAt(0).toUpperCase();
+
+                let displayUID = data.customerId || "HBML-" + id.substring(0, 5).toUpperCase();
+                document.getElementById("lblCustId").innerText = "UID: " + displayUID;
+
+                // 2. కోర్ ఇన్ఫర్మేషన్ ఇంజెక్షన్
+                document.getElementById("txtPhone").innerText = data.phone || "N/A";
+                document.getElementById("txtAddress").innerText = data.address || "Tanuku";
+
+                // 3. 🧮 వడ్డీ మరియు టెన్యూర్‌ని బట్టి టోటల్ లోన్ క్యాలిక్యులేషన్ లాజిక్
+                let emiValue = Number(data.emi || 0);
+                let tenure = Number(data.tenureMonths || data.months || 12);
+                let totalLoanWithInterest = emiValue * tenure;
+
+                if (totalLoanWithInterest <= 0) {
+                    totalLoanWithInterest = Number(data.loanPrincipal || data.loan || 0);
+                }
+
+                // 4. ఈఎంఐ హిస్టరీ సబ్కలెక్షన్ నుండి రియల్ టైమ్ పెయిడ్ అమౌంట్ లెక్కించడం
+                let totalPaidCalculated = 0;
+                const paymentSnap = await getDocs(collection(db, "customers", id, "payments"));
+                paymentSnap.forEach((pDoc) => {
+                    totalPaidCalculated += Number(pDoc.data().amount || 0);
+                });
+
+                // ఒకవేళ సబ్‌కలెక్షన్ లో ఏం లేకపోతే మెయిన్ రికార్డ్ లోని 'paid' ఫీల్డ్ తీసుకుంటుంది
+                let finalPaid = totalPaidCalculated > 0 ? totalPaidCalculated : Number(data.paid || 0);
+                let finalOutstanding = totalLoanWithInterest - finalPaid;
+                if(finalOutstanding < 0) finalOutstanding = 0;
+
+                // 5. స్క్రీన్ పై వాల్యూస్ డిస్‌ప్లే చేయడం
+                document.getElementById("txtLoan").innerText = "₹" + totalLoanWithInterest.toLocaleString('en-IN');
+                document.getElementById("txtEmi").innerText = "₹" + emiValue.toLocaleString('en-IN');
+                document.getElementById("txtPaid").innerText = "₹" + finalPaid.toLocaleString('en-IN');
+                document.getElementById("txtBalance").innerText = "₹" + Math.round(finalOutstanding).toLocaleString('en-IN');
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { streamDigitalProfileCard(customerId); });
+    </script>
+    
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .w-full { shadow: none !important; border: none !important; }
+        }
+    </style>
 </body>
 </html>
