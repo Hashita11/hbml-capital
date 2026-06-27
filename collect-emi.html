@@ -364,8 +364,9 @@
 
                 alert("Recovery Collection Logged and Customer Ledger Figures Updated!");
                 
-                // 3. Auto Redirect to Customer Profile Details screen directly
-                window.location.href = "customer-details.html?id=" + activeDocId;
+                // 3. 👑 ఆటోమేటిక్‌గా మన కొత్త డిజిటల్ రశీదు పేజీకి రీడైరెక్ట్ అయ్యేలా ఇక్కడ మార్చాను
+                localStorage.setItem("last_viewed_customer_id", activeDocId);
+                window.location.href = "emi-receipt.html?id=" + activeDocId;
 
             } catch (error) { 
                 alert("Database write error: " + error.message); 
