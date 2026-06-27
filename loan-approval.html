@@ -1,143 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Loan Approval</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:900px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.btn{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-color:white;
-font-weight:bold;
-}
-
-.approve{
-background:green;
-}
-
-.reject{
-background:red;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Loan Approval Panel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
 
-<body>
+    <div class="w-full max-w-4xl space-y-6">
+        
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition">
+                <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-1.5 rounded-full border border-purple-100 shadow-inner">
+                Admin Secure Area
+            </span>
+        </div>
 
-<div class="box">
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none';">
+            <h1 class="text-2xl font-black text-[#0b2964] tracking-tight uppercase">Loan Approval Portal</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Review & Authorize Pending Customer Credit Accounts</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <div class="bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 overflow-hidden">
+            <div class="p-4 bg-slate-50/60 border-b border-slate-100 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-500 tracking-wider"><i class="fa-solid fa-file-invoice-dollar text-[#0b2964] mr-1.5"></i> Pending Verification Queue</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse min-w-[600px]">
+                    <thead class="bg-slate-50/80 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="p-4">Customer Details</th>
+                            <th class="p-4">Requested Principal</th>
+                            <th class="p-4">Base EMI Target</th>
+                            <th class="p-4">Review Status</th>
+                            <th class="p-4 text-center">Authorization Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvalTableBody" class="divide-y divide-slate-50 font-medium text-slate-600">
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-slate-400 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> లోన్ అప్లికేషన్లను సేకరిస్తున్నాము...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<h1>Loan Approval Panel</h1>
+    </div>
 
-<table>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, doc, updateDoc, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<tr>
-<th>Customer</th>
-<th>Loan Amount</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<tr>
-<td>Ramesh</td>
-<td>₹50,000</td>
-<td id="status1">Pending</td>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<td>
+        async function fetchPendingApplications() {
+            const tbody = document.getElementById("approvalTableBody");
+            try {
+                // 'customers' లేదా 'loan_applications' కలెక్షన్ నుండి డేటాను లాగడం
+                const snap = await getDocs(collection(db, "customers"));
+                
+                let html = "";
+                let pendingCount = 0;
 
-<button class="btn approve"
-onclick="approveLoan('status1')">
-Approve
-</button>
+                snap.forEach((docRecord) => {
+                    const data = docRecord.data();
+                    const docId = docRecord.id;
 
-<button class="btn reject"
-onclick="rejectLoan('status1')">
-Reject
-</button>
+                    // కేవలం 'Pending' లేదా స్టేటస్ ఇంకా అప్రూవ్ అవ్వని కస్టమర్లను మాత్రమే చూపిస్తుంది
+                    if(data.status === "Pending" || !data.status) {
+                        pendingCount++;
+                        let principal = Number(data.loanPrincipal || data.loan || 0);
+                        let emiValue = Number(data.emi || 0);
+                        let cName = data.name || "Unnamed Applicant";
+                        let phone = data.phone || "No Phone";
 
-</td>
+                        html += `
+                            <tr id="row-${docId}" class="hover:bg-slate-50 transition border-b border-slate-100">
+                                <td class="p-4">
+                                    <div class="font-bold text-slate-800 uppercase">${cName}</div>
+                                    <div class="text-[10px] text-slate-400 font-mono font-bold">${phone}</div>
+                                </td>
+                                <td class="p-4 font-mono font-bold text-slate-900">₹${principal.toLocaleString('en-IN')}</td>
+                                <td class="p-4 font-mono font-bold text-purple-700">₹${emiValue.toLocaleString('en-IN')}</td>
+                                <td class="p-4">
+                                    <span class="bg-amber-50 text-amber-600 border border-amber-100 text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Pending Approval</span>
+                                </td>
+                                <td class="p-4 text-center space-x-2">
+                                    <button onclick="processLoanDecision('${docId}', 'Approved', '${cName}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95 shadow-sm">
+                                        <i class="fa-solid fa-check"></i> Approve
+                                    </button>
+                                    <button onclick="processLoanDecision('${docId}', 'Rejected', '${cName}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95 shadow-sm">
+                                        <i class="fa-solid fa-xmark"></i> Reject
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                });
 
-</tr>
+                if(pendingCount === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center font-bold text-slate-400"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> No pending loan approval entries in queue.</td></tr>`;
+                } else {
+                    tbody.innerHTML = html;
+                }
 
-</table>
+            } catch (e) {
+                console.error(e);
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center font-bold text-red-500">Error loading data from cloud node.</td></tr>`;
+            }
+        }
 
-</div>
+        /* 👑 క్లౌడ్ లో లోన్ డెసిషన్ రికార్డ్ చేసి స్టేటస్ మార్చే మాస్టర్ ఫంక్షన్ */
+        window.processLoanDecision = async function(docId, decision, customerName) {
+            if(!confirm(`Are you sure you want to mark ${customerName}'s loan as ${decision}?`)) return;
 
-<script>
+            try {
+                // 1. కస్టమర్ మెయిన్ డాక్యుమెంట్‌లో స్టేటస్ అప్‌డేట్ చేయడం
+                const docRef = doc(db, "customers", docId);
+                await updateDoc(docRef, {
+                    status: decision,
+                    approvedAt: new Date()
+                });
 
-window.approveLoan = async function(customer){
+                // 2. లోన్ అప్రూవల్స్ లాగ్ బోర్డులో ఒక హిస్టరీ ఎంట్రీ రాయడం
+                await addDoc(collection(db, "loan_approvals"), {
+                    customerId: docId,
+                    customerName: customerName,
+                    status: decision,
+                    date: new Date()
+                });
 
-await addDoc(collection(db,"loan_approvals"),{
+                alert(`Loan successfully ${decision}!`);
+                
+                // టేబుల్ లో నుండి ఆ రోడ్ ని క్లీన్ చేయడం
+                const row = document.getElementById(`row-${docId}`);
+                if(row) row.remove();
+                
+                // ఒకవేళ అన్నీ అయిపోతే మళ్లీ ఫ్రెష్ చెక్ చేయడం
+                fetchPendingApplications();
 
-customer:customer,
-status:"Approved",
-date:new Date()
+            } catch (error) {
+                alert("Cloud write error: " + error.message);
+            }
+        }
 
-});
-
-alert("Loan Approved");
-
-}
-
-function rejectLoan(id){
-
-document.getElementById(id)
-.innerHTML="Rejected";
-
-}
-
-</script>
-
+        window.addEventListener('DOMContentLoaded', fetchPendingApplications);
+    </script>
 </body>
 </html>
