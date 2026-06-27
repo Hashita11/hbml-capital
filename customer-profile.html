@@ -81,10 +81,13 @@
         </div>
 
         <!-- FOOTER BUTTON BAR -->
-        <div class="pt-4 flex gap-2 no-print">
-            <button onclick="window.location.href='view-customers.html'" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs py-3 px-4 rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
-                <i class="fa-solid fa-arrow-left"></i> Back
-            </button>
+        <li>
+    <button onclick="triggerEmployeeDashboardLock()" class="w-full flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 hover:text-white rounded-xl transition cursor-pointer text-left font-bold uppercase">
+        <i class="fa-solid fa-house text-sm w-5"></i> Dashboard (హోమ్)
+    </button>
+</li>
+
+            
             <button onclick="window.print()" class="w-1/2 bg-[#0b2964] hover:bg-[#123985] text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-md cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
                 <i class="fa-solid fa-print"></i> Print Profile
             </button>
@@ -190,6 +193,32 @@
         }
 
         streamDigitalProfileCard();
+/* 👑 🛡️ ఎంప్లాయ్ అడ్మిన్ పేజీకి వెళ్లకుండా ప్రతి కనెక్టింగ్ పేజీలోనూ ఆపే మాస్టర్ లాక్ */
+window.triggerEmployeeDashboardLock = function() {
+    // ఒకవేళ పేజీలో అలర్ట్ బాక్స్ లేకపోతే డైనమిక్‌గా క్రియేట్ చేస్తుంది
+    let toast = document.getElementById("accessToast");
+    if(!toast) {
+        toast = document.createElement("div");
+        toast.id = "accessToast";
+        toast.className = "fixed top-5 left-1/2 -translate-x-1/2 bg-amber-600 text-white font-bold text-xs px-6 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2";
+        toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i> <span>Access Restricted! You are under Employee Desk. Please use back/menu buttons.</span>`;
+        document.body.appendChild(toast);
+    }
+
+    // పాప్-అప్ ని స్క్రీన్ పైకి తీసుకురావడం
+    setTimeout(() => {
+        toast.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+        toast.classList.add("opacity-100", "translate-y-0");
+    }, 50);
+
+    // 3 సెకన్ల తర్వాత క్లోజ్ చేయడం
+    setTimeout(() => {
+        toast.classList.remove("opacity-100", "translate-y-0");
+        toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+    }, 3000);
+}
+
+        
     </script>
 </body>
 </html>
