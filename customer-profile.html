@@ -3,168 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Customer Search</title>
+    <title>HBML Capital - Customer Digital Profile Card</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f4f8;
-            padding: 20px;
-            margin: 0;
-        }
-
-        .box {
-            max-width: 700px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            margin-top: 40px;
-        }
-
-        .logo {
-            width: 100px;
-            display: block;
-            margin: auto;
-            margin-bottom: 15px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #0d2b6b;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-size: 24px;
-            letter-spacing: 0.5px;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #0d2b6b;
-        }
-
-        /* 👑 లైవ్ రిజల్ట్ కంటైనర్ & క్లికబుల్ కార్డ్ స్టైలింగ్ */
-        .result-card {
-            background: #f7f9fc;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #eef2f6;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-between: space-between;
-            align-items: center;
-        }
-
-        .result-card:hover {
-            background: #eef2f6;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border-color: #0d2b6b;
-        }
-
-        .info-block h3 {
-            margin: 0 0 8px 0;
-            color: #0d2b6b;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-
-        .info-block p {
-            margin: 4px 0;
-            font-size: 13px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        .uid-tag {
-            color: #0284c7;
-            font-family: monospace;
-            font-size: 11px;
-            background: #e0f2fe;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 6px;
-        }
-
-        .action-arrow {
-            color: #0d2b6b;
-            font-size: 14px;
-            padding-left: 10px;
-        }
-
-        .status-badge {
-            color: #10b981;
-            background: #ecfdf5;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 11px;
-            display: inline-block;
-        }
-
-        .loading-text, .empty-text {
-            text-align: center;
-            color: #888;
-            font-weight: bold;
-            font-size: 13px;
-            padding: 20px;
-        }
-        
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 15px;
-            text-decoration: none;
-            color: #666;
-            font-size: 12px;
-            font-weight: bold;
-            background: white;
-            padding: 8px 14px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-center items-center p-4">
 
-    <div style="max-w-700px; margin: auto; margin-top: 20px;">
-        <a href="admin.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
-    </div>
-
-    <div class="box">
-        <img src="logo.png" class="logo" onerror="this.style.display='none';">
-        <h1>Customer Search</h1>
+    <!-- MAIN CARD BOX -->
+    <div id="mainProfileCard" class="w-full max-w-md bg-white rounded-3xl p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 text-center space-y-6 relative">
         
-        <input type="text" id="searchInput" onkeyup="searchCustomerLive()" placeholder="Search Customer Name or Phone Number...">
-
-        <div id="searchResultsContainer">
-            <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ఫైర్‌బేస్ డేటా సిద్ధమౌతోంది...</div>
+        <!-- TOP BRANDING LOGO -->
+        <div class="space-y-1">
+            <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
+            <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
+            <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Trusted Financial Solutions</p>
         </div>
+
+        <!-- TITLE Separator -->
+        <div class="pt-2">
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Customer Profile</h1>
+        </div>
+
+        <!-- DYNAMIC AVATAR CIRCLE -->
+        <div class="flex justify-center">
+            <div id="avatarCircle" class="h-28 w-28 bg-[#0b2964] text-white rounded-full flex items-center justify-center text-4xl font-bold shadow-lg uppercase">
+                -
+            </div>
+        </div>
+
+        <!-- CUSTOMER NAME TITLE -->
+        <div class="space-y-1">
+            <h2 id="txtName" class="text-2xl font-black text-slate-900 uppercase tracking-tight">Loading Profile...</h2>
+            <span class="inline-block bg-slate-100 text-slate-500 font-mono font-bold text-[10px] tracking-wider px-2.5 py-1 rounded-full uppercase" id="lblCustId">
+                UID: Syncing...
+            </span>
+        </div>
+
+        <!-- DETAILED FINANCIAL METRICS LIST -->
+        <div class="text-left divide-y divide-slate-100 text-sm font-medium pt-2">
+            
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-phone text-slate-400 mr-2 w-4"></i>Phone</span>
+                <span id="txtPhone" class="text-slate-900 font-bold font-mono">---</span>
+            </div>
+
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-location-dot text-slate-400 mr-2 w-4"></i>Address</span>
+                <span id="txtAddress" class="text-slate-900 font-bold">---</span>
+            </div>
+
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-wallet text-slate-400 mr-2 w-4"></i>Loan Amount</span>
+                <span id="txtLoan" class="text-slate-900 font-black font-mono">₹0</span>
+            </div>
+
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-calendar-check text-slate-400 mr-2 w-4"></i>Monthly EMI</span>
+                <span id="txtEmi" class="text-slate-900 font-black font-mono">₹0</span>
+            </div>
+
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-money-bill-1-wave text-slate-400 mr-2 w-4"></i>Paid Amount</span>
+                <span id="txtPaid" class="text-emerald-600 font-black font-mono">₹0</span>
+            </div>
+            
+            <div class="py-3.5 flex justify-between items-center">
+                <span class="text-slate-500 font-bold"><i class="fa-solid fa-scale-unbalanced text-slate-400 mr-2 w-4"></i>Outstanding</span>
+                <span id="txtBalance" class="text-amber-600 font-black font-mono">₹0</span>
+            </div>
+
+        </div>
+
+        <!-- FOOTER BUTTON BAR -->
+        <div class="pt-4 flex gap-2 no-print">
+            <button onclick="window.location.href='view-customers.html'" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs py-3 px-4 rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <button onclick="window.print()" class="w-1/2 bg-[#0b2964] hover:bg-[#123985] text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-md cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
+                <i class="fa-solid fa-print"></i> Print Profile
+            </button>
+        </div>
+
     </div>
 
+    <!-- FIREBASE ARCHITECTURE LOGIC ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -178,79 +109,87 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let localCustomersBackup = []; // క్యాషే లోడ్ సమస్య రాకుండా మాస్టర్ మెమరీ హోల్డర్
-
-        // పేజీ ఓపెన్ అవ్వగానే డేటాబేస్ లోని అందరినీ ముందే లోడ్ చేసి పెట్టుకుంటుంది
-        async function preFetchCustomers() {
+        async function streamDigitalProfileCard() {
             try {
-                const snap = await getDocs(collection(db, "customers"));
-                localCustomersBackup = [];
-                
-                snap.forEach((docRecord) => {
-                    const data = docRecord.data();
-                    localCustomersBackup.push({
-                        id: docRecord.id,
-                        name: data.name || "Unknown",
-                        phone: data.phone || "",
-                        loanPrincipal: Number(data.loanPrincipal || 0),
-                        emi: Number(data.emi || 0),
-                        customerId: data.customerId || "HBML-" + docRecord.id.substring(0, 5).toUpperCase()
-                    });
-                });
+                const params = new URLSearchParams(window.location.search);
+                let customerId = params.get("id");
 
-                // ప్రారంభంలో ఖాళీ మెసేజ్ చూపిస్తుంది (యూజర్ టైప్ చేయడం ప్రారంభించాక రిజల్ట్స్ వస్తాయి)
-                document.getElementById("searchResultsContainer").innerHTML = `<div class="empty-text">Type a name to search borrower profile...</div>`;
-            } catch (e) {
-                console.error(e);
-                document.getElementById("searchResultsContainer").innerHTML = `<div class="empty-text" style="color:red;">Firebase connection error.</div>`;
-            }
-        }
+                // 👑 🛠️ మాస్టర్ బ్యాకప్ లాజిక్: ఒకవేళ URL లో ఐడీ మిస్ అయినా లోకల్ మెమరీ నుండి లాగుతుంది
+                if (!customerId) {
+                    customerId = localStorage.getItem("last_viewed_customer_id");
+                } else {
+                    localStorage.setItem("last_viewed_customer_id", customerId);
+                }
 
-        /* 👑 🔍 టైప్ చేస్తున్నప్పుడు ఇన్స్టంట్‌గా ఫిల్టర్ చేసి ప్రొఫైల్ కార్డుకు కనెక్ట్ చేసే లైవ్ సర్చ్ ఫంక్షన్ */
-        window.searchCustomerLive = function() {
-            let query = document.getElementById("searchInput").value.toLowerCase().trim();
-            let container = document.getElementById("searchResultsContainer");
-
-            if (query === "") {
-                container.innerHTML = `<div class="empty-text">Type a name to search borrower profile...</div>`;
-                return;
-            }
-
-            let html = "";
-            let matchCount = 0;
-
-            localCustomersBackup.forEach((cust) => {
-                if (cust.name.toLowerCase().includes(query) || cust.phone.includes(query)) {
-                    matchCount++;
-                    
-                    // కార్డుపై క్లిక్ చేయగానే లోకల్ మెమరీ లాక్ అయ్యి నేరుగా 'customer-profile.html' కి వెళ్తుంది
-                    html += `
-                        <div class="result-card" onclick="localStorage.setItem('last_viewed_customer_id', '${cust.id}'); window.location.href='customer-profile.html?id=${cust.id}'">
-                            <div class="flex-container">
-                                <div class="info-block">
-                                    <span class="uid-tag">${cust.customerId}</span>
-                                    <h3>${cust.name}</h3>
-                                    <p>Loan: ₹${cust.loanPrincipal.toLocaleString('en-IN')}</p>
-                                    <p>EMI: ₹${cust.emi.toLocaleString('en-IN')}</p>
-                                </div>
-                                <div style="text-align: right;">
-                                    <span class="status-badge">Active</span>
-                                    <div class="action-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-                                </div>
-                            </div>
+                if(!customerId){
+                    document.getElementById("mainProfileCard").innerHTML = `
+                        <div class="p-4 text-center space-y-4">
+                            <div class="h-12 w-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-circle-exclamation"></i></div>
+                            <h2 class="text-lg font-black text-slate-900">No Customer ID Found</h2>
+                            <p class="text-xs text-slate-500 font-medium">దయచేసి Borrowers Directory నుండి ప్రొఫైల్ ఓపెన్ చేయండి.</p>
+                            <a href="view-customers.html" class="inline-block bg-slate-900 text-white font-bold text-xs py-3 px-6 rounded-xl mt-2">Go to Directory</a>
                         </div>
                     `;
+                    return;
                 }
-            });
 
-            if (matchCount === 0) {
-                container.innerHTML = `<div class="empty-text">No matching customers found.</div>`;
-            } else {
-                container.innerHTML = html;
+                const docRef = doc(db, "customers", customerId);
+                const snap = await getDoc(docRef);
+
+                if(!snap.exists()) {
+                    document.getElementById("txtName").innerText = "Profile Not Found";
+                    return;
+                }
+
+                const data = snap.data();
+                const cleanName = data.name || "HBML Customer";
+
+                document.getElementById("txtName").innerText = cleanName;
+                document.getElementById("avatarCircle").innerText = cleanName.charAt(0).toUpperCase();
+
+                let displayUID = data.customerId || "HBML-" + customerId.substring(0, 5).toUpperCase();
+                document.getElementById("lblCustId").innerText = "UID: " + displayUID;
+
+                document.getElementById("txtPhone").innerText = data.phone || "N/A";
+                document.getElementById("txtAddress").innerText = data.address || "Tanuku";
+
+                let emiValue = Number(data.emi || 0);
+                let tenure = 12; 
+                if (data.tenureMonths !== undefined && Number(data.tenureMonths) > 0) {
+                    tenure = Number(data.tenureMonths);
+                } else if (data.months !== undefined && Number(data.months) > 0) {
+                    tenure = Number(data.months);
+                }
+
+                let totalLoanWithInterest = emiValue * tenure;
+                if (totalLoanWithInterest <= 0) {
+                    totalLoanWithInterest = Number(data.loanPrincipal || data.loan || 0);
+                }
+
+                let totalPaidCalculated = 0;
+                try {
+                    const paymentSnap = await getDocs(collection(db, "customers", customerId, "payments"));
+                    paymentSnap.forEach((pDoc) => {
+                        totalPaidCalculated += Number(pDoc.data().amount || 0);
+                    });
+                } catch(e) { console.log("Payments subcollection empty"); }
+
+                let finalPaid = totalPaidCalculated > 0 ? totalPaidCalculated : Number(data.paid || 0);
+                let finalOutstanding = totalLoanWithInterest - finalPaid;
+                if(finalOutstanding < 0) finalOutstanding = 0;
+
+                document.getElementById("txtLoan").innerText = "₹" + totalLoanWithInterest.toLocaleString('en-IN');
+                document.getElementById("txtEmi").innerText = "₹" + emiValue.toLocaleString('en-IN');
+                document.getElementById("txtPaid").innerText = "₹" + finalPaid.toLocaleString('en-IN');
+                document.getElementById("txtBalance").innerText = "₹" + Math.round(finalOutstanding).toLocaleString('en-IN');
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById("txtName").innerText = "Sync Error";
             }
         }
 
-        window.addEventListener('DOMContentLoaded', preFetchCustomers);
+        streamDigitalProfileCard();
     </script>
 </body>
 </html>
