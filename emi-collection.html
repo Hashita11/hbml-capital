@@ -1,280 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>HBML EMI Collection</title>
-
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-max-width:650px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,.15);
-}
-
-.logo{
-width:90px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:25px;
-}
-
-.card{
-background:#f7f9fc;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-}
-
-.label{
-color:#666;
-font-size:14px;
-}
-
-.value{
-font-size:22px;
-font-weight:bold;
-color:#0d2b6b;
-margin-top:5px;
-}
-
-input,select{
-width:100%;
-padding:12px;
-margin-top:8px;
-margin-bottom:18px;
-border:1px solid #ccc;
-border-radius:8px;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:14px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:18px;
-cursor:pointer;
-}
-
-button:hover{
-background:#163c91;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Collect EMI Gateway</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
-<body>
-
-<div class="box">
-
-<img src="logo.png" class="logo">
-
-<h1>EMI Collection</h1>
-
-<div class="card">
-<div class="label">Customer Name</div>
-<div class="value" id="customerName">Loading...</div>
-</div>
-
-<div class="card">
-<div class="label">Monthly EMI</div>
-<div class="value" id="customerEMI">₹0</div>
-</div>
-
-<div class="card">
-<div class="label">Outstanding Balance</div>
-<div class="value" id="customerBalance">₹0</div>
-</div>
-
-<label>Amount</label>
-
-<input
-type="number"
-id="amount">
-
-<label>Payment Mode</label>
-
-<select id="mode">
-
-<option>Cash</option>
-<option>PhonePe</option>
-<option>Google Pay</option>
-<option>Bank Transfer</option>
-
-</select>
-  <button id="collectBtn">
-Collect EMI
-</button>
-
-</div>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getFirestore,
-doc,
-getDoc,
-updateDoc,
-addDoc,
-collection
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig={
-
-apiKey:"AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-
-authDomain:"hbml-capital.firebaseapp.com",
-
-projectId:"hbml-capital",
-
-storageBucket:"hbml-capital.firebasestorage.app",
-
-messagingSenderId:"893969951538",
-
-appId:"1:893969951538:web:ba028463a6adcfb417c52b"
-
-};
-
-const app=initializeApp(firebaseConfig);
-
-const db=getFirestore(app);
-
-const params=new URLSearchParams(window.location.search);
-
-const customerId=params.get("id");
-
-if(!customerId){
-
-alert("Customer ID Missing");
-
-window.location="view-customers.html";
-
-}
-
-const customerRef=doc(db,"customers",customerId);
-
-const snap=await getDoc(customerRef);
-
-if(!snap.exists()){
-
-alert("Customer Not Found");
-
-window.location="view-customers.html";
-
-}
-
-const customer=snap.data();
-
-document.getElementById("customerName").innerHTML=customer.name;
-
-document.getElementById("customerEMI").innerHTML=
-"₹"+Number(customer.emi).toLocaleString();
-
-document.getElementById("customerBalance").innerHTML=
-"₹"+Number(customer.balance||customer.loan).toLocaleString();
-
-document.getElementById("amount").value=
-customer.emi;
-  
-document.getElementById("collectBtn").onclick = async function(){
-
-try{
-
-const amount =
-Number(document.getElementById("amount").value);
-
-const mode =
-document.getElementById("mode").value;
-
-if(amount<=0){
-
-alert("Enter valid amount");
-
-return;
-
-}
-
-const paid =
-Number(customer.paid || 0) + amount;
-
-const balance =
-Number(customer.loan) - paid;
-
-/* SAVE PAYMENT */
-
-await addDoc(
-
-collection(db,"customers",customerId,"payments"),
-
-{
-
-amount:amount,
-
-mode:mode,
-
-date:new Date().toLocaleDateString("en-IN"),
-
-created:new Date()
-
-}
-
-);
-
-/* UPDATE CUSTOMER */
-
-await updateDoc(customerRef,{
-
-paid:paid,
-
-balance:balance
-
-});
-
-alert("EMI Collected Successfully");
-
-window.location.href =
-"customer-details.html?id="+customerId;
-
-}
-catch(error){
-
-alert(error.message);
-
-}
-
-};
-  </script>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
+
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
+        
+        <!-- TOP CONTROL NAVIGATION -->
+        <div class="flex justify-between items-center gap-4">
+            <a href="admin.html" class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-950/60 border border-slate-800 px-3 py-2 rounded-xl transition font-bold uppercase">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
+                Secure Collection Node
+            </span>
+        </div>
+
+        <!-- BRANDING HEADER -->
+        <div class="text-center space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-12 w-12 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 mx-auto hidden">H</div>
+            <h1 class="text-lg font-black tracking-tight uppercase text-white">EMI Collection</h1>
+        </div>
+
+        <!-- 📊 CUSTOMER METRICS CARD STREAM -->
+        <div class="grid grid-cols-1 gap-3 text-left">
+            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Customer Name</span>
+                <h2 id="customerName" class="text-sm font-black text-white uppercase mt-0.5">Loading...</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Monthly EMI</span>
+                    <h2 id="customerEMI" class="text-sm font-black text-sky-400 font-mono mt-0.5">₹0</h2>
+                </div>
+                <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/60">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Outstanding Balance</span>
+                    <h2 id="customerBalance" class="text-sm font-black text-rose-500 font-mono mt-0.5">₹0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSACTION INPUT FORM -->
+        <div class="space-y-4 text-left text-xs font-medium">
+            <div class="space-y-1.5">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Collection Amount (వసూలైన మొత్తం)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3 text-slate-500 font-bold text-sm">₹</span>
+                    <input type="number" id="amount" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-4 py-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Payment Mode (పేమెంట్ విధానం)</label>
+                <select id="mode" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
+                    <option value="Cash">Cash</option>
+                    <option value="PhonePe">PhonePe</option>
+                    <option value="Google Pay">Google Pay</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- MASTER DISPATCH TRIGGER WITH ANTI-DOUBLE CLICK CLICK -->
+        <button id="collectBtn" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 px-4 rounded-xl transition shadow-md tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-cloud-arrow-up" id="submitIcon"></i> Collect EMI
+        </button>
+
+    </div>
+
+    <!-- FIREBASE PLATFORM PLATFORMS AND LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const params = new URLSearchParams(window.location.search);
+        const customerId = params.get("id");
+
+        if(!customerId) {
+            alert("Customer ID Missing");
+            window.location = "view-customers.html";
+        }
+
+        // 👑 డబుల్ సబ్‌మిషన్లను ఫ్రీజ్ చేసే మాస్టర్ గేట్ కంట్రోలర్
+        let isSubmittingGate = false;
+
+        const customerRef = doc(db, "customers", customerId);
+        const snap = await getDoc(customerRef);
+
+        if(!snap.exists()) {
+            alert("Customer Not Found");
+            window.location = "view-customers.html";
+        }
+
+        const customer = snap.data();
+
+        document.getElementById("customerName").innerHTML = customer.name || "N/A";
+        document.getElementById("customerEMI").innerHTML = "₹" + Number(customer.emi || 0).toLocaleString('en-IN');
+        
+        let loanAmountWeight = Number(customer.loanPrincipal || customer.loan || 0);
+        let currentBalanceWeight = Number(customer.balance !== undefined ? customer.balance : loanAmountWeight);
+        document.getElementById("customerBalance").innerHTML = "₹" + currentBalanceWeight.toLocaleString('en-IN');
+
+        document.getElementById("amount").value = customer.emi || 0;
+        
+        /* 💾 CLOUD DISPATCH CONTEXT ENGINE */
+        document.getElementById("collectBtn").onclick = async function() {
+            // 👑 🛡️ ఎంట్రీ ఆల్రెడీ ప్రాసెస్ అవుతుంటే మళ్లీ క్లిక్ అవ్వకుండా ఇక్కడే ఆపేస్తుంది!
+            if (isSubmittingGate) return;
+
+            try {
+                const amount = Number(document.getElementById("amount").value);
+                const mode = document.getElementById("mode").value;
+
+                if (amount <= 0 || isNaN(amount)) {
+                    alert("Enter valid amount");
+                    return;
+                }
+
+                const btn = document.getElementById("collectBtn");
+                const icon = document.getElementById("submitIcon");
+                
+                // 👑 గేట్ లాక్ చేసి బటన్‌ను ఇన్స్టంట్‌గా డిసేబుల్ చేయడం
+                isSubmittingGate = true;
+                btn.disabled = true;
+                btn.classList.add("opacity-50", "cursor-not-allowed");
+                icon.className = "fa-solid fa-spinner animate-spin";
+
+                let historicPaid = Number(customer.paid || 0);
+                const paid = historicPaid + amount;
+                
+                let balance = loanAmountWeight - paid;
+                if(balance < 0) balance = 0;
+
+                // 1. SAVE TO CUSTOMER PAYMENTS LOG SUB-COLLECTION
+                await addDoc(collection(db, "customers", customerId, "payments"), {
+                    amount: amount,
+                    mode: mode,
+                    date: new Date().toLocaleDateString("en-IN"),
+                    created: new Date(),
+                    timestamp: new Date().getTime()
+                });
+
+                // 2. BACKUP INTO GLOBAL COLLECTION (డే-బుక్ మరియు పేమెంట్ హిస్టరీ కోసం)
+                await addDoc(collection(db, "emi_collections"), {
+                    customerId: customerId,
+                    customerName: customer.name || "N/A",
+                    emiAmountPaid: amount,
+                    penaltyAmountPaid: 0, // బేస్ గేట్‌వే కాబట్టి 0
+                    mode: mode,
+                    date: new Date()
+                });
+
+                // 3. UPDATE MASTER LEDGER FIGURES
+                await updateDoc(customerRef, {
+                    paid: paid,
+                    balance: balance
+                });
+
+                alert("EMI Collected Successfully");
+                
+                // 👑 రశీదు పేజీకి నేరుగా కస్టమర్ ఐడీని రూట్ చేయడం
+                localStorage.setItem("last_viewed_customer_id", customerId);
+                window.location.href = "emi-receipt.html?id=" + customerId;
+
+            } catch (error) {
+                alert(error.message);
+                // ఎర్రర్ వస్తేనే ఏజెంట్ మళ్లీ నొక్కడానికి గేట్ ఓపెన్ అవుతుంది
+                isSubmittingGate = false;
+                const btn = document.getElementById("collectBtn");
+                const icon = document.getElementById("submitIcon");
+                btn.disabled = false;
+                btn.classList.remove("opacity-50", "cursor-not-allowed");
+                icon.className = "fa-solid fa-cloud-arrow-up";
+            }
+        };
+    </script>
 
 </body>
 </html>
