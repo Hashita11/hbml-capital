@@ -98,7 +98,7 @@
                     </thead>
                     <tbody id="paymentTable" class="divide-y divide-slate-800/60 font-medium text-slate-300">
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> ట్రాన్సాక్షన్స్ చెక్ చేస్తున్నాము...</td>
+                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i>  ట్రాన్సాక్షన్స్ చెక్ చేస్తున్నాము...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,24 +162,30 @@
                 document.getElementById("phone").innerText = data.phone || "N/A";
                 document.getElementById("address").innerText = data.address || "N/A";
                 
-                /* 👑 🧮 AUTOMATED INTEREST ADDITION ENGINE (వడ్డీ క్యాలిక్యులేషన్ లాజిక్) */
+                /* 👑 🧮 DYNAMIC INTEL ENGINE FOR ANY TENURE (మారే టెన్యూర్‌ను లెక్కించే స్మార్ట్ ఇంజిన్) */
                 let principal = Number(data.loanPrincipal || data.loan || 0);
                 let emiValue = Number(data.emi || 0);
-                let tenure = Number(data.tenureMonths || data.months || 10); // డీఫాల్ట్ గా 10 నెలలు తీసుకుంటుంది
                 
-                // ఒకవేళ డేటాబేస్ లో ముందే పూర్తి లోన్ అమౌంట్ (వడ్డీతో కలిపి) ఉంటే అది, లేదంటే EMI * Months లెక్క కడుతుంది
-                let totalLoanWithInterest = principal;
-                if (emiValue > 0 && tenure > 0 && principal === (emiValue * tenure)) {
+                // డేటాబేస్ లో 'tenureMonths' లేదా 'months' ఏదున్నా తీసుకుంటుంది, ఏదీ లేకపోతే డీఫాల్ట్‌గా 12 నెలలు అనుకుంటుంది
+                let tenure = 12; 
+                if (data.tenureMonths !== undefined && Number(data.tenureMonths) > 0) {
+                    tenure = Number(data.tenureMonths);
+                } else if (data.months !== undefined && Number(data.months) > 0) {
+                    tenure = Number(data.months);
+                }
+                
+                // EMI మరియు నెలలు గుణించి అసలైన టోటల్ లోన్ అమౌంట్ ని తీస్తుంది
+                let totalLoanWithInterest = emiValue * tenure;
+
+                // ఒకవేళ EMI లేదా Tenure రికార్డ్ అవ్వకపోతే డీఫాల్ట్‌గా అసలు అమౌంట్ చూపిస్తుంది
+                if (totalLoanWithInterest <= 0) {
                     totalLoanWithInterest = principal;
-                } else if (emiValue > 0 && tenure > 0) {
-                    // EMI మరియు నెలలు గుణించి అసలైన టోటల్ లోన్ అమౌంట్ ని తీస్తుంది
-                    totalLoanWithInterest = emiValue * tenure;
                 }
 
                 document.getElementById("loanBox").innerText = "₹" + totalLoanWithInterest.toLocaleString('en-IN');
                 document.getElementById("emiBox").innerText = "₹" + emiValue.toLocaleString('en-IN');
 
-                /* Repayment subcollection calculation */
+                /* Repayment subcollection check */
                 const tbody = document.getElementById("paymentTable");
                 tbody.innerHTML = "";
                 let totalPaidCalculated = 0;
@@ -216,12 +222,11 @@
 
                 document.getElementById("paidBox").innerText = "₹" + totalPaidCalculated.toLocaleString('en-IN');
                 
-                // 👑 ఔట్‌స్టాండింగ్ బ్యాలెన్స్ కూడా వడ్డీతో కూడిన లోన్ అమౌంట్ నుండి మైనస్ అవుతుంది
+                // ఔట్‌స్టాండింగ్ బ్యాలెన్స్ కూడా డైనమిక్ లోన్ అమౌంట్ నుండి మైనస్ అవుతుంది
                 let currentOutstanding = totalLoanWithInterest - totalPaidCalculated;
                 if(currentOutstanding < 0) currentOutstanding = 0;
                 document.getElementById("balanceBox").innerText = "₹" + Math.round(currentOutstanding).toLocaleString('en-IN');
 
-                // background real-time analytics synchronization
                 if(data.paid !== totalPaidCalculated) {
                     await updateDoc(customerRef, {
                         paid: totalPaidCalculated,
