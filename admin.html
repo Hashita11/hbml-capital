@@ -116,7 +116,8 @@
                     <button onclick="location.href='analytics.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
                         <i class="fa-solid fa-chart-line text-teal-400 text-xl"></i> Analytics Panel
                     </button>
-                    <button onclick="location.href='dsashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
+                    <!-- 👑 🔗 ఇక్కడ మీ గిట్‌హబ్ ఫైల్ పేరు స్పెల్లింగ్ పక్కాగా సరిచేసి లింక్ చేశాను -->
+                    <button onclick="location.href='dashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
                         <i class="fa-solid fa-chart-bar text-teal-400 text-xl"></i> Metric Charts
                     </button>
                     <button onclick="location.href='branch-management.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
@@ -164,7 +165,7 @@
             <!-- CATEGORY 6: ENGINE INTEGRITY, SECURITY & SYSTEM REVEALS -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved"></i> Security, Automation & Logs (భద్రత & ఆటోమేషన్)
+                    <i class="fa-solid fa-shield-halved"></i> Security, Automation & Logs (భారత & ఆటోమేషన్)
                 </h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <button onclick="location.href='audit-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-emerald-500 cursor-pointer">
@@ -255,6 +256,15 @@
                         ? `<span class="bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-sky-200/50 dark:border-sky-900/50">Admin Log</span>`
                         : `<span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">${data.role}</span>`;
 
+                    // 👑 🛠️ టైమ్‌స్టాంప్ క్రాష్ అవ్వకుండా ఆటో-డిటెక్షన్ లాజిక్ యాడ్ చేశాను
+                    let displayTime = 'N/A';
+                    if (data.loginTime) {
+                        let parsedDate = data.loginTime.seconds ? new Date(data.loginTime.seconds * 1000) : new Date(data.loginTime);
+                        if (!isNaN(parsedDate.getTime())) {
+                            displayTime = parsedDate.toLocaleTimeString();
+                        }
+                    }
+
                     tableHTML += `
                         <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/30 transition">
                             <td class="p-4 text-slate-900 dark:text-white font-bold text-left">
@@ -263,7 +273,7 @@
                             </td>
                             <td class="p-4 font-mono text-xs text-slate-500">firebase-config.js</td>
                             <td class="p-4">${statusBadge}</td>
-                            <td class="p-4 text-right text-xs text-slate-500 font-mono">${data.loginTime ? new Date(data.loginTime.seconds * 1000).toLocaleTimeString() : 'N/A'}</td>
+                            <td class="p-4 text-right text-xs text-slate-500 font-mono">${displayTime}</td>
                         </tr>
                     `;
                 });
