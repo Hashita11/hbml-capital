@@ -48,7 +48,7 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="bg-sky-950/20 border border-sky-900/30 p-4 rounded-2xl text-center shadow-inner">
-                    <span class="text-[10px] font-bold text-sky-400/80 uppercase tracking-wider block">Total Loan</span>
+                    <span class="text-[10px] font-bold text-sky-400/80 uppercase tracking-wider block">Total Loan (+ Interest)</span>
                     <h2 id="loanBox" class="text-base md:text-xl font-black font-mono text-sky-400 mt-1">₹0</h2>
                 </div>
                 <div class="bg-emerald-950/20 border border-emerald-900/30 p-4 rounded-2xl text-center shadow-inner">
@@ -98,7 +98,7 @@
                     </thead>
                     <tbody id="paymentTable" class="divide-y divide-slate-800/60 font-medium text-slate-300">
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i>  ట్రాన్సాక్షన్స్ చెక్ చేస్తున్నాము...</td>
+                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5"></i> ట్రాన్సాక్షన్స్ చెక్ చేస్తున్నాము...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,16 +162,27 @@
                 document.getElementById("phone").innerText = data.phone || "N/A";
                 document.getElementById("address").innerText = data.address || "N/A";
                 
-                let loanPrincipal = Number(data.loanPrincipal || data.loan || 0);
+                /* 👑 🧮 AUTOMATED INTEREST ADDITION ENGINE (వడ్డీ క్యాలిక్యులేషన్ లాజిక్) */
+                let principal = Number(data.loanPrincipal || data.loan || 0);
                 let emiValue = Number(data.emi || 0);
+                let tenure = Number(data.tenureMonths || data.months || 10); // డీఫాల్ట్ గా 10 నెలలు తీసుకుంటుంది
+                
+                // ఒకవేళ డేటాబేస్ లో ముందే పూర్తి లోన్ అమౌంట్ (వడ్డీతో కలిపి) ఉంటే అది, లేదంటే EMI * Months లెక్క కడుతుంది
+                let totalLoanWithInterest = principal;
+                if (emiValue > 0 && tenure > 0 && principal === (emiValue * tenure)) {
+                    totalLoanWithInterest = principal;
+                } else if (emiValue > 0 && tenure > 0) {
+                    // EMI మరియు నెలలు గుణించి అసలైన టోటల్ లోన్ అమౌంట్ ని తీస్తుంది
+                    totalLoanWithInterest = emiValue * tenure;
+                }
 
-                document.getElementById("loanBox").innerText = "₹" + loanPrincipal.toLocaleString('en-IN');
+                document.getElementById("loanBox").innerText = "₹" + totalLoanWithInterest.toLocaleString('en-IN');
                 document.getElementById("emiBox").innerText = "₹" + emiValue.toLocaleString('en-IN');
 
-                /* Repayment subcollection check */
+                /* Repayment subcollection calculation */
                 const tbody = document.getElementById("paymentTable");
                 tbody.innerHTML = "";
-                let totalPaidCalculated = 0; // 👑 లైవ్ క్యాలిక్యులేషన్ సమ్ వేరియబుల్
+                let totalPaidCalculated = 0;
                 let processedIds = new Set();
 
                 const paymentSnap = await getDocs(collection(db, "customers", id, "payments"));
@@ -183,7 +194,7 @@
 
                     const p = paymentDoc.data();
                     let amt = Number(p.amount || 0);
-                    totalPaidCalculated += amt; // టేబుల్‌లో ఉన్న రికార్డులను ఇక్కడే ప్లస్ చేస్తుంది
+                    totalPaidCalculated += amt;
 
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/40" id="row-${docId}">
@@ -203,14 +214,14 @@
                     tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-600 font-bold">No payment transaction blocks recorded yet.</td></tr>`;
                 }
 
-                // 👑 👑 మాస్టర్ సొల్యూషన్: డేటాబేస్ పాత ఫీల్డ్‌తో సంబంధం లేకుండా లైవ్ టేబుల్ సమ్‌ని ఇక్కడ ఇంజెక్ట్ చేస్తుంది!
                 document.getElementById("paidBox").innerText = "₹" + totalPaidCalculated.toLocaleString('en-IN');
                 
-                let currentOutstanding = loanPrincipal - totalPaidCalculated;
+                // 👑 ఔట్‌స్టాండింగ్ బ్యాలెన్స్ కూడా వడ్డీతో కూడిన లోన్ అమౌంట్ నుండి మైనస్ అవుతుంది
+                let currentOutstanding = totalLoanWithInterest - totalPaidCalculated;
                 if(currentOutstanding < 0) currentOutstanding = 0;
                 document.getElementById("balanceBox").innerText = "₹" + Math.round(currentOutstanding).toLocaleString('en-IN');
 
-                // బ్యాక్‌గ్రౌండ్ క్లౌడ్ సింక్: ఒకవేళ మెయిన్ డాక్యుమెంట్‌లో తప్పుగా ఉంటే ఆటోమేటిక్‌గా బ్యాక్‌గ్రౌండ్‌లో సరిచేస్తుంది
+                // background real-time analytics synchronization
                 if(data.paid !== totalPaidCalculated) {
                     await updateDoc(customerRef, {
                         paid: totalPaidCalculated,
@@ -224,7 +235,6 @@
             }
         }
 
-        /* 👑 🚨 తప్పుడు ఈఎంఐ ఎంట్రీని డిలీట్ చేసే సిస్టమ్ */
         window.deleteSinglePayment = async function(paymentDocId, paymentAmount) {
             if(!confirm(`ఈ రికార్డును డిలీట్ చేయాలనుకుంటున్నారా?`)) return;
 
