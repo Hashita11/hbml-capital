@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Search</title>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -68,6 +69,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             border: 1px solid #eef2f6;
+            text-align: left;
         }
 
         .result-card:hover {
@@ -155,7 +157,7 @@
 </head>
 <body>
 
-    <div class="no-print" style="max-w-700px; margin: auto; margin-top: 10px;">
+    <div class="no-print" style="max-width:700px; margin: auto; margin-top: 10px;">
         <a href="admin.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
     </div>
 
@@ -165,13 +167,16 @@
         </div>
         <h1>Customer Search</h1>
         
-        <input type="text" id="searchInput" placeholder="Search Customer Name or Phone Number...">
+        <!-- 👑 🛠️ మొబైల్ బ్రౌజర్ల కోసం oninput, onkeyup రెండింటినీ ఇక్కడే యాడ్ చేశాను -->
+        <input type="text" id="searchInput" oninput="searchCustomerLive()" onkeyup="searchCustomerLive()" placeholder="Search Customer Name or Phone Number...">
 
+        <!-- రిజల్ట్స్ కంటైనర్ -->
         <div id="searchResultsContainer">
             <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ఫైర్‌బేస్ డేటా లోడ్ అవుతోంది...</div>
         </div>
     </div>
 
+    <!-- FIREBASE ARCHITECTURE ENGINE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -190,7 +195,6 @@
 
         let localCustomersBackup = [];
 
-        // డేటాబేస్ నుండి కస్టమర్ల లిస్ట్ లాగడం
         async function fetchAllBorrowers() {
             try {
                 const snap = await getDocs(collection(db, "customers"));
@@ -199,12 +203,10 @@
                 snap.forEach((docRecord) => {
                     const data = docRecord.data();
                     
-                    // 🛠️ ఫీల్డ్ కరెక్షన్: 'loanPrincipal' లేదా 'loan' ఉన్నా కరెక్ట్ గా అసలు అమౌంట్ తీసుకుంటుంది
                     let principalAmount = Number(data.loanPrincipal !== undefined ? data.loanPrincipal : (data.loan || 0));
                     let emiValue = Number(data.emi || 0);
                     let tenure = Number(data.tenureMonths || data.months || 12);
 
-                    // ఒకవేళ ఎంట్రీ లో లోన్ ప్రిన్సిపల్ సున్నా వస్తే EMI * Tenure క్యాలిక్యులేట్ చేస్తుంది
                     if(principalAmount === 0 && emiValue > 0) {
                         principalAmount = emiValue * tenure;
                     }
@@ -226,7 +228,7 @@
             }
         }
 
-        // 👑 🔍 విండో గ్లోబల్ స్కోప్‌కి సర్చ్ ఫంక్షన్ బైండ్ చేయడం (HTML onclick క్రాష్ అవ్వకుండా)
+        // 👑 🔍 గ్లోబల్ విండో స్కోప్‌కి బైండ్ చేసిన సరికొత్త స్మార్ట్ సర్చ్ ఇంజన్
         window.searchCustomerLive = function() {
             let query = document.getElementById("searchInput").value.toLowerCase().trim();
             let container = document.getElementById("searchResultsContainer");
@@ -243,7 +245,6 @@
                 if (cust.name.toLowerCase().includes(query) || cust.phone.includes(query)) {
                     matchCount++;
                     
-                    // 👑 క్లిక్ యాక్షన్‌ను ఇక్కడే గ్లోబల్ విండో మెథడ్ ద్వారా బైండ్ చేశాను
                     html += `
                         <div class="result-card" onclick="goToProfileDirectly('${cust.id}')">
                             <div class="flex-container">
@@ -270,14 +271,10 @@
             }
         }
 
-        // 👑 రూటింగ్ గేట్‌వే లాక్ - క్యాషే ఎర్రర్స్ రాకుండా స్టోరేజ్ అండ్ యుఆర్ఎల్ కి కనెక్ట్ చేస్తుంది
         window.goToProfileDirectly = function(docId) {
             localStorage.setItem('last_viewed_customer_id', docId);
             window.location.href = "customer-profile.html?id=" + docId;
         }
-
-        // ఇన్‌పుట్ బాక్స్‌కు లైవ్ కీ-అప్ లిజనర్ కనెక్షన్
-        document.getElementById("searchInput").addEventListener("keyup", window.searchCustomerLive);
 
         window.addEventListener('DOMContentLoaded', fetchAllBorrowers);
     </script>
