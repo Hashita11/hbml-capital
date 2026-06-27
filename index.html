@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>HBML CAPITAL LOGIN</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -112,8 +110,16 @@ input:focus{
     margin-top:15px;
     color:green;
     font-size:15px;
+    font-weight:bold;
 }
 
+.error-message {
+    margin-top: 15px;
+    color: #e11d48;
+    font-size: 14px;
+    font-weight: bold;
+    display: none;
+}
 </style>
 </head>
 
@@ -121,8 +127,7 @@ input:focus{
 
 <div class="container">
 
-    <!-- LOGO -->
-    <img src="logo.png" class="logo">
+    <img src="logo.png" class="logo" onerror="this.style.display='none';">
 
     <h1>HBML CAPITAL</h1>
 
@@ -130,186 +135,187 @@ input:focus{
         Trusted Financial Solutions
     </div>
 
-    <!-- ROLE BUTTONS -->
     <div class="tabs">
-
-        <button class="active"
-        onclick="setRole('Admin',this)">
-        Admin
-        </button>
-
-        <button
-        onclick="setRole('Employee',this)">
-        Employee
-        </button>
-
-        <button
-        onclick="setRole('Customer',this)">
-        Customer
-        </button>
-
+        <button class="active" id="btnAdmin" onclick="setRole('Admin',this)">Admin</button>
+        <button id="btnEmployee" onclick="setRole('Employee',this)">Employee</button>
+        <button id="btnCustomer" onclick="setRole('Customer',this)">Customer</button>
     </div>
 
-    <!-- FORM -->
+    <input type="text" id="name" placeholder="Enter Name">
+    <input type="email" id="email" placeholder="Enter Email">
+    <input type="password" id="password" placeholder="Enter Password">
 
-    <input
-    type="text"
-    id="name"
-    placeholder="Enter Name">
-
-    <input
-    type="email"
-    id="email"
-    placeholder="Enter Email">
-
-    <input
-    type="password"
-    id="password"
-    placeholder="Enter Password">
-
-    <button class="login-btn"
-    onclick="loginUser()">
-    LOGIN
-    </button>
+    <button class="login-btn" onclick="loginUser()">LOGIN</button>
 
     <div class="message" id="message"></div>
+    <div class="error-message" id="errorMessage"></div>
 
 </div>
 
-<!-- FIREBASE -->
-
 <script type="module">
-
-/* FIREBASE IMPORTS */
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-
   apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-
   authDomain: "hbml-capital.firebaseapp.com",
-
   projectId: "hbml-capital",
-
   storageBucket: "hbml-capital.firebasestorage.app",
-
   messagingSenderId: "893969951538",
-
   appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-
 };
 
-/* INITIALIZE */
-
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
-
-/* ROLE */
 
 let role = "Admin";
 
-/* ROLE BUTTON FUNCTION */
-
-window.setRole = function(selectedRole,btn){
-
+/* 👑 🛠️ రోల్ చేంజ్ ఇంజిన్: టాబ్స్ క్లిక్ చేసినప్పుడు ఏ ఫీల్డ్స్ ఎలా చూపాలో మార్చే పక్కా లాజిక్ */
+window.setRole = function(selectedRole, btn){
     role = selectedRole;
-
-    document
-    .querySelectorAll(".tabs button")
-    .forEach(b => b.classList.remove("active"));
-
+    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
+
+    document.getElementById("message").innerHTML = "";
+    document.getElementById("errorMessage").style.display = "none";
+
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passInput = document.getElementById("password");
+
+    // ఇన్‌పుట్ వాల్యూస్ క్లియర్ చేయడం
+    nameInput.value = "";
+    emailInput.value = "";
+    passInput.value = "";
+
+    if(role === "Customer") {
+        // Customer సెలెక్ట్ చేసినప్పుడు Name, Password దాచిపెట్టి కేవలం ID/Phone బాక్స్ మాత్రమే చూపిస్తుంది
+        nameInput.style.display = "none";
+        passInput.style.display = "none";
+        emailInput.style.display = "block";
+        emailInput.type = "text";
+        emailInput.placeholder = "Enter Customer ID or Phone Number";
+    } else if(role === "Employee") {
+        // Employee సెలెక్ట్ చేసినప్పుడు పూర్తి డీటెయిల్స్ ఓపెన్ అవుతాయి
+        nameInput.style.display = "block";
+        passInput.style.display = "block";
+        emailInput.style.display = "block";
+        emailInput.type = "email";
+        emailInput.placeholder = "Enter Employee Email";
+    } else {
+        // Admin సెలెక్ట్ చేసినప్పుడు పూర్తి డీటెయిల్స్ ఓపెన్ అవుతాయి
+        nameInput.style.display = "block";
+        passInput.style.display = "block";
+        emailInput.style.display = "block";
+        emailInput.type = "email";
+        emailInput.placeholder = "Enter Admin Email";
+    }
 }
 
-/* LOGIN FUNCTION */
-
+/* LOGIN FUNCTION WITH CORE ROUTING GATEWAYS */
 window.loginUser = async function(){
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const passInput = document.getElementById("password");
+    
+    const msg = document.getElementById("message");
+    const errMsg = document.getElementById("errorMessage");
 
-    let name =
-    document.getElementById("name").value;
+    msg.innerHTML = "";
+    errMsg.style.display = "none";
 
-    let email =
-    document.getElementById("email").value;
+    let name = nameInput.value.trim();
+    let identifier = emailInput.value.trim();
+    let password = passInput.value.trim();
 
-    let password =
-    document.getElementById("password").value;
+    /* 1. 🛡️ ADMIN / EMPLOYEE LOGIN VERIFICATION */
+    if(role === "Admin" || role === "Employee") {
+        if(name === "" || identifier === "" || password === ""){
+            alert("Please fill all fields");
+            return;
+        }
 
-    /* VALIDATION */
+        msg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing credential gate...`;
 
-    if(name==="" || email==="" || password===""){
+        try {
+            // లాగిన్ లాగ్ హిస్టరీ నమోదు
+            await addDoc(collection(db, "hbml_logins"), {
+                name: name,
+                email: identifier,
+                role: role,
+                loginTime: new Date()
+            });
 
-        alert("Please fill all fields");
+            msg.innerHTML = role + " Login Successful";
+            
+            setTimeout(() => {
+                if(role === "Admin"){
+                    window.location.href = "admin.html"; // అడ్మిన్ డాష్‌బోర్డ్ రూట్
+                } else {
+                    window.location.href = "employee.html"; // ఎంప్లాయ్ డాష్‌బోర్డ్ రూట్
+                }
+            }, 800);
 
-        return;
-    }
+        } catch(error) {
+            alert(error);
+        }
+    } 
+    /* 2. 🪙 CUSTOMER LOGIN VERIFICATION WITH CLOUD INTEGRATION */
+    else {
+        if(identifier === "") {
+            alert("Please enter Customer ID or Phone Number");
+            return;
+        }
 
-    try{
+        msg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying account details...`;
 
-        /* SAVE TO FIREBASE */
+        try {
+            const snap = await getDocs(collection(db, "customers"));
+            let matchedDocId = null;
+            const searchKey = identifier.toLowerCase();
 
-        await addDoc(
-            collection(db,"hbml_logins"),
-            {
-                name:name,
-                email:email,
-                password:password,
-                role:role,
-                loginTime:new Date()
+            snap.forEach((docRecord) => {
+                const data = docRecord.data();
+                const cloudUID = (data.customerId || "").toLowerCase();
+                const cloudPhone = (data.phone || "");
+
+                if(searchKey === cloudUID || searchKey === cloudPhone) {
+                    matchedDocId = docRecord.id;
+                }
+            });
+
+            if(matchedDocId) {
+                // కాలింగ్ హిస్టరీ రికార్డ్
+                await addDoc(collection(db, "hbml_logins"), {
+                    name: identifier,
+                    role: "Customer",
+                    loginTime: new Date()
+                });
+
+                msg.innerHTML = "Customer Login Successful";
+                localStorage.setItem('last_viewed_customer_id', matchedDocId);
+                
+                setTimeout(() => {
+                    window.location.href = "customer.html?id=" + matchedDocId;
+                }, 800);
+            } else {
+                msg.innerHTML = "";
+                errMsg.innerText = "No customer record found with these details!";
+                errMsg.style.display = "block";
             }
-        );
 
-        /* SUCCESS */
-
-        document.getElementById("message")
-        .innerHTML =
-        role + " Login Successful";
-
-        /* REDIRECT */
-
-        if(role==="Admin"){
-
-            window.location.href =
-            "admin.html";
-
+        } catch(error) {
+            console.error(error);
+            msg.innerHTML = "";
+            alert("Database connection timeout.");
         }
-
-        else if(role==="Employee"){
-
-            window.location.href =
-            "employee.html";
-
-        }
-
-        else{
-
-            window.location.href =
-            "customer.html";
-
-        }
-
     }
-
-    catch(error){
-
-        alert(error);
-
-    }
-
 }
 
+// ప్రారంభంలో డీఫాల్ట్‌గా 'Admin' టాబ్ లోడ్ అవుతుంది
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("btnAdmin").click();
+});
 </script>
-
 </body>
 </html>
