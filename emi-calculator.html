@@ -1,245 +1,269 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML EMI Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
 
-<title>HBML EMI Calculator</title>
+        body{
+            background:#f2f4f8;
+            padding:20px;
+        }
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+        /* MAIN BOX */
+        .box{
+            max-width:550px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:25px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
 
-<style>
+        /* LOGO */
+        .logo{
+            width:100px;
+            display:block;
+            margin:auto;
+            margin-bottom:15px;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+        /* TITLE */
+        h1{
+            text-align:center;
+            color:#0d2b6b;
+            margin-bottom:5px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 22px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-body{
-background:#f2f4f8;
-padding:20px;
-}
+        /* INPUTS & SELECTS */
+        .input-group {
+            margin-bottom: 16px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
 
-/* MAIN BOX */
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            outline: none;
+            background: #fafafa;
+        }
 
-.box{
-max-width:550px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
+        input:focus, select:focus {
+            border-color:#0d2b6b;
+            background: white;
+        }
 
-/* LOGO */
+        /* BUTTON */
+        button{
+            width:100%;
+            padding:16px;
+            background:#0d2b6b;
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+            font-weight:bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
 
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
+        button:hover{
+            background:#163c91;
+        }
 
-/* TITLE */
+        /* RESULT DOCK */
+        .result{
+            margin-top:25px;
+            background:#f7f9fc;
+            padding:20px;
+            border-radius:15px;
+            border: 1px solid #eef2f6;
+        }
 
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:25px;
-}
+        .result h2{
+            color:#0d2b6b;
+            margin-bottom:15px;
+            text-align:center;
+            font-size:18px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
 
-/* INPUT */
+        .row{
+            display:flex;
+            justify-content:space-between;
+            padding:14px 0;
+            border-bottom:1px solid #ddd;
+            align-items: center;
+        }
+        
+        .row:last-child {
+            border-bottom: none;
+        }
 
-input{
-width:100%;
-padding:15px;
-margin-bottom:18px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:16px;
-}
+        .label{
+            font-weight:bold;
+            color:#555;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
 
-/* BUTTON */
+        .value{
+            color:#0d2b6b;
+            font-weight: 900;
+            font-size: 16px;
+        }
+        
+        .value.highlight {
+            color: #10b981;
+        }
 
-button{
-width:100%;
-padding:15px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-font-size:17px;
-cursor:pointer;
-font-weight:bold;
-}
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: bold;
+            background: white;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
 
-button:hover{
-background:#163c91;
-}
-
-/* RESULT */
-
-.result{
-margin-top:25px;
-background:#f7f9fc;
-padding:20px;
-border-radius:15px;
-}
-
-.result h2{
-color:#0d2b6b;
-margin-bottom:15px;
-text-align:center;
-}
-
-.row{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid #ddd;
-}
-
-.label{
-font-weight:bold;
-color:#0d2b6b;
-}
-
-.value{
-color:#333;
-}
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-.row{
-flex-direction:column;
-gap:5px;
-}
-
-}
-
-</style>
-
+        /* MOBILE RESPONSIVENESS */
+        @media(max-width:480px){
+            .box { padding: 20px; }
+            h1 { font-size: 18px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="box">
+    <div style="max-w-550px; margin: auto; margin-top: 10px;">
+        <a href="javascript:history.back()" class="back-btn"><i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు</a>
+    </div>
 
-<img src="logo.png" class="logo">
+    <div class="box">
+        <img src="logo.png" class="logo" onerror="this.style.display='none';">
+        <h1>HBML EMI Calculator</h1>
+        <div class="subtitle">Trusted Financial Solutions</div>
 
-<h1>HBML EMI Calculator</h1>
+        <div class="input-group">
+            <label>Interest Method (వడ్డీ విధానం)</label>
+            <select id="method">
+                <option value="Flat">Flat Interest Rate (స్థిర వడ్డీ)</option>
+                <option value="Reducing">Reducing Balance Rate (తగ్గే అసలు వడ్డీ)</option>
+            </select>
+        </div>
 
-<input type="number"
-id="loan"
-placeholder="Loan Amount">
+        <div class="input-group">
+            <label>Loan Principal (అసలు అమౌంట్)</label>
+            <input type="number" id="loan" placeholder="Enter Loan Amount">
+        </div>
 
-<input type="number"
-id="interest"
-placeholder="Annual Interest Rate (%)">
+        <div class="input-group">
+            <label>Annual Interest Rate (%) (సంవత్సర వడ్డీ శాతం)</label>
+            <input type="number" id="interest" placeholder="Enter Annual Interest Rate">
+        </div>
 
-<input type="number"
-id="months"
-placeholder="Loan Duration (Months)">
+        <div class="input-group">
+            <label>Loan Duration (Months) (టెన్యూర్‌ నెలలు)</label>
+            <input type="number" id="months" placeholder="Enter Duration In Months">
+        </div>
 
-<button onclick="calculateEMI()">
+        <button onclick="calculateEMI()">Calculate EMI</button>
 
-Calculate EMI
+        <div class="result">
+            <h2>EMI Calculation Result</h2>
 
-</button>
+            <div class="row">
+                <div class="label">Monthly EMI (నెలవారీ ఈఎంఐ)</div>
+                <div class="value highlight" id="emi">₹0</div>
+            </div>
 
-<div class="result">
+            <div class="row">
+                <div class="label">Total Interest (మొత్తం వడ్డీ)</div>
+                <div class="value" id="totalInterest">₹0</div>
+            </div>
 
-<h2>EMI Result</h2>
+            <div class="row">
+                <div class="label">Total Payment (అసలు + వడ్డీ)</div>
+                <div class="value" id="totalPayment">₹0</div>
+            </div>
+        </div>
+    </div>
 
-<div class="row">
-<div class="label">Monthly EMI</div>
-<div class="value" id="emi">
-₹0
-</div>
-</div>
+    <script>
+        function calculateEMI(){
+            let loan = parseFloat(document.getElementById("loan").value);
+            let annualInterest = parseFloat(document.getElementById("interest").value);
+            let months = parseFloat(document.getElementById("months").value);
+            let method = document.getElementById("method").value;
 
-<div class="row">
-<div class="label">Total Interest</div>
-<div class="value" id="totalInterest">
-₹0
-</div>
-</div>
+            if(isNaN(loan) || isNaN(annualInterest) || isNaN(months) || loan <= 0 || months <= 0){
+                alert("Please Fill All Fields With Valid Numbers");
+                return;
+            }
 
-<div class="row">
-<div class="label">Total Payment</div>
-<div class="value" id="totalPayment">
-₹0
-</div>
-</div>
+            let emi = 0;
+            let totalPayment = 0;
+            let totalInterest = 0;
 
-</div>
+            /* 👑 డ్యూయల్ ఇంట్రెస్ట్ మోడ్ క్యాలిక్యులేషన్ ఇంజన్ */
+            if (method === "Flat") {
+                let years = months / 12;
+                totalInterest = loan * (annualInterest / 100) * years;
+                totalPayment = loan + totalInterest;
+                emi = totalPayment / months;
+            } else {
+                let monthlyRate = (annualInterest / 12) / 100;
+                emi = (loan * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+                totalPayment = emi * months;
+                totalInterest = totalPayment - loan;
+            }
 
-</div>
-
-<script>
-
-function calculateEMI(){
-
-let loan =
-parseFloat(document.getElementById("loan").value);
-
-let annualInterest =
-parseFloat(document.getElementById("interest").value);
-
-let months =
-parseFloat(document.getElementById("months").value);
-
-if(isNaN(loan) ||
-isNaN(annualInterest) ||
-isNaN(months)){
-
-alert("Please Fill All Fields");
-
-return;
-
-}
-
-/* EMI FORMULA */
-
-let monthlyInterest =
-annualInterest / 12 / 100;
-
-let emi =
-
-(loan * monthlyInterest *
-Math.pow(1 + monthlyInterest, months))
-
-/
-
-(Math.pow(1 + monthlyInterest, months) - 1);
-
-let totalPayment =
-emi * months;
-
-let totalInterest =
-totalPayment - loan;
-
-/* DISPLAY */
-
-document.getElementById("emi")
-.innerHTML =
-"₹" + emi.toFixed(2);
-
-document.getElementById("totalInterest")
-.innerHTML =
-"₹" + totalInterest.toFixed(2);
-
-document.getElementById("totalPayment")
-.innerHTML =
-"₹" + totalPayment.toFixed(2);
-
-}
-
-</script>
-
+            /* DISPLAY WITH INDIAN CURRENCY FORMAT */
+            document.getElementById("emi").innerHTML = "₹" + Math.round(emi).toLocaleString('en-IN');
+            document.getElementById("totalInterest").innerHTML = "₹" + Math.round(totalInterest).toLocaleString('en-IN');
+            document.getElementById("totalPayment").innerHTML = "₹" + Math.round(totalPayment).toLocaleString('en-IN');
+        }
+    </script>
 </body>
 </html>
