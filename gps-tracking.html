@@ -1,110 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>GPS Tracking</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-margin-bottom:15px;
-}
-
-h1{
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-.location{
-margin-top:20px;
-font-size:18px;
-color:#333;
-}
-
-button{
-padding:15px 25px;
-background:#0d2b6b;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:16px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - GPS Field Tracking</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
-<body>
+    <div class="w-full max-w-md bg-white border border-slate-100 rounded-3xl p-6 shadow-2xl space-y-6 text-center">
+        
+        <!-- TOP NAVIGATION CONTROL -->
+        <div class="flex justify-between items-center no-print">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-3.5 py-2 rounded-xl shadow-xs transition">
+                <i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు
+            </a>
+            <span class="text-[10px] font-black uppercase bg-sky-50 text-sky-600 px-3 py-1.5 rounded-full border border-sky-100 shadow-inner">
+                GPS Satellite Sync
+            </span>
+        </div>
 
-<div class="box">
+        <!-- BRANDING HEADER -->
+        <div class="space-y-1.5 border-b border-slate-50 pb-4">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none';">
+            <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">Agent GPS Tracking</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Field Staff Location Verification</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <!-- 👑 GPS STATUS DOCK -->
+        <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-4">
+            <div class="flex items-center justify-center gap-2.5 text-slate-400 font-bold text-sm" id="lblGpsStatus">
+                <i class="fa-solid fa-location-crosshairs text-lg animate-pulse text-slate-400"></i>
+                <span>GPS Device Status: Idle</span>
+            </div>
 
-<h1>Employee GPS Tracking</h1>
+            <!-- LOCATION COORDINATES BREAKDOWN -->
+            <div class="grid grid-cols-2 gap-3 text-left text-xs font-semibold">
+                <div class="bg-white p-3 rounded-xl border border-slate-200/60">
+                    <span class="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Latitude (అక్షాంశం)</span>
+                    <span id="lblLat" class="text-slate-800 font-mono font-bold text-sm">—</span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-slate-200/60">
+                    <span class="text-[9px] text-slate-400 uppercase font-bold tracking-wider block">Longitude (రేఖాంశం)</span>
+                    <span id="lblLng" class="text-slate-800 font-mono font-bold text-sm">—</span>
+                </div>
+            </div>
 
-<button onclick="getLocation()">
+            <!-- GOOGLE MAPS LINK BUTTON -->
+            <div id="mapLinkContainer" class="hidden pt-2">
+                <a id="btnMapLink" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 hover:text-sky-700 underline bg-sky-50 px-4 py-2 rounded-xl transition">
+                    <i class="fa-solid fa-map-location-dot"></i> View Location on Google Maps
+                </a>
+            </div>
+        </div>
 
-Track Location
+        <!-- ACTION TRIGGER BUTTON -->
+        <button onclick="captureAndSyncLocation()" id="btnSync" class="w-full bg-[#0b2964] hover:bg-[#123985] text-white font-bold py-4 px-4 rounded-xl transition shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-satellite-dish" id="syncIcon"></i> PING & SAVE LIVE LOCATION
+        </button>
 
-</button>
+    </div>
 
-<div class="location" id="location">
+    <!-- FIREBASE AND GEOLOCATION INTEGRATION SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-Waiting for location...
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-</div>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-</div>
+        window.captureAndSyncLocation = function() {
+            const statusEl = document.getElementById("lblGpsStatus");
+            const btn = document.getElementById("btnSync");
+            const icon = document.getElementById("syncIcon");
 
-<script>
+            if (!navigator.geolocation) {
+                alert("Your mobile or browser does not support GPS tracking features.");
+                return;
+            }
 
-function getLocation(){
+            // UI లోడింగ్ స్టేట్
+            statusEl.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-sky-500 text-lg"></i> <span class="text-sky-600">Connecting to Satellites...</span>`;
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
 
-if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                let lat = position.coords.latitude;
+                let lng = position.coords.longitude;
 
-navigator.geolocation.getCurrentPosition(
+                // UI అప్‌డేట్
+                document.getElementById("lblLat").innerText = lat.toFixed(6);
+                document.getElementById("lblLng").innerText = lng.toFixed(6);
+                
+                let mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                document.getElementById("btnMapLink").href = mapsUrl;
+                document.getElementById("mapLinkContainer").classList.remove("hidden");
 
-function(position){
+                statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i> <span class="text-emerald-600">Location Latched Successfully!</span>`;
 
-document.getElementById("location")
-.innerHTML =
+                try {
+                    // 👑 ఫైర్‌బేస్ లోకి లొకేషన్ లాగ్ రాయడం
+                    await addDoc(collection(db, "agent_gps_logs"), {
+                        agentName: "Field Employee", 
+                        latitude: lat,
+                        longitude: lng,
+                        googleMapsUrl: mapsUrl,
+                        timestamp: new Date()
+                    });
 
-"Latitude: " +
+                    alert("Live Field Coordinates Synced to Cloud Node!");
 
-position.coords.latitude +
+                } catch (error) {
+                    alert("Database Sync Error: " + error.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.classList.remove("opacity-50");
+                    icon.className = "fa-solid fa-satellite-dish";
+                }
 
-"<br><br>Longitude: " +
-
-position.coords.longitude;
-
-}
-
-);
-
-}
-
-}
-
-</script>
-
+            }, (error) => {
+                // ఎర్రర్ హ్యాండ్లింగ్
+                console.error(error);
+                statusEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i> <span class="text-rose-600">GPS Access Denied or Timed Out.</span>`;
+                alert("Please enable Device Location / GPS permissions in your phone settings.");
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+                icon.className = "fa-solid fa-satellite-dish";
+            }, {
+                enableHighAccuracy: true, // పక్కా ఖచ్చితత్వంతో లొకేషన్ లాగుతుంది
+                timeout: 10000
+            });
+        }
+    </script>
 </body>
 </html>
