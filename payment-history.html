@@ -1,119 +1,150 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
-<title>Payment History</title>
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-table th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-table td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.status-paid{
-color:green;
-font-weight:bold;
-}
-
-.status-pending{
-color:red;
-font-weight:bold;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Live Payment History</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-<body>
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- TOP CONTROL NAVIGATION -->
+        <div class="flex justify-between items-center gap-2">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు
+            </a>
+            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
+                Live Audit Stream
+            </span>
+        </div>
 
-<div class="box">
+        <!-- BRANDING HEADER -->
+        <div class="text-center space-y-2 py-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Global Payment History</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Real-Time Daily Collection Day Book</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <!-- 📑 HISTORY DIRECTORY CONTAINER -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
+                    <i class="fa-solid fa-clock-history text-sky-500 mr-1.5"></i> All Received Transactions Log
+                </span>
+                <span id="lblTotalTxnCounter" class="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-slate-400">Rows: 0</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse min-w-[550px]">
+                    <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                        <tr>
+                            <th class="p-4">Payment Date</th>
+                            <th class="p-4">Customer Name / ID</th>
+                            <th class="p-4">EMI Recovered</th>
+                            <th class="p-4">Penalties Paid</th>
+                            <th class="p-4 text-right">Payment Channel</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblHistoryBody" class="divide-y divide-slate-800 font-medium text-slate-300">
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold">
+                                <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> ఫైర్‌బేస్ నుండి రికార్డులను సేకరిస్తున్నాము...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<h1>Payment History</h1>
+    </div>
 
-<table>
+    <!-- FIREBASE DATA PLATFORM ARCHITECTURE MODULES -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<tr>
-<th>Date</th>
-<th>Customer</th>
-<th>Amount</th>
-<th>Status</th>
-</tr>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<tr>
-<td>01-05-2026</td>
-<td>Ramesh</td>
-<td>₹5,000</td>
-<td class="status-paid">
-Paid
-</td>
-</tr>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-<tr>
-<td>01-06-2026</td>
-<td>Suresh</td>
-<td>₹8,000</td>
-<td class="status-pending">
-Pending
-</td>
-</tr>
+        async function streamGlobalPaymentHistory() {
+            const tbody = document.getElementById("tblHistoryBody");
+            try {
+                // గ్లోబల్ కలెక్షన్స్ నోడ్ నుండి డేటాను లాగడం
+                const ref = collection(db, "emi_collections");
+                const snap = await getDocs(ref);
 
-<tr>
-<td>01-07-2026</td>
-<td>Kumar</td>
-<td>₹12,000</td>
-<td class="status-paid">
-Paid
-</td>
-</tr>
+                if(snap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center font-bold text-slate-500"><i class="fa-solid fa-folder-open text-slate-600 mr-1"></i> No transactions logged in the day book yet.</td></tr>`;
+                    document.getElementById("lblTotalTxnCounter").innerText = "Rows: 0";
+                    return;
+                }
 
-</table>
+                let records = [];
+                snap.forEach(doc => {
+                    records.push({ id: doc.id, ...doc.data() });
+                });
 
-</div>
+                // లేటెస్ట్ పేమెంట్లు పైకి వచ్చేలా క్రమబద్ధీకరించడం
+                records.sort((a, b) => {
+                    let dateA = a.date?.seconds ? a.date.seconds : new Date(a.date || 0).getTime();
+                    let dateB = b.date?.seconds ? b.date.seconds : new Date(b.date || 0).getTime();
+                    return dateB - dateA;
+                });
 
+                let html = "";
+                let totalRows = 0;
+
+                records.forEach((row) => {
+                    totalRows++;
+                    let displayDate = "—";
+                    if(row.date) {
+                        let dateObj = row.date.seconds ? new Date(row.date.seconds * 1000) : new Date(row.date);
+                        displayDate = dateObj.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                    }
+
+                    let custName = row.customerName || "N/A";
+                    let emiPaid = Number(row.emiAmountPaid || 0);
+                    let finePaid = Number(row.penaltyAmountPaid || 0);
+                    let channel = row.mode || "Cash";
+
+                    html += `
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60">
+                            <td class="p-4 font-mono font-bold text-slate-400">${displayDate}</td>
+                            <td class="p-4 uppercase font-black text-white">${custName}</td>
+                            <td class="p-4 font-mono font-bold text-emerald-400">₹${emiPaid.toLocaleString('en-IN')}</td>
+                            <td class="p-4 font-mono font-bold text-amber-500">₹${finePaid.toLocaleString('en-IN')}</td>
+                            <td class="p-4 text-right">
+                                <span class="bg-slate-800 text-slate-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded border border-slate-700">${channel}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = html;
+                document.getElementById("lblTotalTxnCounter").innerText = "Rows: " + totalRows;
+
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500 font-bold">Cloud synchronization timeout.</td></tr>`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', streamGlobalPaymentHistory);
+    </script>
 </body>
 </html>
