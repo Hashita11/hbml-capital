@@ -1,111 +1,277 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Staff Salary</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f4f8;
-padding:20px;
-}
-
-.box{
-background:white;
-padding:25px;
-border-radius:20px;
-max-width:900px;
-margin:auto;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-.logo{
-width:100px;
-display:block;
-margin:auto;
-margin-bottom:15px;
-}
-
-h1{
-text-align:center;
-color:#0d2b6b;
-margin-bottom:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#0d2b6b;
-color:white;
-padding:14px;
-}
-
-td{
-padding:14px;
-border-bottom:1px solid #ddd;
-text-align:center;
-}
-
-.pay{
-background:green;
-color:white;
-padding:10px 15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Staff Salary Management</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
 
-<body>
+    <div class="w-full max-w-6xl space-y-6">
+        
+        <!-- TOP CONTROL BAR -->
+        <div class="flex justify-between items-center">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition">
+                <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
+            </a>
+            <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-1.5 rounded-full border border-purple-100 shadow-inner">
+                Payroll Engine (9:00 AM Late Lock)
+            </span>
+        </div>
 
-<div class="box">
+        <!-- BRANDING HEADER -->
+        <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-1.5">
+            <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none';">
+            <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">Staff Salary Management</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut)</p>
+        </div>
 
-<img src="logo.png" class="logo">
+        <!-- 📑 STAFF PAYROLL DIRECTORY CONTAINER -->
+        <div class="bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 overflow-hidden">
+            <div class="p-4 bg-slate-50/60 border-b border-slate-100 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-500 tracking-wider">
+                    <i class="fa-solid fa-money-check-dollar text-[#0b2964] mr-1.5"></i> Employee Monthly Payroll Disbursal Queue
+                </span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse min-w-[950px]">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="p-4">Employee Details</th>
+                            <th class="p-4">Base Scale</th>
+                            <th class="p-4 text-center">Duty Status<br><span class="text-[9px] text-slate-400">(On-Time / Late)</span></th>
+                            <th class="p-4 text-center">Paid / Absent Days<br><span class="text-[9px] text-slate-400">(Sun & Fest Included)</span></th>
+                            <th class="p-4">Net Payable Salary</th>
+                            <th class="p-4 text-center">Disbursal Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salaryTableBody" class="divide-y divide-slate-50 font-medium text-slate-600">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-slate-400 font-bold">
+                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ రూల్స్ ప్రకారం జీతాలు లెక్కిస్తున్నాము...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<h1>Staff Salary Management</h1>
+    </div>
 
-<table>
+    <!-- FIREBASE ARCHITECTURE ENGINE MODULES -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<tr>
-<th>Employee</th>
-<th>Role</th>
-<th>Salary</th>
-<th>Status</th>
-</tr>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
 
-<tr>
-<td>Suresh</td>
-<td>Manager</td>
-<td>₹25,000</td>
-<td>
-<button class="pay"
-onclick="paySalary()">
-Pay Salary
-</button>
-</td>
-</tr>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-</table>
+        const MAIN_FESTIVAL_HOLIDAYS = [
+            "2026-01-14", "2026-01-15", 
+            "2026-03-28", 
+            "2026-08-15", 
+            "2026-10-19", "2026-10-20", 
+            "2026-11-08"  
+        ];
 
-</div>
+        function calculateMonthCalendarMatrix() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth(); 
 
-<script>
+            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+            let sundaysCount = 0;
+            let festivalHolidaysCount = 0;
 
-function paySalary(){
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                let checkDate = new Date(year, month, day);
+                if (checkDate.getDay() === 0) {
+                    sundaysCount++;
+                } else {
+                    let formattedDateStr = checkDate.toISOString().split('T')[0];
+                    if (MAIN_FESTIVAL_HOLIDAYS.includes(formattedDateStr)) {
+                        festivalHolidaysCount++;
+                    }
+                }
+            }
+            return { totalDaysInMonth, sundaysCount, festivalHolidaysCount };
+        }
 
-alert("Salary Paid Successfully");
+        async function loadStaffPayrollLedger() {
+            const tbody = document.getElementById("salaryTableBody");
+            try {
+                const calendar = calculateMonthCalendarMatrix();
+                
+                const empSnap = await getDocs(collection(db, "employees"));
+                const attSnap = await getDocs(collection(db, "attendance")); 
 
-}
+                if(empSnap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center font-bold text-slate-400">No employee records registered in system yet.</td></tr>`;
+                    return;
+                }
 
-</script>
+                // 👑 అటెండెన్స్ తో పాటు 9:00 AM లేట్ టైమింగ్స్ రికార్డ్స్ ని ట్రాక్ చేయడం
+                let staffAttendanceMetrics = {};
+                
+                attSnap.forEach(doc => {
+                    let log = doc.data();
+                    let id = log.employeeDocId || log.employeeId;
+                    
+                    if(id && (log.status === "Present" || log.status === "Success")) {
+                        if(!staffAttendanceMetrics[id]) {
+                            staffAttendanceMetrics[id] = { presentDays: 0, lateDays: 0 };
+                        }
+                        
+                        staffAttendanceMetrics[id].presentDays++;
 
+                        // ⏰ 9:00 AM లేట్ లెక్కింపు లాజిక్ చెక్
+                        if(log.timestamp) {
+                            let logTime = new Date(log.timestamp);
+                            let logHours = logTime.getHours();
+                            let logMinutes = logTime.getMinutes();
+
+                            // ఒకవేళ 9:00 AM లేదా ఆ పైన టైమ్ రికార్డ్ అయితే Late కింద కూడుతుంది
+                            if (logHours > 9 || (logHours === 9 && logMinutes > 0)) {
+                                staffAttendanceMetrics[id].lateDays++;
+                            }
+                        } else if (log.isLate === true || log.late === true) {
+                            // ప్రత్యామ్నాయంగా బూలియన్ ఫ్లాగ్ ఉంటే
+                            staffAttendanceMetrics[id].lateDays++;
+                        }
+                    }
+                });
+
+                let html = "";
+                
+                empSnap.forEach((docRecord) => {
+                    const data = docRecord.data();
+                    const docId = docRecord.id;
+
+                    let empName = data.name || "Unknown Staff";
+                    let empUID = data.employeeId || "EMP-" + docId.substring(0, 4).toUpperCase();
+                    let role = data.role || data.designation || "Field Agent";
+                    let baseSalary = Number(data.salary || 0);
+                    let currentStatus = data.salaryStatus || "Unpaid";
+
+                    let metrics = staffAttendanceMetrics[docId] || { presentDays: 0, lateDays: 0 };
+                    let actualDutyDaysPresent = metrics.presentDays;
+                    let totalLateDaysRecorded = metrics.lateDays;
+
+                    // 👑 🧮 3 LATES = 1 DAY SALARY CUT లాజిక్ ఇంజెక్షన్
+                    let lateSalaryCutDays = Math.floor(totalLateDaysRecorded / 3);
+
+                    // నెట్ పెయిడ్ డేస్ లెక్కింపు (డ్యూటీ రోజులు + ఆదివారాలు + పండుగలు - లేట్ కట్స్)
+                    let totalPaidDaysAllowed = (actualDutyDaysPresent + calendar.sundaysCount + calendar.festivalHolidaysCount) - lateSalaryCutDays;
+                    
+                    if(totalPaidDaysAllowed > calendar.totalDaysInMonth) {
+                        totalPaidDaysAllowed = calendar.totalDaysInMonth;
+                    }
+                    if(totalPaidDaysAllowed < 0) totalPaidDaysAllowed = 0;
+
+                    // ఆబ్సెంట్ LWP రోజులు
+                    let absentLwpDays = calendar.totalDaysInMonth - totalPaidDaysAllowed;
+
+                    // ఫైనల్ జీతం లెక్కింపు
+                    let perDaySalaryWeight = baseSalary / calendar.totalDaysInMonth;
+                    let finalNetPayableSalary = Math.round(perDaySalaryWeight * totalPaidDaysAllowed);
+
+                    let statusBadge = "";
+                    let actionButton = "";
+
+                    if (currentStatus === "Paid") {
+                        statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider"><i class="fa-solid fa-circle-check mr-0.5"></i> Paid</span>`;
+                        actionButton = `<button disabled class="bg-slate-100 text-slate-400 font-bold text-[10px] px-4 py-2 rounded-lg uppercase tracking-wider cursor-not-allowed border border-slate-200">Disbursed</button>`;
+                    } else {
+                        statusBadge = `<span class="bg-amber-50 text-amber-600 border border-amber-100 text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider"><i class="fa-solid fa-clock mr-0.5"></i> Pending</span>`;
+                        actionButton = `
+                            <button id="btn-${docId}" onclick="disburseStaffSalary('${docId}', '${empName}', ${finalNetPayableSalary}, ${totalPaidDaysAllowed}, ${absentLwpDays}, ${totalLateDaysRecorded})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-4 py-2 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95 shadow-xs flex items-center gap-1 mx-auto">
+                                <i class="fa-solid fa-receipt"></i> Pay Salary
+                            </button>
+                        `;
+                    }
+
+                    html += `
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                            <td class="p-4">
+                                <div class="font-bold text-slate-800 uppercase text-sm">${empName}</div>
+                                <div class="text-[10px] text-[#0b2964] font-mono font-bold">${empUID} — <span class="text-slate-400 font-sans">${role}</span></div>
+                            </td>
+                            <td class="p-4 font-mono font-bold text-slate-500">₹${baseSalary.toLocaleString('en-IN')}</td>
+                            <td class="p-4 text-center">
+                                <div class="font-mono font-bold text-slate-700 text-sm">Total Present: ${actualDutyDaysPresent} Days</div>
+                                <div class="text-[10px] mt-0.5 ${totalLateDaysRecorded > 0 ? 'text-amber-600 font-black' : 'text-slate-400'}"><i class="fa-solid fa-clock"></i> Late Marks: ${totalLateDaysRecorded} ${lateSalaryCutDays > 0 ? '(-'+lateSalaryCutDays+' Days Cut)' : ''}</div>
+                            </td>
+                            <td class="p-4 text-center">
+                                <div class="font-mono font-black text-emerald-600">Paid: ${totalPaidDaysAllowed} Days</div>
+                                <div class="font-mono text-rose-500 text-[10px] font-bold">LWP Absent: ${absentLwpDays} Days</div>
+                            </td>
+                            <td class="p-4 font-mono font-black text-[#0b2964] text-sm">₹${finalNetPayableSalary.toLocaleString('en-IN')}</td>
+                            <td class="p-4 text-center flex flex-col items-center gap-1">${statusBadge} <div class="mt-1">${actionButton}</div></td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = html;
+
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center font-bold text-rose-500">Cloud data network synchronization failure.</td></tr>`;
+            }
+        }
+
+        window.disburseStaffSalary = async function(docId, staffName, amount, paidDays, absentDays, lateDays) {
+            if(!confirm(`Are you sure you want to process salary disbursement of ₹${amount.toLocaleString('en-IN')} for ${staffName}? (${lateDays} Late Marks detected)`)) return;
+
+            const btn = document.getElementById(`btn-${docId}`);
+            if(btn) {
+                btn.disabled = true;
+                btn.className = "bg-slate-200 text-slate-400 font-bold text-[10px] px-4 py-2 rounded-lg uppercase tracking-wider cursor-not-allowed";
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing`;
+            }
+
+            try {
+                await addDoc(collection(db, "salary_disbursements"), {
+                    employeeDocId: docId,
+                    employeeName: staffName,
+                    amountPaid: amount,
+                    calculatedPaidDays: paidDays,
+                    calculatedAbsentDays: absentDays,
+                    totalLateMarks: lateDays,
+                    disbursedAt: new Date()
+                });
+
+                await updateDoc(doc(db, "employees", docId), {
+                    salaryStatus: "Paid"
+                });
+
+                alert(`Salary Disbursed Successfully for ${staffName}!`);
+                loadStaffPayrollLedger();
+
+            } catch (error) {
+                alert("Database write error: " + error.message);
+                loadStaffPayrollLedger();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadStaffPayrollLedger);
+    </script>
 </body>
 </html>
