@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Analytics & Dashboard Charts</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js Library via jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
+
+    <div class="w-full max-w-4xl space-y-6">
+        
+        <!-- TOP NAVBAR ROW -->
+        <div class="flex justify-between items-center">
+            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition">
+                <i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు
+            </a>
+            <button onclick="window.location.reload()" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#0b2964] bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition cursor-pointer">
+                <i class="fa-solid fa-rotate animate-spin-slow"></i> Refresh Node
+            </button>
+        </div>
+
+        <!-- BRANDING HEADER -->
+        <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-1.5">
+            <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none';">
+            <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">HBML Financial Analytics</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Real-time Book Capital Charts Node</p>
+        </div>
+
+        <!-- 📊 REAL-TIME CORE CHARTS CONTAINER GRID -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- CHART CARD 1: EMI RECOVERY CHART -->
+            <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.01)] space-y-4">
+                <div class="border-b border-slate-50 pb-2">
+                    <h3 class="text-xs font-black text-[#0b2964] uppercase tracking-wider"><i class="fa-solid fa-chart-line text-sky-500 mr-1.5"></i> Recovery Trend (వసూళ్ల ట్రెండ్)</h3>
+                </div>
+                <div class="relative h-64 w-full">
+                    <canvas id="recoveryLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- CHART CARD 2: CAPITAL RATIO PIE CHART -->
+            <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.01)] space-y-4">
+                <div class="border-b border-slate-50 pb-2">
+                    <h3 class="text-xs font-black text-[#0b2964] uppercase tracking-wider"><i class="fa-solid fa-chart-pie text-purple-500 mr-1.5"></i> Book Matrix Ratio (అసలు vs వసూళ్లు)</h3>
+                </div>
+                <div class="relative h-64 w-full flex items-center justify-center">
+                    <canvas id="capitalPieChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FIREBASE LIVE AGGREGATION & GRAPH ENGINE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function initLiveAnalyticsDashboard() {
+            try {
+                // 1. క్లౌడ్ డేటాబేస్ నుండి కస్టమర్ల క్యాపిటల్ నిల్వలను లెక్కించడం
+                const custSnap = await getDocs(collection(db, "customers"));
+                let totalBookPrincipal = 0;
+                let totalEmiPaidSoFar = 0;
+                let totalPenaltiesCollected = 0;
+
+                custSnap.forEach((doc) => {
+                    const data = doc.data();
+                    totalBookPrincipal += Number(data.loanPrincipal || data.loan || 0);
+                    totalEmiPaidSoFar += Number(data.paid || 0);
+                    totalPenaltiesCollected += Number(data.totalPenaltyPaid || 0);
+                });
+
+                // 2. గ్లోబల్ కలెక్షన్ హిస్టరీ నుండి నెలవారీ రికవరీ లాగ్‌లను గ్రూప్ చేయడం
+                const paymentSnap = await getDocs(collection(db, "emi_collections"));
+                
+                // డీఫాల్ట్ మంత్లీ స్లాట్స్ బ్యాకప్
+                let monthlyDataBuckets = { "Apr": 0, "May": 0, "Jun": 0, "Jul": 0, "Aug": 0, "Sep": 0 };
+
+                paymentSnap.forEach((doc) => {
+                    const p = doc.data();
+                    let amt = Number(p.emiAmountPaid || 0);
+                    
+                    if(p.date) {
+                        let dateObj = p.date.toDate ? p.date.toDate() : new Date(p.date);
+                        let monthName = dateObj.toLocaleString('en-US', { month: 'short' });
+                        if(monthlyDataBuckets[monthName] !== undefined) {
+                            monthlyDataBuckets[monthName] += amt;
+                        }
+                    }
+                });
+
+                // 3. 👑 GRAPH 1: RECOVERY LINE CHART GENERATION
+                const ctxLine = document.getElementById('recoveryLineChart').getContext('2d');
+                new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(monthlyDataBuckets),
+                        datasets: [{
+                            label: 'Monthly EMI Received (₹)',
+                            data: Object.values(monthlyDataBuckets),
+                            borderColor: '#0284c7',
+                            backgroundColor: 'rgba(2, 132, 199, 0.05)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            fill: true,
+                            pointBackgroundColor: '#0284c7'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#f1f5f9' }, ticks: { font: { weight: 'bold' } } },
+                            x: { grid: { display: false }, ticks: { font: { weight: 'bold' } } }
+                        }
+                    }
+                });
+
+                // 4. 👑 GRAPH 2: CAPITAL PIE CHART GENERATION
+                const ctxPie = document.getElementById('capitalPieChart').getContext('2d');
+                new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Net Outstanding', 'EMI Paid', 'Fines Collected'],
+                        datasets: [{
+                            data: [Math.max(0, totalBookPrincipal - totalEmiPaidSoFar), totalEmiPaidSoFar, totalPenaltiesCollected],
+                            backgroundColor: ['#0f172a', '#10b981', '#f59e0b'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { boxWidth: 12, font: { size: 11, weight: 'bold' } }
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+
+            } catch (error) {
+                console.error("Chart Render Gateway Timeout Error: ", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', initLiveAnalyticsDashboard);
+    </script>
+</body>
+</html>
