@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f8;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .box {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-img {
+            width: 100px;
+            display: block;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d2b6b;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0d2b6b;
+        }
+
+        /* క్లికబుల్ క్రాఫ్ట్ కార్డ్ స్టైలింగ్ */
+        .result-card {
+            background: #f7f9fc;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #eef2f6;
+        }
+
+        .result-card:hover {
+            background: #eef2f6;
+            transform: translateY(-2px);
+            border-color: #0d2b6b;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-block h3 {
+            margin: 0 0 6px 0;
+            color: #0d2b6b;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        .info-block p {
+            margin: 4px 0;
+            font-size: 13px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .uid-tag {
+            color: #0284c7;
+            font-family: monospace;
+            font-size: 11px;
+            background: #e0f2fe;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .right-block {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .status-badge {
+            color: #10b981;
+            background: #ecfdf5;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .action-arrow {
+            color: #0d2b6b;
+            font-size: 14px;
+        }
+
+        .loading-text, .empty-text {
+            text-align: center;
+            color: #888;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            font-weight: bold;
+            background: white;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print" style="max-w-700px; margin: auto; margin-top: 10px;">
+        <a href="admin.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+    </div>
+
+    <div class="box">
+        <div class="logo-container">
+            <img src="logo.png" class="logo-img" onerror="this.style.display='none';">
+        </div>
+        <h1>Customer Search</h1>
+        
+        <input type="text" id="searchInput" placeholder="Search Customer Name or Phone Number...">
+
+        <div id="searchResultsContainer">
+            <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> ఫైర్‌బేస్ డేటా లోడ్ అవుతోంది...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let localCustomersBackup = [];
+
+        // డేటాబేస్ నుండి కస్టమర్ల లిస్ట్ లాగడం
+        async function fetchAllBorrowers() {
+            try {
+                const snap = await getDocs(collection(db, "customers"));
+                localCustomersBackup = [];
+                
+                snap.forEach((docRecord) => {
+                    const data = docRecord.data();
+                    
+                    // 🛠️ ఫీల్డ్ కరెక్షన్: 'loanPrincipal' లేదా 'loan' ఉన్నా కరెక్ట్ గా అసలు అమౌంట్ తీసుకుంటుంది
+                    let principalAmount = Number(data.loanPrincipal !== undefined ? data.loanPrincipal : (data.loan || 0));
+                    let emiValue = Number(data.emi || 0);
+                    let tenure = Number(data.tenureMonths || data.months || 12);
+
+                    // ఒకవేళ ఎంట్రీ లో లోన్ ప్రిన్సిపల్ సున్నా వస్తే EMI * Tenure క్యాలిక్యులేట్ చేస్తుంది
+                    if(principalAmount === 0 && emiValue > 0) {
+                        principalAmount = emiValue * tenure;
+                    }
+
+                    localCustomersBackup.push({
+                        id: docRecord.id,
+                        name: data.name || "Unknown Borrower",
+                        phone: data.phone || "",
+                        loanAmt: principalAmount,
+                        emi: emiValue,
+                        customerId: data.customerId || "HBML-" + docRecord.id.substring(0, 5).toUpperCase()
+                    });
+                });
+
+                document.getElementById("searchResultsContainer").innerHTML = `<div class="empty-text">Type a name to search borrower profile...</div>`;
+            } catch (e) {
+                console.error(e);
+                document.getElementById("searchResultsContainer").innerHTML = `<div class="empty-text" style="color:red;">Cloud fetch failed.</div>`;
+            }
+        }
+
+        // 👑 🔍 విండో గ్లోబల్ స్కోప్‌కి సర్చ్ ఫంక్షన్ బైండ్ చేయడం (HTML onclick క్రాష్ అవ్వకుండా)
+        window.searchCustomerLive = function() {
+            let query = document.getElementById("searchInput").value.toLowerCase().trim();
+            let container = document.getElementById("searchResultsContainer");
+
+            if (query === "") {
+                container.innerHTML = `<div class="empty-text">Type a name to search borrower profile...</div>`;
+                return;
+            }
+
+            let html = "";
+            let matchCount = 0;
+
+            localCustomersBackup.forEach((cust) => {
+                if (cust.name.toLowerCase().includes(query) || cust.phone.includes(query)) {
+                    matchCount++;
+                    
+                    // 👑 క్లిక్ యాక్షన్‌ను ఇక్కడే గ్లోబల్ విండో మెథడ్ ద్వారా బైండ్ చేశాను
+                    html += `
+                        <div class="result-card" onclick="goToProfileDirectly('${cust.id}')">
+                            <div class="flex-container">
+                                <div class="info-block">
+                                    <span class="uid-tag">${cust.customerId}</span>
+                                    <h3>${cust.name}</h3>
+                                    <p>Loan: ₹${cust.loanAmt.toLocaleString('en-IN')}</p>
+                                    <p>EMI: ₹${cust.emi.toLocaleString('en-IN')}</p>
+                                </div>
+                                <div class="right-block">
+                                    <span class="status-badge">Active</span>
+                                    <div class="action-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (matchCount === 0) {
+                container.innerHTML = `<div class="empty-text">No matching borrowers found.</div>`;
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        // 👑 రూటింగ్ గేట్‌వే లాక్ - క్యాషే ఎర్రర్స్ రాకుండా స్టోరేజ్ అండ్ యుఆర్ఎల్ కి కనెక్ట్ చేస్తుంది
+        window.goToProfileDirectly = function(docId) {
+            localStorage.setItem('last_viewed_customer_id', docId);
+            window.location.href = "customer-profile.html?id=" + docId;
+        }
+
+        // ఇన్‌పుట్ బాక్స్‌కు లైవ్ కీ-అప్ లిజనర్ కనెక్షన్
+        document.getElementById("searchInput").addEventListener("keyup", window.searchCustomerLive);
+
+        window.addEventListener('DOMContentLoaded', fetchAllBorrowers);
+    </script>
+</body>
+</html>
