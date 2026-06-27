@@ -11,16 +11,20 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
+    <!-- 🌐 ACCESS DENIED TOAST POPUP CONTAINER -->
+    <div id="accessToast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-amber-600 text-white font-bold text-xs px-6 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2">
+        <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
+        <span>Access Restricted! You are under Employee Desk. Please use back/menu buttons.</span>
+    </div>
+
     <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
         
-        <!-- BACK TO DASHBOARD -->
-        <div class="flex justify-between items-center">
-            <li>
-    <button onclick="triggerEmployeeDashboardLock()" class="w-full flex items-center gap-3 px-4 py-3 text-white/70 hover:bg-white/5 hover:text-white rounded-xl transition cursor-pointer text-left font-bold uppercase">
-        <i class="fa-solid fa-house text-sm w-5"></i> Dashboard (హోమ్)
-    </button>
-</li>
-
+        <!-- BACK TO DASHBOARD CONTROL ROW -->
+        <div class="flex justify-between items-center gap-4">
+            <!-- 👑 🛡️ లేఅవుట్ సరిచేసి ఇక్కడ మన మాస్టర్ పాప్-అప్ లాక్ కనెక్ట్ చేసాను -->
+            <button onclick="triggerEmployeeDashboardLock()" class="flex items-center gap-2 text-xs font-bold text-white/70 hover:text-white bg-slate-950/60 hover:bg-slate-950 border border-slate-800 px-4 py-2.5 rounded-xl transition cursor-pointer font-bold uppercase">
+                <i class="fa-solid fa-house text-sm"></i> Dashboard
+            </button>
             <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">Automated Overdue Gateway</span>
         </div>
 
@@ -372,31 +376,30 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => { if(activeDocId) loadCustomerByDocId(activeDocId); });
+
         /* 👑 🛡️ ఎంప్లాయ్ అడ్మిన్ పేజీకి వెళ్లకుండా ప్రతి కనెక్టింగ్ పేజీలోనూ ఆపే మాస్టర్ లాక్ */
-window.triggerEmployeeDashboardLock = function() {
-    // ఒకవేళ పేజీలో అలర్ట్ బాక్స్ లేకపోతే డైనమిక్‌గా క్రియేట్ చేస్తుంది
-    let toast = document.getElementById("accessToast");
-    if(!toast) {
-        toast = document.createElement("div");
-        toast.id = "accessToast";
-        toast.className = "fixed top-5 left-1/2 -translate-x-1/2 bg-amber-600 text-white font-bold text-xs px-6 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2";
-        toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i> <span>Access Restricted! You are under Employee Desk. Please use back/menu buttons.</span>`;
-        document.body.appendChild(toast);
-    }
+        window.triggerEmployeeDashboardLock = function() {
+            let toast = document.getElementById("accessToast");
+            if(!toast) {
+                toast = document.createElement("div");
+                toast.id = "accessToast";
+                toast.className = "fixed top-5 left-1/2 -translate-x-1/2 bg-amber-600 text-white font-bold text-xs px-6 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-2";
+                toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i> <span>Access Restricted! You are under Employee Desk. Please use back/menu buttons.</span>`;
+                document.body.appendChild(toast);
+            }
 
-    // పాప్-అప్ ని స్క్రీన్ పైకి తీసుకురావడం
-    setTimeout(() => {
-        toast.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
-        toast.classList.add("opacity-100", "translate-y-0");
-    }, 50);
+            // పాప్-అప్ ని స్క్రీన్ పైకి తీసుకురావడం
+            setTimeout(() => {
+                toast.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+                toast.classList.add("opacity-100", "translate-y-0");
+            }, 50);
 
-    // 3 సెకన్ల తర్వాత క్లోజ్ చేయడం
-    setTimeout(() => {
-        toast.classList.remove("opacity-100", "translate-y-0");
-        toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
-    }, 3000);
-}
-
+            // 3 సెకన్ల తర్వాత క్లోజ్ చేయడం
+            setTimeout(() => {
+                toast.classList.remove("opacity-100", "translate-y-0");
+                toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+            }, 3000);
+        }
     </script>
 </body>
 </html>
