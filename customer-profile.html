@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Customer Digital Profile Card</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -15,29 +13,24 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-center items-center p-4">
 
-    <!-- MAIN CARD BOX -->
     <div id="mainProfileCard" class="w-full max-w-md bg-white rounded-3xl p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-slate-100 text-center space-y-6 relative">
         
-        <!-- TOP BRANDING LOGO -->
         <div class="space-y-1">
             <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
             <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
             <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest">Trusted Financial Solutions</p>
         </div>
 
-        <!-- TITLE Separator -->
         <div class="pt-2">
             <h1 class="text-2xl font-black text-slate-900 tracking-tight">Customer Profile</h1>
         </div>
 
-        <!-- DYNAMIC AVATAR CIRCLE -->
         <div class="flex justify-center">
             <div id="avatarCircle" class="h-28 w-28 bg-[#0b2964] text-white rounded-full flex items-center justify-center text-4xl font-bold shadow-lg uppercase">
                 -
             </div>
         </div>
 
-        <!-- CUSTOMER NAME TITLE -->
         <div class="space-y-1">
             <h2 id="txtName" class="text-2xl font-black text-slate-900 uppercase tracking-tight">Loading Profile...</h2>
             <span class="inline-block bg-slate-100 text-slate-500 font-mono font-bold text-[10px] tracking-wider px-2.5 py-1 rounded-full uppercase" id="lblCustId">
@@ -45,7 +38,6 @@
             </span>
         </div>
 
-        <!-- DETAILED FINANCIAL METRICS LIST -->
         <div class="text-left divide-y divide-slate-100 text-sm font-medium pt-2">
             
             <div class="py-3.5 flex justify-between items-center">
@@ -80,7 +72,6 @@
 
         </div>
 
-        <!-- FOOTER BUTTON BAR -->
         <div class="pt-4 flex gap-2 no-print">
             <button onclick="window.location.href='view-customers.html'" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs py-3 px-4 rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95">
                 <i class="fa-solid fa-arrow-left"></i> Back
@@ -92,7 +83,6 @@
 
     </div>
 
-    <!-- FIREBASE ARCHITECTURE LOGIC ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -109,13 +99,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // 👑 🛠️ ఇక్కడ 'window' ఆబ్జెక్ట్‌కు నేరుగా బైండ్ చేయడం వల్ల బ్రౌజర్ ఏ స్పీడ్‌లో లోడ్ చేసినా సరే ఐడీ ఇన్‌స్టంట్‌గా క్యాచ్ అవుతుంది
         async function streamDigitalProfileCard() {
             try {
-                // URL నుండి ID ని లాగడం (ఈవెంట్ లోపల సురక్షితంగా రన్ అవుతుంది)
                 const params = new URLSearchParams(window.location.search);
                 const customerId = params.get("id");
 
-                /* 👑 🚨 ఐడీ లేకపోతే ఇక్కడ మాత్రమే ఎర్రర్ చూపిస్తుంది, ఉన్నప్పుడు కార్డ్‌ని డిస్టర్బ్ చేయదు */
                 if(!customerId){
                     document.getElementById("mainProfileCard").innerHTML = `
                         <div class="p-4 text-center space-y-4">
@@ -139,18 +128,15 @@
                 const data = snap.data();
                 const cleanName = data.name || "HBML Customer";
 
-                // పేరు & అవతార్ ఫిల్లింగ్
                 document.getElementById("txtName").innerText = cleanName;
                 document.getElementById("avatarCircle").innerText = cleanName.charAt(0).toUpperCase();
 
                 let displayUID = data.customerId || "HBML-" + customerId.substring(0, 5).toUpperCase();
                 document.getElementById("lblCustId").innerText = "UID: " + displayUID;
 
-                // బేసిక్ డేటా
                 document.getElementById("txtPhone").innerText = data.phone || "N/A";
                 document.getElementById("txtAddress").innerText = data.address || "Tanuku";
 
-                // 🧮 వడ్డీ మరియు టెన్యూర్‌ని బట్టి టోటల్ లోన్ క్యాలిక్యులేషన్ లాజిక్
                 let emiValue = Number(data.emi || 0);
                 let tenure = 12; 
                 if (data.tenureMonths !== undefined && Number(data.tenureMonths) > 0) {
@@ -164,7 +150,6 @@
                     totalLoanWithInterest = Number(data.loanPrincipal || data.loan || 0);
                 }
 
-                // సబ్‌కలెక్షన్ పేమెంట్స్ చెకింగ్
                 let totalPaidCalculated = 0;
                 try {
                     const paymentSnap = await getDocs(collection(db, "customers", customerId, "payments"));
@@ -177,7 +162,6 @@
                 let finalOutstanding = totalLoanWithInterest - finalPaid;
                 if(finalOutstanding < 0) finalOutstanding = 0;
 
-                // ఫైనల్ డిస్‌ప్లే ఇంజెక్షన్
                 document.getElementById("txtLoan").innerText = "₹" + totalLoanWithInterest.toLocaleString('en-IN');
                 document.getElementById("txtEmi").innerText = "₹" + emiValue.toLocaleString('en-IN');
                 document.getElementById("txtPaid").innerText = "₹" + finalPaid.toLocaleString('en-IN');
@@ -189,8 +173,12 @@
             }
         }
 
-        // DOM లోడ్ అయిన తర్వాతే ఐడీ చెకింగ్ ఇంజిన్ రన్ అవుతుంది
-        window.addEventListener('DOMContentLoaded', streamDigitalProfileCard);
+        // 👑 సేఫ్ ఎగ్జిక్యూషన్ లాక్
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", streamDigitalProfileCard);
+        } else {
+            streamDigitalProfileCard();
+        }
     </script>
     
     <style>
