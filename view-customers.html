@@ -65,7 +65,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* 📉 STREAM ALL REGISTERED BORROWERS FROM FIRESTORE CLOUD */
         async function loadBorrowersDirectory() {
             const container = document.getElementById("customerListContainer");
             try {
@@ -85,7 +84,6 @@
                     const docId = docRecord.id; 
                     const cleanName = data.name || "Unknown Borrower";
                     
-                    // 🛠️ డైనమిక్ టెన్యూర్‌ను బట్టి వడ్డీతో కూడిన టోటల్ లోన్ క్యాలిక్యులేషన్ సింక్
                     let emiValue = Number(data.emi || 0);
                     let tenure = Number(data.tenureMonths || data.months || 12);
                     let totalLoanWithInterest = emiValue * tenure;
@@ -94,7 +92,6 @@
                         totalLoanWithInterest = Number(data.loanPrincipal || data.loan || 0);
                     }
 
-                    // ఔట్‌స్టాండింగ్ బ్యాలెన్స్ లెక్క
                     let paid = Number(data.paid || 0);
                     let balance = totalLoanWithInterest - paid;
                     if(balance < 0) balance = 0;
@@ -104,6 +101,7 @@
 
                     let displayUID = data.customerId || "HBML-" + docId.substring(0, 5).toUpperCase();
 
+                    // 👑 🛠️ ఇక్కడ బటన్ ఆన్‌క్లిక్ లోపల డైరెక్ట్‌గా రూటింగ్ లింక్‌ను ఇంజెక్ట్ చేశాను, ఫంక్షన్ల క్లాష్ రాదు!
                     html += `
                         <div class="p-4 flex justify-between items-center bg-slate-900/40 hover:bg-slate-900 transition gap-4 client-row-item" data-name="${cleanName.toLowerCase()}" data-phone="${(data.phone || '').toLowerCase()}">
                             <div class="space-y-0.5">
@@ -122,7 +120,7 @@
                                     <div class="text-[9px] font-bold text-slate-500 uppercase">Outstanding</div>
                                     <div class="text-xs font-mono font-black text-amber-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
                                 </div>
-                                <button onclick="openCustomerProfileCard('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
+                                <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='customer-profile.html?id=${docId}'" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
                                     Profile Card <i class="fa-solid fa-chevron-right text-[10px]"></i>
                                 </button>
                             </div>
@@ -137,16 +135,10 @@
 
             } catch (error) {
                 console.error(error);
-                container.innerHTML = `<div class="p-8 text-center text-rose-500 font-bold">Cloud fetch failed. Check connection link.</div>`;
+                container.innerHTML = `<div class="p-8 text-center text-rose-500 font-bold">Cloud fetch failed.</div>`;
             }
         }
 
-        // 👑 సరికొత్త డిజిటల్ కార్డు ప్రొఫైల్ రూటింగ్ గేట్‌వే లైన్
-        window.openCustomerProfileCard = function(docId) {
-            window.location.href = "customer-profile.html?id=" + docId;
-        }
-
-        /* 🔍 లైవ్ సెర్చ్ ఫిల్టర్ ఫంక్షన్ */
         window.searchCustomer = function() {
             let filter = document.getElementById("search").value.toLowerCase().trim();
             let rows = document.getElementsByClassName("client-row-item");
