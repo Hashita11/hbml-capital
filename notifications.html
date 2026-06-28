@@ -9,7 +9,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center py-10">
 
     <div class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
         
@@ -19,7 +19,6 @@
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
             
-            <!-- 👑 👤 ROLE SELECTOR: ఎవరి లాగిన్ కి ఏది కనిపించాలో టెస్ట్ చేయడానికి డ్రాప్‌డౌన్ -->
             <div class="w-full sm:w-auto flex items-center gap-2">
                 <span class="text-[10px] font-black text-slate-500 uppercase tracking-wider shrink-0">Current Role:</span>
                 <select id="currentUserRole" onchange="switchNotificationRoleMode()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-sky-400 focus:outline-hidden cursor-pointer appearance-none pr-8 relative">
@@ -38,6 +37,39 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider" id="lblSubtitle">Loading Cloud Signals...</p>
         </div>
 
+        <!-- 👑 📢 BROADCAST NEW ALERT FORM (అడ్మిన్ ప్యానెల్) -->
+        <div id="adminPublishPanel" class="bg-slate-950/50 border border-slate-800 rounded-2xl p-4 space-y-3 text-left">
+            <h3 class="text-xs font-black uppercase text-amber-500 tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-bullhorn"></i> Broadcast New Alert (కొత్త అలర్ట్ పంపండి)
+            </h3>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase block mb-1">Target Audience</label>
+                    <select id="newAlertRole" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 font-bold text-slate-300 focus:outline-hidden cursor-pointer">
+                        <option value="all">All (అందరికీ)</option>
+                        <option value="field agent">Field Agents Only</option>
+                        <option value="customer">Customers Only</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase block mb-1">Alert Type Icon</label>
+                    <select id="newAlertType" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 font-bold text-slate-300 focus:outline-hidden cursor-pointer">
+                        <option value="emi">EMI / Collection</option>
+                        <option value="loan">Loan Status</option>
+                        <option value="attendance">Attendance Check</option>
+                        <option value="report">Management Report</option>
+                    </select>
+                </div>
+            </div>
+            <div class="space-y-2 text-xs">
+                <input type="text" id="newAlertTitle" placeholder="Alert Title (e.g., System Update)" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-hidden focus:border-sky-500">
+                <textarea id="newAlertMsg" placeholder="Type notification details in English or Telugu..." rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-hidden focus:border-sky-500 resize-none"></textarea>
+            </div>
+            <button onclick="publishAlertToCloud()" id="btnPublish" class="w-full bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold py-2.5 rounded-xl transition uppercase tracking-wide flex items-center justify-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-paper-plane" id="publishIcon"></i> Broadcast Notification
+            </button>
+        </div>
+
         <!-- 🔔 DYNAMIC NOTIFICATION STREAM CONTAINER -->
         <div class="space-y-3.5 text-left min-h-[200px]" id="notificationsContainer">
             <div class="text-center py-12 text-slate-500 text-xs font-bold font-mono animate-pulse">
@@ -50,7 +82,7 @@
     <!-- FIREBASE AND ROLE FILTER LOGIC SYSTEM -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -64,20 +96,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // గ్లోబల్ రన్‌టైమ్ అర్రే
         let globalFetchedNotifications = [];
+        let isPublishGateLocked = false;
 
-        /* 💾 SEED DEFAULT DATA: ఒకవేళ ఫైర్‌బేస్ కలెక్షన్ ఖాళీగా ఉంటే టెస్టింగ్ కోసం బ్యాకప్ లోడ్ అవుతుంది */
         const SEED_FALLBACK_ALERTS = [
-            { title: "EMI Payment Due Tomorrow", msg: "కస్టమర్ల నెలవారీ ఈఎంఐ షెడ్యూల్ రేపటి తేదీతో యాక్టివేట్ అవ్వడానికి సిద్ధంగా ఉంది.", role: "field agent", type: "emi" },
-            { title: "New Customer Loan Approved", msg: "కొత్త రుణగ్రహీత యొక్క కేవైసీ పత్రాల వెరిఫికేషన్ పూర్తయి ఖాతా మంజూరైంది.", role: "admin", type: "loan" },
-            { title: "Employee Attendance Updated", msg: "సిబ్బంది యొక్క నేటి హాజరు బయోమెట్రిక్/జీపీఎస్ సిస్టమ్ ద్వారా అప్‌డేట్ చేయబడింది.", role: "admin", type: "attendance" },
-            { title: "Your Loan EMI Received Successfully", msg: "మీ ఈనెల లోన్ ఈఎంఐ రికవరీ అమౌంట్ విజయవంతంగా జమైంది. థాంక్యూ!", role: "customer", type: "loan" },
-            { title: "Monthly Performance Report Generated", msg: "ఈ నెలకు సంబంధించిన బ్రాంచ్‌ల వారీ రికవరీ మరియు కలెక్షన్ నివేదిక సిద్ధమైంది.", role: "admin", type: "report" }
+            { title: "EMI Payment Due Tomorrow", msg: "కస్టమర్ల నెలవారీ ఈఎంఐ షెడ్యూల్ రేపటి తేదీతో యాక్టివేట్ అవ్వడానికి సిద్ధంగా ఉంది.", role: "field agent", type: "emi", timestamp: new Date().getTime() },
+            { title: "New Customer Loan Approved", msg: "కొత్త రుణग्रहీత యొక్క కేవైసీ పత్రాల వెరిఫికేషన్ పూర్తయి ఖాతా మంజూరైంది.", role: "all", type: "loan", timestamp: new Date().getTime() - 3600000 },
+            { title: "Employee Attendance Updated", msg: "సిబ్బంది యొక్క నేటి హాజరు బయోమెట్రిక్/జీపీఎస్ సిస్టమ్ ద్వారా అప్‌డేట్ చేయబడింది.", role: "all", type: "attendance", timestamp: new Date().getTime() - 7200000 },
+            { title: "Your Loan EMI Received Successfully", msg: "మీ ఈనెల లోన్ ఈఎంఐ రికవరీ అమౌంట్ విజయవంతంగా జమైంది. థాంక్యూ!", role: "customer", type: "loan", timestamp: new Date().getTime() - 86400000 },
+            { title: "Monthly Performance Report Generated", msg: "ఈ నెలకు సంబంధించిన బ్రాంచ్‌ల వారీ రికవరీ మరియు కలెక్షన్ నిвеదిక సిద్ధమైంది.", role: "admin", type: "report", timestamp: new Date().getTime() - 172800000 }
         ];
 
         async function fetchLiveCloudNotifications() {
-            const container = document.getElementById("notificationsContainer");
             try {
                 const snap = await getDocs(collection(db, "notifications"));
                 globalFetchedNotifications = [];
@@ -86,43 +116,48 @@
                     snap.forEach(doc => {
                         globalFetchedNotifications.push(doc.data());
                     });
+                    // తాజా నోటిఫికేషన్లు పైకి రావడానికి టైమ్‌స్టాంప్ బట్టి సార్ట్ చేయడం
+                    globalFetchedNotifications.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
                 } else {
-                    // ఫైర్‌బేస్ లో డేటా లేకపోతే శాంపిల్స్ ని లోడ్ చేసుకుంటుంది
                     globalFetchedNotifications = [...SEED_FALLBACK_ALERTS];
                 }
 
-                // డీఫాల్ట్ గా అడ్మిన్ వ్యూ ని రన్ చేయడం
-                renderFilteredNotifications("Admin");
+                // డీఫాల్ట్ గా అడ్మిన్ వ్యూ రన్
+                let currentRole = document.getElementById("currentUserRole").value;
+                renderFilteredNotifications(currentRole);
 
             } catch (error) {
                 console.error("Cloud Error:", error);
-                // ఎర్రర్ వస్తే లోకల్ బ్యాకప్ రన్ అవుతుంది
                 globalFetchedNotifications = [...SEED_FALLBACK_ALERTS];
                 renderFilteredNotifications("Admin");
             }
         }
 
-        /* 👑 🧮 MASTER ROLE FILTER FUNCTION */
+        /* 👑 🧮 MASTER ROLE FILTER & TIMESTAMP SYSTEM */
         window.renderFilteredNotifications = function(selectedRole) {
             const container = document.getElementById("notificationsContainer");
             const subtitle = document.getElementById("lblSubtitle");
+            const adminPanel = document.getElementById("adminPublishPanel");
             
             let currentRoleLower = selectedRole.toLowerCase();
             let html = "";
             let matchCount = 0;
 
-            // సబ్‌టైటిల్ లేబుల్ మార్చడం
             subtitle.innerText = `Viewing Log As: ${selectedRole} Mode`;
+
+            // 🛡️ సెక్యూరిటీ: అడ్మిన్ కాకుండా ఏజెంట్ లేదా కస్టమర్ వ్యూ లో ఉన్నప్పుడు నోటిఫికేషన్ క్రియేషన్ ఫామ్ కనిపించదు
+            if(currentRoleLower === "admin") {
+                adminPanel.classList.remove("hidden");
+            } else {
+                adminPanel.classList.add("hidden");
+            }
 
             globalFetchedNotifications.forEach(item => {
                 let target = (item.role || item.targetRole || "all").toLowerCase();
                 
-                // 🛡️ ఫిల్టర్ నిబంధన: 
-                // 1. అడ్మిన్ కి అన్నీ కనిపిస్తాయి (all)
-                // 2. మిగిలిన వారికి కేవలం వారి రోల్ కి మ్యాచ్ అయినవి మాత్రమే కనిపిస్తాయి
                 let hasAccess = false;
                 if (currentRoleLower === "admin") {
-                    hasAccess = true; // Admin sees everything
+                    hasAccess = true; 
                 } else if (currentRoleLower === "field agent" && target === "field agent") {
                     hasAccess = true;
                 } else if (currentRoleLower === "customer" && target === "customer") {
@@ -134,7 +169,6 @@
                 if(hasAccess) {
                     matchCount++;
                     
-                    // థీమ్ కలర్స్ & ఐకాన్స్ కాన్ఫిగరేషన్
                     let borderStyle = "border-sky-500";
                     let iconStyle = "bg-sky-500/10 text-sky-400";
                     let iconClass = "fa-solid fa-bell";
@@ -157,13 +191,28 @@
                         iconClass = "fa-solid fa-chart-pie";
                     }
 
+                    // ప్రెటీ టైమ్‌స్టాంప్ క్యాలిక్యులేషన్
+                    let timeDisplay = "Recent Alert";
+                    if(item.timestamp) {
+                        let diff = new Date().getTime() - item.timestamp;
+                        let mins = Math.floor(diff / 60000);
+                        let hours = Math.floor(mins / 60);
+                        if(mins < 1) timeDisplay = "Just now";
+                        else if(mins < 60) timeDisplay = `${mins} mins ago`;
+                        else if(hours < 24) timeDisplay = `${hours} hours ago`;
+                        else timeDisplay = new Date(item.timestamp).toLocaleDateString('en-IN');
+                    }
+
                     html += `
                         <div class="bg-slate-950/60 p-4 rounded-xl border-l-4 ${borderStyle} border-y border-r border-slate-800/80 flex items-start gap-3.5 transition hover:border-slate-700">
                             <div class="p-2 ${iconStyle} rounded-lg text-sm mt-0.5 shrink-0">
                                 <i class="${iconClass}"></i>
                             </div>
-                            <div class="space-y-0.5">
-                                <h4 class="text-xs font-black text-white uppercase tracking-wide">${item.title}</h4>
+                            <div class="space-y-1 w-full">
+                                <div class="flex justify-between items-center w-full">
+                                    <h4 class="text-xs font-black text-white uppercase tracking-wide">${item.title}</h4>
+                                    <span class="text-[9px] font-mono font-bold text-slate-500"><i class="fa-regular fa-clock text-[8px]"></i> ${timeDisplay}</span>
+                                </div>
                                 <p class="text-[11px] text-slate-400 leading-relaxed font-medium">${item.msg || item.message}</p>
                             </div>
                         </div>
@@ -178,7 +227,55 @@
             container.innerHTML = html;
         }
 
-        /* 🔄 డ్రాప్‌డౌన్ మార్చినప్పుడు ఫిల్టర్ ట్రిగ్గర్ అవ్వడం */
+        /* 💾 WRITE NEW ALERT TO CLOUD FIREBASE NODE */
+        window.publishAlertToCloud = async function() {
+            if (isPublishGateLocked) return;
+
+            let targetRole = document.getElementById("newAlertRole").value;
+            let alertType = document.getElementById("newAlertType").value;
+            let title = document.getElementById("newAlertTitle").value.trim();
+            let message = document.getElementById("newAlertMsg").value.trim();
+
+            if(!title || !message) {
+                alert("Please fill in both the Title and Details fields.");
+                return;
+            }
+
+            const btn = document.getElementById("btnPublish");
+            const icon = document.getElementById("publishIcon");
+
+            isPublishGateLocked = true;
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
+
+            try {
+                await addDoc(collection(db, "notifications"), {
+                    title: title,
+                    msg: message,
+                    role: targetRole,
+                    type: alertType,
+                    timestamp: new Date().getTime()
+                });
+
+                alert(`Notification broadcasted successfully to all [ ${targetRole} ] profiles!`);
+                
+                // Form Reset
+                document.getElementById("newAlertTitle").value = "";
+                document.getElementById("newAlertMsg").value = "";
+
+                fetchLiveCloudNotifications(); // Refresh list
+
+            } catch (error) {
+                alert("Broadcast failure: " + error.message);
+            } finally {
+                isPublishGateLocked = false;
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+                icon.className = "fa-solid fa-paper-plane";
+            }
+        }
+
         window.switchNotificationRoleMode = function() {
             let role = document.getElementById("currentUserRole").value;
             renderFilteredNotifications(role);
