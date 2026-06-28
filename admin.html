@@ -68,7 +68,8 @@
                     <i class="fa-solid fa-money-check-dollar"></i> EMI Dashboards & Logs (ఈఎంఐ రికార్డులు)
                 </h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <button onclick="location.href='emi-dashboard.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
+                    <!-- 👑 🛠️ 404 FIX: emi-dashboard.html ని గిట్‌హబ్‌లో ఉన్న dashboard-charts.html కు పక్కాగా రీ-రూట్ చేసాను -->
+                    <button onclick="location.href='dashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
                         <i class="fa-solid fa-calendar-days text-amber-500 text-xl"></i> EMI Dashboard
                     </button>
                     <button onclick="location.href='emi-collection.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
@@ -116,7 +117,6 @@
                     <button onclick="location.href='analytics.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
                         <i class="fa-solid fa-chart-line text-teal-400 text-xl"></i> Analytics Panel
                     </button>
-                    <!-- 👑 🔗 ఇక్కడ మీ గిట్‌హబ్ ఫైల్ పేరు స్పెల్లింగ్ పక్కాగా సరిచేసి లింక్ చేశాను -->
                     <button onclick="location.href='dashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-teal-500 cursor-pointer">
                         <i class="fa-solid fa-chart-bar text-teal-400 text-xl"></i> Metric Charts
                     </button>
@@ -171,7 +171,8 @@
                     <button onclick="location.href='audit-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-emerald-500 cursor-pointer">
                         <i class="fa-solid fa-file-shield text-emerald-400 text-xl"></i> Audit Reports
                     </button>
-                    <button onclick="location.href='pdf-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
+                    <!-- 👑 🛠️ 404 FIX: ఇక్కడ ఉన్న ఎక్స్‌పోర్ట్ PDF బటన్‌ను మన మాస్టర్ loan-report.html ఫైల్‌కు సరిగ్గా లింక్ చేశాను -->
+                    <button onclick="location.href='loan-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
                         <i class="fa-solid fa-file-pdf text-rose-400 text-xl"></i> Export PDF
                     </button>
                     <button onclick="location.href='notifications.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-sky-500 cursor-pointer">
@@ -256,7 +257,6 @@
                         ? `<span class="bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-sky-200/50 dark:border-sky-900/50">Admin Log</span>`
                         : `<span class="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2.5 py-0.5 rounded-md text-xs font-bold border border-emerald-200/50 dark:border-emerald-900/50">${data.role}</span>`;
 
-                    // 👑 🛠️ టైమ్‌స్టాంప్ క్రాష్ అవ్వకుండా ఆటో-డిటెక్షన్ లాజిక్ యాడ్ చేశాను
                     let displayTime = 'N/A';
                     if (data.loginTime) {
                         let parsedDate = data.loginTime.seconds ? new Date(data.loginTime.seconds * 1000) : new Date(data.loginTime);
