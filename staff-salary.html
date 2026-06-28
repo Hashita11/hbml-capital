@@ -23,7 +23,7 @@
                 <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
             </a>
             <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-1.5 rounded-full border border-purple-100 shadow-inner">
-                Payroll Engine (9:00 AM Late Lock)
+                Payroll Engine (15-Day Minimum Lock)
             </span>
         </div>
 
@@ -31,7 +31,7 @@
         <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-1.5">
             <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none';">
             <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">Staff Salary Management</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut)</p>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut) • Min 15 Days Work for Sunday/Festival Paid Leaves</p>
         </div>
 
         <!-- 📑 STAFF PAYROLL DIRECTORY CONTAINER -->
@@ -47,6 +47,7 @@
                     <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
                         <tr>
                             <th class="p-4">Employee Details</th>
+                            <th class="p-4">Assigned Branch</th>
                             <th class="p-4">Base Scale</th>
                             <th class="p-4 text-center">Duty Status<br><span class="text-[9px] text-slate-400">(On-Time / Late)</span></th>
                             <th class="p-4 text-center">Paid / Absent Days<br><span class="text-[9px] text-slate-400">(Sun & Fest Included)</span></th>
@@ -56,8 +57,8 @@
                     </thead>
                     <tbody id="salaryTableBody" class="divide-y divide-slate-50 font-medium text-slate-600">
                         <tr>
-                            <td colspan="6" class="p-8 text-center text-slate-400 font-bold">
-                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ రూల్స్ ప్రకారం జీతాలు లెక్కిస్తున్నాము...
+                            <td colspan="7" class="p-8 text-center text-slate-400 font-bold">
+                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ మరియు 15 రోజుల రూల్ ప్రకారం జీతాలు లెక్కిస్తున్నాము...
                             </td>
                         </tr>
                     </tbody>
@@ -124,11 +125,10 @@
                 const attSnap = await getDocs(collection(db, "attendance")); 
 
                 if(empSnap.empty) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center font-bold text-slate-400">No employee records registered in system yet.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center font-bold text-slate-400">No employee records registered in system yet.</td></tr>`;
                     return;
                 }
 
-                // 👑 అటెండెన్స్ తో పాటు 9:00 AM లేట్ టైమింగ్స్ రికార్డ్స్ ని ట్రాక్ చేయడం
                 let staffAttendanceMetrics = {};
                 
                 attSnap.forEach(doc => {
@@ -142,18 +142,15 @@
                         
                         staffAttendanceMetrics[id].presentDays++;
 
-                        // ⏰ 9:00 AM లేట్ లెక్కింపు లాజిక్ చెక్
                         if(log.timestamp) {
                             let logTime = new Date(log.timestamp);
                             let logHours = logTime.getHours();
                             let logMinutes = logTime.getMinutes();
 
-                            // ఒకవేళ 9:00 AM లేదా ఆ పైన టైమ్ రికార్డ్ అయితే Late కింద కూడుతుంది
                             if (logHours > 9 || (logHours === 9 && logMinutes > 0)) {
                                 staffAttendanceMetrics[id].lateDays++;
                             }
                         } else if (log.isLate === true || log.late === true) {
-                            // ప్రత్యామ్నాయంగా బూలియన్ ఫ్లాగ్ ఉంటే
                             staffAttendanceMetrics[id].lateDays++;
                         }
                     }
@@ -168,6 +165,7 @@
                     let empName = data.name || "Unknown Staff";
                     let empUID = data.employeeId || "EMP-" + docId.substring(0, 4).toUpperCase();
                     let role = data.role || data.designation || "Field Agent";
+                    let branch = data.branch || "Tanuku";
                     let baseSalary = Number(data.salary || 0);
                     let currentStatus = data.salaryStatus || "Unpaid";
 
@@ -175,23 +173,30 @@
                     let actualDutyDaysPresent = metrics.presentDays;
                     let totalLateDaysRecorded = metrics.lateDays;
 
-                    // 👑 🧮 3 LATES = 1 DAY SALARY CUT లాజిక్ ఇంజెక్షన్
                     let lateSalaryCutDays = Math.floor(totalLateDaysRecorded / 3);
 
-                    // నెట్ పెయిడ్ డేస్ లెక్కింపు (డ్యూటీ రోజులు + ఆదివారాలు + పండుగలు - లేట్ కట్స్)
-                    let totalPaidDaysAllowed = (actualDutyDaysPresent + calendar.sundaysCount + calendar.festivalHolidaysCount) - lateSalaryCutDays;
+                    // 👑 🧮 15 DAYS WORK POLICY INJECTION
+                    // ఉద్యోగి కనీసం 15 రోజులు లేదా అంతకంటే ఎక్కువ ప్రెసెంట్ అయితేనే ఆదివారాలు, పండుగ సెలవులు లెక్కలోకి వస్తాయి.
+                    let allowedHolidaysCount = 0;
+                    if (actualDutyDaysPresent >= 15) {
+                        allowedHolidaysCount = calendar.sundaysCount + calendar.festivalHolidaysCount;
+                    } else {
+                        allowedHolidaysCount = 0; // 15 రోజుల కంటే తక్కువ వస్తే సెలవుల బెనిఫిట్ కట్
+                    }
+
+                    // నెట్ పెయిడ్ డేస్ లెక్కింపు
+                    let totalPaidDaysAllowed = (actualDutyDaysPresent + allowedHolidaysCount) - lateSalaryCutDays;
                     
                     if(totalPaidDaysAllowed > calendar.totalDaysInMonth) {
                         totalPaidDaysAllowed = calendar.totalDaysInMonth;
                     }
                     if(totalPaidDaysAllowed < 0) totalPaidDaysAllowed = 0;
 
-                    // ఆబ్సెంట్ LWP రోజులు
                     let absentLwpDays = calendar.totalDaysInMonth - totalPaidDaysAllowed;
 
-                    // ఫైనల్ జీతం లెక్కింపు
+                    // ఫైనల్ నెట్ శాలరీ క్యాలిక్యులేషన్
                     let perDaySalaryWeight = baseSalary / calendar.totalDaysInMonth;
-                    let finalNetPayableSalary = Math.round(perDaySalaryWeight * totalPaidDaysAllowed);
+                    let finalNetPayableSalary = totalPaidDaysAllowed > 0 ? Math.round(perDaySalaryWeight * totalPaidDaysAllowed) : 0;
 
                     let statusBadge = "";
                     let actionButton = "";
@@ -214,6 +219,9 @@
                                 <div class="font-bold text-slate-800 uppercase text-sm">${empName}</div>
                                 <div class="text-[10px] text-[#0b2964] font-mono font-bold">${empUID} — <span class="text-slate-400 font-sans">${role}</span></div>
                             </td>
+                            <td class="p-4">
+                                <span class="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded"><i class="fa-solid fa-building text-[9px] mr-1"></i>${branch}</span>
+                            </td>
                             <td class="p-4 font-mono font-bold text-slate-500">₹${baseSalary.toLocaleString('en-IN')}</td>
                             <td class="p-4 text-center">
                                 <div class="font-mono font-bold text-slate-700 text-sm">Total Present: ${actualDutyDaysPresent} Days</div>
@@ -233,7 +241,7 @@
 
             } catch (error) {
                 console.error(error);
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center font-bold text-rose-500">Cloud data network synchronization failure.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center font-bold text-rose-500">Cloud data network synchronization failure.</td></tr>`;
             }
         }
 
