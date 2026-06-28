@@ -11,7 +11,6 @@
 
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <!-- HEADER TOP BAR -->
         <div class="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md">
             <div class="flex items-center gap-3">
                 <img src="logo.png" alt="HBML Logo" class="h-8 w-auto">
@@ -26,7 +25,6 @@
             </div>
         </div>
 
-        <!-- WELCOME & MAIN REPORT LINK -->
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-3xl text-center space-y-4 shadow-xl">
             <div class="h-16 w-16 bg-sky-950 text-sky-400 rounded-full flex items-center justify-center text-2xl font-black mx-auto border border-sky-800 shadow-md">A</div>
             <div>
@@ -38,10 +36,8 @@
             </button>
         </div>
 
-        <!-- 📊 CATEGORIZED QUICK ACTION GRID SYSTEMS (NO STATIC BOXES) -->
         <div class="space-y-6">
 
-            <!-- CATEGORY 1: LOAN ONBOARDING & CORE ACTIONS -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-2">
                     <i class="fa-solid fa-scale-balanced"></i> Loan Management & Actions (లోన్ నిర్వహణ)
@@ -62,13 +58,11 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 2: EMI LEDGERS & MONITORING dashboards -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-amber-500 flex items-center gap-2">
                     <i class="fa-solid fa-money-check-dollar"></i> EMI Dashboards & Logs (ఈఎంఐ రికార్డులు)
                 </h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <!-- 👑 🛠️ 404 FIX: emi-dashboard.html ని గిట్‌హబ్‌లో ఉన్న dashboard-charts.html కు పక్కాగా రీ-రూట్ చేసాను -->
                     <button onclick="location.href='dashboard-charts.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-amber-500 cursor-pointer">
                         <i class="fa-solid fa-calendar-days text-amber-500 text-xl"></i> EMI Dashboard
                     </button>
@@ -84,7 +78,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 3: CUSTOMER SERVICES & SEARCH -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-purple-400 flex items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass-chart"></i> Customer Profiles (కస్టమర్ సెక్షన్)
@@ -108,7 +101,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 4: ADVANCED BUSINESS ANALYTICS & CHARTS -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-teal-400 flex items-center gap-2">
                     <i class="fa-solid fa-chart-line"></i> Business Performance & Intelligence (ఎనలిటిక్స్)
@@ -129,7 +121,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 5: STAFF, HR & FIELD AUTOMATIONS -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-2">
                     <i class="fa-solid fa-user-gear"></i> Staff, HR & Field Systems (సిబ్బంది & ఫీల్డ్ మేనేజ్‌మెంట్)
@@ -153,7 +144,7 @@
                     <button onclick="location.href='whatsapp-reminder.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-green-500 cursor-pointer">
                         <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i> WA Reminders
                     </button>
-                    <button onclick="location.href='emi-receipt.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-cyan-500 cursor-pointer">
+                    <button onclick="openSecureLastReceipt()" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-cyan-500 cursor-pointer">
                         <i class="fa-solid fa-receipt text-cyan-400 text-xl"></i> Print Receipt
                     </button>
                     <button onclick="location.href='employee.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
@@ -162,7 +153,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 6: ENGINE INTEGRITY, SECURITY & SYSTEM REVEALS -->
             <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-md">
                 <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved"></i> Security, Automation & Logs (భారత & ఆటోమేషన్)
@@ -171,7 +161,6 @@
                     <button onclick="location.href='audit-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-emerald-500 cursor-pointer">
                         <i class="fa-solid fa-file-shield text-emerald-400 text-xl"></i> Audit Reports
                     </button>
-                    <!-- 👑 🛠️ 404 FIX: ఇక్కడ ఉన్న ఎక్స్‌పోర్ట్ PDF బటన్‌ను మన మాస్టర్ loan-report.html ఫైల్‌కు సరిగ్గా లింక్ చేశాను -->
                     <button onclick="location.href='loan-report.html'" class="bg-slate-800/60 hover:bg-slate-800 p-4 rounded-2xl text-xs font-bold transition flex flex-col items-center justify-center gap-2 text-center h-24 border border-slate-800 hover:border-rose-500 cursor-pointer">
                         <i class="fa-solid fa-file-pdf text-rose-400 text-xl"></i> Export PDF
                     </button>
@@ -184,7 +173,6 @@
                 </div>
             </div>
 
-            <!-- CATEGORY 7: SETTINGS SYSTEM -->
             <div class="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-md grid grid-cols-2 gap-4">
                 <button onclick="location.href='settings.html'" class="bg-slate-800/60 hover:bg-slate-800 p-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-800 hover:border-slate-500 cursor-pointer">
                     <i class="fa-solid fa-sliders text-slate-400"></i> Settings System
@@ -196,7 +184,6 @@
 
         </div>
 
-        <!-- FIREBASE INJECT ACTIVITY BOX -->
         <div class="bg-white border border-slate-200 dark:bg-slate-900 dark:border-slate-800 rounded-3xl shadow-xl overflow-hidden">
             <div class="p-5 border-b border-slate-100 dark:border-slate-800">
                 <h3 class="text-sm font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">Recent System Activity Logs</h3>
@@ -222,7 +209,6 @@
 
     </div>
 
-    <!-- FIREBASE AND REALTIME ENGINE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -280,6 +266,16 @@
                 tableBody.innerHTML = tableHTML;
             } catch (error) {
                 tableBody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-rose-500 text-xs">డేటా లోడ్ చేయడంలో లోపం జరిగింది.</td></tr>`;
+            }
+        }
+
+        /* 👑 🛠️ సేఫ్ రశీదు ఓపెనర్ ఫంక్షన్ */
+        window.openSecureLastReceipt = function() {
+            let lastId = localStorage.getItem("last_viewed_customer_id");
+            if(lastId) {
+                window.location.href = "emi-receipt.html?id=" + lastId;
+            } else {
+                window.location.href = "collect-emi.html";
             }
         }
 
