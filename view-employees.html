@@ -19,7 +19,7 @@
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
             <span class="text-[10px] font-black uppercase bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-md border border-sky-500/20 shadow-xs tracking-wider">
-                HR Records Node
+                HR Branch Segments
             </span>
         </div>
 
@@ -28,15 +28,29 @@
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
             <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Employee Database</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Internal Staff Directory & Roles Management</p>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Branch-Wise Staff Directory & Performance Nodes</p>
         </div>
 
-        <!-- 🔍 SEARCH BOX CONTAINER -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800/80">
-            <div class="relative">
-                <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" id="search" onkeyup="searchEmployee()" placeholder="Search employee name or role..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-white">
+        <!-- 🔍 BRANCH & TEXT SEARCH CONTROL BOX -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            <!-- 🏢 బ్రాంచ్ సెలెక్టర్ ఫిల్టర్ (న్యూ ఫీచర్) -->
+            <div class="sm:col-span-1">
+                <select id="filterBranch" onchange="filterStaffMaster()" class="w-full h-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-slate-300 cursor-pointer">
+                    <option value="All">All Branches (అన్ని బ్రాంచ్‌లు)</option>
+                    <option value="Tanuku">Tanuku (Headquarters)</option>
+                    <option value="Velpur">Velpur Branch</option>
+                    <option value="Undrajavaram">Undrajavaram Branch</option>
+                    <option value="Relangi">Relangi Branch</option>
+                </select>
             </div>
+
+            <!-- పేరు లేదా రోల్ వెతికే బాక్స్ -->
+            <div class="sm:col-span-2 relative">
+                <span class="absolute left-4 top-4 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id="search" onkeyup="filterStaffMaster()" placeholder="Search employee name or role..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-white">
+            </div>
+
         </div>
 
         <!-- 📑 EMPLOYEES DIRECTORY TABLE -->
@@ -45,15 +59,16 @@
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
                     <i class="fa-solid fa-users text-sky-500 mr-1.5"></i> Registered Staff Members List
                 </span>
+                <span id="lblStaffCount" class="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-slate-400">Count: 0</span>
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse min-w-[550px]">
+                <table class="w-full text-left text-xs border-collapse min-w-[650px]">
                     <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="p-4">Employee Name</th>
-                            <th class="p-4">Phone Number</th>
-                            <th class="p-4">Email Address</th>
+                            <th class="p-4">Assigned Branch</th>
+                            <th class="p-4">Contact / Email</th>
                             <th class="p-4 text-right">Designated Role</th>
                         </tr>
                     </thead>
@@ -98,19 +113,29 @@
                 }
 
                 let html = "";
+                let totalCount = 0;
 
                 querySnapshot.forEach((doc) => {
+                    totalCount++;
                     const data = doc.data();
                     let name = data.name || "N/A";
                     let phone = data.phone || "—";
                     let email = data.email || "—";
                     let role = data.role || data.designation || "Field Agent";
+                    
+                    // 👑 🏢 బ్రాంచ్ పారామీటర్ రీడింగ్ (ఒకవేళ ఫీల్డ్ ఖాళీగా ఉంటే డీఫాల్ట్ గా 'Tanuku' హెడ్‌క్వార్టర్స్‌గా తీసుకుంటుంది)
+                    let branch = data.branch || "Tanuku"; 
 
                     html += `
-                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 employee-row" data-search="${name.toLowerCase()} ${role.toLowerCase()}">
+                        <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 employee-row" data-branch="${branch.toLowerCase()}" data-search="${name.toLowerCase()} ${role.toLowerCase()}">
                             <td class="p-4 font-black text-white uppercase text-sm">${name}</td>
-                            <td class="p-4 font-mono font-bold text-slate-400">${phone}</td>
-                            <td class="p-4 font-mono text-slate-400">${email}</td>
+                            <td class="p-4">
+                                <span class="bg-slate-950 text-amber-400 border border-slate-800 text-[10px] font-bold uppercase px-2.5 py-1 rounded-md tracking-wider"><i class="fa-solid fa-building text-[9px] mr-1"></i> ${branch}</span>
+                            </td>
+                            <td class="p-4 font-mono text-slate-400">
+                                <div>${phone}</div>
+                                <div class="text-[10px] text-slate-500 font-sans font-normal lowercase">${email}</div>
+                            </td>
                             <td class="p-4 text-right">
                                 <span class="bg-slate-800 text-sky-400 border border-slate-700 text-[10px] font-bold uppercase px-2.5 py-1 rounded-md tracking-wider">${role}</span>
                             </td>
@@ -119,6 +144,7 @@
                 });
 
                 tbody.innerHTML = html;
+                document.getElementById("lblStaffCount").innerText = "Count: " + totalCount;
 
             } catch (error) {
                 console.error(error);
@@ -126,19 +152,28 @@
             }
         }
 
-        /* 🔍 LIVE TEXT SEARCH FILTER */
-        window.searchEmployee = function() {
-            let input = document.getElementById("search").value.toLowerCase().trim();
+        /* 👑 🔍 ਬਰਾੰਚ ਅਤੇ ਟੈਕਸਟ ਸਰਚ ਦੋਵਾਂ ਨੂੰ ਇਕੱਠੇ ਫਿਲਟਰ ਕਰਨ ਵਾਲਾ ਮਾਸਟਰ ਫੰਕਸ਼ਨ */
+        window.filterStaffMaster = function() {
+            let selectedBranch = document.getElementById("filterBranch").value.toLowerCase();
+            let textInput = document.getElementById("search").value.toLowerCase().trim();
             let rows = document.getElementsByClassName("employee-row");
+            let visibleCount = 0;
 
             for (let i = 0; i < rows.length; i++) {
-                let searchContent = rows[i].getAttribute("data-search") || "";
-                if (searchContent.includes(input)) {
+                let rowBranch = rows[i].getAttribute("data-branch") || "";
+                let rowSearch = rows[i].getAttribute("data-search") || "";
+
+                let branchMatch = (selectedBranch === "all" || rowBranch === selectedBranch);
+                let textMatch = (rowSearch.includes(textInput));
+
+                if (branchMatch && textMatch) {
                     rows[i].style.display = "";
+                    visibleCount++;
                 } else {
                     rows[i].style.display = "none";
                 }
             }
+            document.getElementById("lblStaffCount").innerText = "Count: " + visibleCount;
         }
 
         window.addEventListener('DOMContentLoaded', loadEmployees);
