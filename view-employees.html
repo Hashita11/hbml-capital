@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - View Employees</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
     <div class="max-w-4xl mx-auto space-y-6">
         
+        <!-- TOP CONTROL NAVIGATION -->
         <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
@@ -20,6 +23,7 @@
             </span>
         </div>
 
+        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
@@ -27,8 +31,8 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Branch-Wise Staff Directory & Performance Nodes</p>
         </div>
 
+        <!-- 🔍 BRANCH & TEXT SEARCH CONTROL BOX -->
         <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            
             <div class="sm:col-span-1">
                 <select id="filterBranch" onchange="filterStaffMaster()" class="w-full h-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-slate-300 cursor-pointer">
                     <option value="All">All Branches (అన్ని బ్రాంచ్‌లు)</option>
@@ -38,14 +42,13 @@
                     <option value="Relangi">Relangi Branch</option>
                 </select>
             </div>
-
             <div class="sm:col-span-2 relative">
                 <span class="absolute left-4 top-4 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" id="search" onkeyup="filterStaffMaster()" placeholder="Search employee name or role..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-white">
             </div>
-
         </div>
 
+        <!-- 📑 EMPLOYEES DIRECTORY TABLE -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
             <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
@@ -78,6 +81,7 @@
 
     </div>
 
+    <!-- 👑 🛠️ EDIT EMPLOYEE MODAL (POPUP DIALOG WITH UNLOCKED AADHAAR) -->
     <div id="editModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-4 shadow-2xl relative text-left">
             <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg cursor-pointer">
@@ -93,12 +97,25 @@
             <div class="space-y-3 text-xs font-medium">
                 <div class="space-y-1">
                     <label class="text-slate-400 font-bold">Full Name</label>
-                    <input type="text" id="editName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold text-white focus:outline-hidden focus:border-sky-500">
+                    <input type="text" id="editName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold text-white focus:outline-hidden focus:border-sky-500 uppercase">
                 </div>
                 <div class="space-y-1">
                     <label class="text-slate-400 font-bold">Phone Number</label>
                     <input type="number" id="editPhone" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500">
                 </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60">
+                    <div class="space-y-1">
+                        <!-- 👑 🛠️ స్టాఫ్ ఆధార్ బాక్స్ అన్‌లాక్ (Removes restrictions & allows inputs) -->
+                        <label class="text-slate-400 font-bold">Aadhaar Number</label>
+                        <input type="text" id="editAadhaar" maxlength="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">PAN Card Code</label>
+                        <input type="text" id="editPan" maxlength="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 uppercase">
+                    </div>
+                </div>
+
                 <div class="space-y-1">
                     <label class="text-slate-400 font-bold">Email Address</label>
                     <input type="email" id="editEmail" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-300 focus:outline-hidden focus:border-sky-500">
@@ -130,11 +147,12 @@
             </div>
 
             <button onclick="updateEmployeeCloudRecord()" id="btnSaveUpdate" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 rounded-xl transition text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-md">
-                <i class="fa-solid fa-floppy-disk" id="updateIcon"></i> Save Changes (అప్‌డేట్ చేయి)
+                <i class="fa-solid fa-floppy-disk" id="updateIcon"></i> Save Changes
             </button>
         </div>
     </div>
 
+    <!-- FIREBASE PLATFORM DATA ARCHITECTURE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -166,7 +184,7 @@
 
                 let html = "";
                 let totalCount = 0;
-                localCachedStaffRecords = {}; // Reset cache
+                localCachedStaffRecords = {};
 
                 querySnapshot.forEach((docRecord) => {
                     totalCount++;
@@ -180,7 +198,6 @@
                     let email = data.email || "—";
                     let role = data.role || data.designation || "Field Agent";
                     let branch = data.branch || "Tanuku"; 
-                    let salary = Number(data.salary || 0);
 
                     html += `
                         <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 employee-row" data-branch="${branch.toLowerCase()}" data-search="${name.toLowerCase()} ${role.toLowerCase()}">
@@ -226,6 +243,10 @@
             document.getElementById("editBranch").value = emp.branch || 'Tanuku';
             document.getElementById("editSalary").value = emp.salary || 0;
             document.getElementById("editRole").value = emp.role || 'Field Agent';
+            
+            // 👑 🛠️ స్టాఫ్ యొక్క ఒరిజినల్ ఆధార్ కూడా ఇక్కడ డైరెక్ట్ గా లోడ్ అవుతుంది
+            document.getElementById("editAadhaar").value = emp.aadhaar || '';
+            document.getElementById("editPan").value = emp.pan || '';
 
             document.getElementById("editModal").classList.remove("hidden");
         }
@@ -241,15 +262,19 @@
             let docId = document.getElementById("editDocId").value;
             let name = document.getElementById("editName").value.trim();
             let phone = document.getElementById("editPhone").value.trim();
+            let aadhaar = document.getElementById("editAadhaar").value.trim();
+            let pan = document.getElementById("editPan").value.trim().toUpperCase();
             let email = document.getElementById("editEmail").value.trim();
             let branch = document.getElementById("editBranch").value;
             let salary = Number(document.getElementById("editSalary").value);
             let role = document.getElementById("editRole").value;
 
-            if(!name || !phone || !email || !salary) {
+            if(!name || !phone || !aadhaar || !email || !salary) {
                 alert("Fields cannot be empty.");
                 return;
             }
+
+            if(aadhaar.length !== 12) return alert("Aadhaar Number must be exactly 12 digits.");
 
             const btn = document.getElementById("btnSaveUpdate");
             const icon = document.getElementById("updateIcon");
@@ -261,9 +286,12 @@
 
             try {
                 const docRef = doc(db, "employees", docId);
+                // 👑 🛠️ ఆధార్, పాన్ సహా అన్నీ అప్‌డేట్ అవుతాయి
                 await updateDoc(docRef, {
                     name: name,
                     phone: phone,
+                    aadhaar: aadhaar,
+                    pan: pan,
                     email: email,
                     branch: branch,
                     salary: salary,
@@ -272,10 +300,10 @@
 
                 alert("Employee details updated successfully!");
                 closeEditModal();
-                loadEmployees(); // Reload list
+                loadEmployees(); 
             } catch (error) {
                 alert("Update failed: " + error.message);
-            } finally {
+            } bits {
                 isUpdateGateLocked = false;
                 btn.disabled = false;
                 btn.classList.remove("opacity-50");
