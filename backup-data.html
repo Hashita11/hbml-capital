@@ -6,6 +6,10 @@
     <title>HBML Capital - Cloud Backup & Storage</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
@@ -28,7 +32,7 @@
             <div class="flex items-center gap-2 text-xs font-black text-amber-400 uppercase tracking-wide">
                 <i class="fa-solid fa-database animate-pulse"></i> Engine Status: Connected
             </div>
-            <p class="text-[11px] text-slate-400 font-medium leading-relaxed">ఇక్కడి నుండి మీ ఫైర్‌బేస్ క్లౌడ్ డేటాబేస్ లోని సింగిల్ లోన్స్ మరియు పొదుపు సంఘాల లోన్ రికార్డులను ఎక్సెల్ షీట్ (CSV ફైల్) రూపంలో మీ డివైజ్ లోకి సురక్షితంగా బ్యాకప్ డౌన్‌లోడ్ చేసుకోవచ్చు.</p>
+            <p class="text-[11px] text-slate-400 font-medium leading-relaxed">ఇక్కడి నుండి మీ ఫైర్‌బేస్ క్లౌడ్ డేటాబేస్ లోని సింగిల్ లోన్స్ మరియు పొదుపు సంఘాల లోన్ రికార్డులను ఎక్సెల్ షీట్ (CSV ఫైల్) రూపంలో మీ డివైజ్ లోకి సురక్షితంగా బ్యాకప్ డౌన్‌లోడ్ చేసుకోవచ్చు.</p>
         </div>
 
         <div class="space-y-3 pt-2">
@@ -79,8 +83,7 @@
                     return;
                 }
 
-                // CSV హెడర్స్ అమర్చడం
-                let csvContent = "Customer ID,Name,Phone,Aadhaar,PAN,Loan Type,Method,Principal,Total Loan,Monthly EMI,Balance\n";
+                let csvContent = "Customer ID,Name,Phone,PAN,Loan Type,Method,Principal,Total Loan,Monthly EMI,Balance\n";
 
                 snap.forEach(doc => {
                     const data = doc.data();
@@ -88,7 +91,6 @@
                         `"${data.customerId || 'N/A'}"`,
                         `"${data.name || 'N/A'}"`,
                         `"${data.phone || 'N/A'}"`,
-                        `"${data.aadhaar || 'N/A'}"`,
                         `"${data.pan || 'N/A'}"`,
                         `"${data.loanType || 'Microfinance'}"`,
                         `"${data.interestMethod || 'Flat'}"`,
@@ -124,8 +126,7 @@
                     return;
                 }
 
-                // CSV హెడర్స్
-                let csvContent = "Group ID,Group Name,Member Name,Phone,Aadhaar,Principal,Total Payable,Monthly EMI,Balance\n";
+                let csvContent = "Group ID,Group Name,Member Name,Phone,Principal,Total Payable,Monthly EMI,Balance\n";
 
                 snap.forEach(doc => {
                     const data = doc.data();
@@ -139,7 +140,6 @@
                             `"${groupName}"`,
                             `"${m.name || 'N/A'}"`,
                             `"${m.phone || 'N/A'}"`,
-                            `"${m.aadhaar || 'N/A'}"`,
                             `"${m.loanPrincipal || 0}"`,
                             `"${m.totalPayable || 0}"`,
                             `"${m.emi || 0}"`,
