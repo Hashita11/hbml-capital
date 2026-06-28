@@ -4,24 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Business Intelligence Analytics</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6" id="body-root">
 
     <div class="max-w-4xl mx-auto space-y-6">
         
+        <!-- TOP CONTROL NAVIGATION BAR -->
         <div class="flex justify-between items-center bg-slate-900/40 p-2 rounded-2xl border border-slate-800/40">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <button onclick="triggerAnalyticsRefresh()" id="btnRefresh" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer flex items-center gap-1.5 active:scale-95">
-                <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Refresh Stats
-            </button>
+            <div class="flex items-center gap-2">
+                <!-- 👑 📊 FEATURE 1: వన్-క్లిక్ ఎక్సెల్ బ్యాకప్ ఎక్స్‌పోర్ట్ బటన్ -->
+                <button onclick="exportAnalyticsToExcelCSV()" class="text-xs font-black text-white bg-emerald-600 border border-emerald-700 px-4 py-2 rounded-xl transition hover:bg-emerald-500 cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-md">
+                    <i class="fa-solid fa-file-excel"></i> Export Excel
+                </button>
+                <button onclick="triggerAnalyticsRefresh()" id="btnRefresh" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer flex items-center gap-1.5 active:scale-95">
+                    <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i> Refresh Stats
+                </button>
+            </div>
         </div>
 
+        <!-- MAIN ANALYTICS CONTAINER BOARD -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-8">
             
+            <!-- BRANDING HEADER -->
             <div class="text-center space-y-2">
                 <img src="logo.png" alt="HBML Logo" class="h-16 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
                 <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
@@ -29,9 +40,10 @@
                 <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Realtime Financial Metrics & Health Check</p>
             </div>
 
+            <!-- 4-GRID FINANCIAL METRIC MATRIX -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
-                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner text-left">
                     <div class="h-12 w-12 bg-sky-950/50 text-sky-400 border border-sky-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
                     <div>
                         <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Disbursed Book</span>
@@ -39,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner text-left">
                     <div class="h-12 w-12 bg-purple-950/50 text-purple-400 border border-purple-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
                     <div>
                         <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Total Live Borrowers</span>
@@ -47,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner text-left">
                     <div class="h-12 w-12 bg-emerald-950/50 text-emerald-400 border border-emerald-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-chart-pie"></i></div>
                     <div>
                         <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Loan Recovery Ratio</span>
@@ -55,7 +67,7 @@
                     </div>
                 </div>
 
-                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner">
+                <div class="bg-slate-950/60 p-6 rounded-2xl border border-slate-800 flex items-center gap-4 shadow-inner text-left">
                     <div class="h-12 w-12 bg-rose-950/50 text-rose-400 border border-rose-900/40 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-user-tie"></i></div>
                     <div>
                         <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Active Field Staffs</span>
@@ -65,6 +77,18 @@
 
             </div>
 
+            <!-- 👑 📊 FEATURE 2: VISUAL LOAN RECOVERY GAUGE PROGRESS TRACKER -->
+            <div class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-2 text-left">
+                <div class="flex justify-between items-center text-xs font-bold">
+                    <span class="text-slate-400 uppercase tracking-wider text-[10px]"><i class="fa-solid fa-shield-heart text-emerald-500 mr-1"></i> Capital Recovery Progress (మొత్తం వసూళ్ల పురోగతి)</span>
+                    <span id="lblRecoveryBarPercent" class="font-mono text-emerald-400">0% Collected</span>
+                </div>
+                <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/60">
+                    <div id="barRecoveryProgress" class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- ENGINE STATUS DATA FOOTER -->
             <div class="bg-slate-950/40 border border-slate-800 p-4 rounded-xl text-xs flex justify-between items-center text-slate-500 font-bold uppercase tracking-wider">
                 <span><i class="fa-solid fa-circle-dot text-emerald-500 animate-pulse mr-1.5"></i> Stream Engine Status: Connected</span>
                 <span id="lblLastUpdated">Syncing...</span>
@@ -74,6 +98,7 @@
 
     </div>
 
+    <!-- FIREBASE AND INTEL SOFTWARE STREAMS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -90,19 +115,21 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        /* ⚡ TRIGGER REFRESH WITH SPINNING ANIMATION */
+        // Global numbers store for excel generation
+        let csvDisbursedScale = 0;
+        let csvBorrowersCount = 0;
+        let csvRecoveryPercent = 0;
+        let csvStaffsCount = 0;
+
         window.triggerAnalyticsRefresh = async function() {
             const icon = document.getElementById("refreshIcon");
             const btn = document.getElementById("btnRefresh");
 
-            // ఐకాన్ రౌండ్ గా తిరిగేలా యానిమేషన్ ఆన్ చేయడం
             icon.classList.add("animate-spin");
             btn.classList.add("opacity-60");
 
-            // లైవ్ ఎనలిటిక్స్ లోడ్ చేయడం
             await loadLiveAnalytics();
 
-            // లోడ్ అయ్యాక యానిమేషన్ స్టాప్ చేయడం
             setTimeout(() => {
                 icon.classList.remove("animate-spin");
                 btn.classList.remove("opacity-60");
@@ -144,20 +171,59 @@
                 let recoveryRatioPercent = 0;
                 if(totalDisbursedBook > 0) {
                     recoveryRatioPercent = (totalRecoveredEMI / totalDisbursedBook) * 100;
-                } else {
-                    recoveryRatioPercent = 0;
                 }
 
-                document.getElementById("lblTotalRevenue").innerText = "₹" + Math.round(totalDisbursedBook).toLocaleString('en-IN');
-                document.getElementById("lblTotalCustomers").innerText = totalCustomersCount.toLocaleString('en-IN');
-                document.getElementById("lblRecoveryRatio").innerText = Math.round(recoveryRatioPercent) + "%";
-                document.getElementById("lblEmployees").innerText = totalStaffsCount;
+                // Cache values into memory
+                csvDisbursedScale = Math.round(totalDisbursedBook);
+                csvBorrowersCount = totalCustomersCount;
+                csvRecoveryPercent = Math.round(recoveryRatioPercent);
+                csvStaffsCount = totalStaffsCount;
+
+                // Render metrics elements on dashboard interface
+                document.getElementById("lblTotalRevenue").innerText = "₹" + csvDisbursedScale.toLocaleString('en-IN');
+                document.getElementById("lblTotalCustomers").innerText = csvBorrowersCount.toLocaleString('en-IN');
+                document.getElementById("lblRecoveryRatio").innerText = csvRecoveryPercent + "%";
+                document.getElementById("lblEmployees").innerText = csvStaffsCount;
                 document.getElementById("lblLastUpdated").innerText = "Last Updated: " + new Date().toLocaleTimeString();
+
+                // 👑 📊 Update Live Visual Recovery Bar Element
+                const progressBar = document.getElementById("barRecoveryProgress");
+                const progressLabel = document.getElementById("lblRecoveryBarPercent");
+                if (progressBar && progressLabel) {
+                    progressBar.style.width = csvRecoveryPercent + "%";
+                    progressLabel.innerText = csvRecoveryPercent + "% Collected";
+                }
 
             } catch (error) {
                 console.error(error);
                 document.getElementById("lblLastUpdated").innerText = "Cloud Sync Failure!";
             }
+        }
+
+        /* 👑 🛠️ ADVANCED FEATURE ACTION: EXPORT LOG MATRIX INTO EXCEL (CSV) SHEET */
+        window.exportAnalyticsToExcelCSV = function() {
+            if(csvDisbursedScale === 0) {
+                alert("Please wait until dynamic metrics are loaded from firebase cloud registry.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "HBML Capital - Business Intelligence Analytics Report\n";
+            csvContent += "Generated Date," + new Date().toLocaleDateString('en-IN') + " " + new Date().toLocaleTimeString() + "\n\n";
+            csvContent += "Financial Metric Pillar,Current Status Value\n";
+            csvContent += "Total Disbursed Loan Book,INR " + csvDisbursedScale + "\n";
+            csvContent += "Total Registered Live Borrowers," + csvBorrowersCount + "\n";
+            csvContent += "Loan Capital Recovery Ratio," + csvRecoveryPercent + "%\n";
+            csvContent += "Active On-Field Collection Staffs," + csvStaffsCount + "\n";
+            csvContent += "System Database Registry Integrity,SECURE VERIFIED NODE\n";
+
+            const encodedUri = encodeURI(csvContent);
+            const downloadAnchor = document.createElement("a");
+            downloadAnchor.setAttribute("href", encodedUri);
+            downloadAnchor.setAttribute("download", "HBML_Business_Analytics_Backup_" + new Date().toISOString().substring(0,10) + ".csv");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
         }
 
         window.addEventListener('DOMContentLoaded', loadLiveAnalytics);
