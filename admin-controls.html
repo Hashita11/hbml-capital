@@ -39,32 +39,17 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Automated Interest, Live Targets & Role Guards</p>
         </div>
 
-        <!-- 👑 NEW ADVANCED FEATURE: TARGET SHARING & MANAGEMENT (టార్గెట్ సెట్ చేసే విభాగం) -->
+        <!-- 👑 🛠️ FULLY AUTOMATED TARGET SHARING DESK -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl text-left">
             <h3 class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
                 <i class="fa-solid fa-share-nodes"></i> 1. Agent Target Sharing desk (సిబ్బంది టార్గెట్ కేటాయింపు)
             </h3>
-            <p class="text-xs text-slate-400">ఇక్కడ మీరు ఏజెంట్ల రోజువారీ/నెలవారీ వసూళ్ల టార్గెట్‌లను మాన్యువల్‌గా మార్చవచ్చు. ఇక్కడ సేవ్ చేసిన టార్గెట్లే లైవ్ స్క్రీన్‌లలో కనిపిస్తాయి.</p>
+            <p class="text-xs text-slate-400">ఫైర్‌బేస్ డేటాబేస్ నుండి ఆటోమేటిక్‌గా మీ తాజా ఏజెంట్ల వివరాలన్నీ ఇక్కడ లోడ్ అవుతాయి. మీరు మెంబర్లను మార్చినా సిస్టమ్ ఆటోమేటిక్‌గా అప్‌డేట్ అవుతుంది.</p>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold">
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <div class="text-white uppercase font-black flex items-center gap-2 text-sm">
-                        <i class="fa-solid fa-user text-emerald-400"></i> NARESH (HBML-LJHEP)
-                    </div>
-                    <div>
-                        <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Set Target Amount (₹)</label>
-                        <input type="number" id="targetNaresh" value="50000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-hidden focus:border-sky-500 font-mono text-sm">
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <div class="text-white uppercase font-black flex items-center gap-2 text-sm">
-                        <i class="fa-solid fa-user text-rose-400"></i> SURESH KUMAR (HBML-EMP-02)
-                    </div>
-                    <div>
-                        <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Set Target Amount (₹)</label>
-                        <input type="number" id="targetSuresh" value="50000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-hidden focus:border-sky-500 font-mono text-sm">
-                    </div>
+            <!-- Dynamic Form Dynamic Injection Grid -->
+            <div id="dynamicTargetInputsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold">
+                <div class="p-4 text-center text-slate-500 font-bold text-xs col-span-2">
+                    <i class="fa-solid fa-spinner animate-spin text-sky-400 mr-1.5"></i> క్లౌడ్ డేటాబేస్ నుండి లైవ్ ఏజెంట్లను సేకరిస్తున్నాము...
                 </div>
             </div>
 
@@ -96,40 +81,14 @@
             </div>
         </div>
 
-        <!-- LIVE COLLECTION TARGET TRACKING PROGRESS -->
+        <!-- LIVE COLLECTION TARGET TRACKING PROGRESS PREVIEW -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl text-left">
             <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
                 <i class="fa-solid fa-chart-line"></i> 3. Live Field Agent Collection Targets Preview
             </h3>
             
-            <div class="space-y-4 text-xs">
-                <!-- Agent 1 Row -->
-                <div class="space-y-1.5">
-                    <div class="flex justify-between items-center font-bold">
-                        <div>
-                            <span class="text-white uppercase font-black">Naresh</span>
-                            <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-LJHEP</span>
-                        </div>
-                        <span class="font-mono text-emerald-400" id="lblPreviewNaresh">₹25,000 / ₹50,000 collected (50%)</span>
-                    </div>
-                    <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
-                        <div id="barPreviewNaresh" class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
-                    </div>
-                </div>
-
-                <!-- Agent 2 Row -->
-                <div class="space-y-1.5">
-                    <div class="flex justify-between items-center font-bold">
-                        <div>
-                            <span class="text-white uppercase font-black">Suresh Kumar</span>
-                            <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-EMP-02</span>
-                        </div>
-                        <span class="font-mono text-slate-400" id="lblPreviewSuresh">₹0 / ₹50,000 collected (0%)</span>
-                    </div>
-                    <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
-                        <div id="barPreviewSuresh" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
+            <div class="space-y-4 text-xs" id="dynamicTargetPreviewsContainer">
+                <div class="p-4 text-center text-slate-500 font-bold text-xs">Loading performance view...</div>
             </div>
         </div>
 
@@ -159,47 +118,120 @@
     </div>
 
     <!-- ADVANCED MANAGEMENT RUNTIME ENGINES -->
-    <script>
-        // LocalStorage fallback for dynamic cross-page saving
-        let currentNareshTarget = Number(localStorage.getItem("target_naresh") || 50000);
-        let currentSureshTarget = Number(localStorage.getItem("target_suresh") || 50000);
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        function initTargetsValuesOnLoad() {
-            document.getElementById("targetNaresh").value = currentNareshTarget;
-            document.getElementById("targetSuresh").value = currentSureshTarget;
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let activeStaffCache = [];
+
+        async function syncLiveEmployeesList() {
+            try {
+                const snap = await getDocs(collection(db, "employees"));
+                activeStaffCache = [];
+                
+                if (!snap.empty) {
+                    snap.forEach(doc => {
+                        const d = doc.data();
+                        activeStaffCache.push({
+                            id: doc.id,
+                            name: d.name || "Unknown Staff",
+                            empID: d.employeeId || "HBML-EMP"
+                        });
+                    });
+                } else {
+                    // Fallback to core if database node is blank
+                    activeStaffCache = [
+                        { id: "naresh_node", name: "NARESH", empID: "HBML-LJHEP" },
+                        { id: "suresh_node", name: "SURESH KUMAR", empID: "HBML-EMP-02" }
+                    ];
+                }
+                
+                buildTargetInputsUI();
+            } catch (error) {
+                console.error(error);
+                activeStaffCache = [
+                    { id: "naresh_node", name: "NARESH", empID: "HBML-LJHEP" },
+                    { id: "suresh_node", name: "SURESH KUMAR", empID: "HBML-EMP-02" }
+                ];
+                buildTargetInputsUI();
+            }
+        }
+
+        function buildTargetInputsUI() {
+            const gridContainer = document.getElementById("dynamicTargetInputsGrid");
+            let html = "";
+
+            activeStaffCache.forEach(staff => {
+                let savedValue = localStorage.getItem("target_" + staff.id) || 50000;
+                html += `
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                        <div class="text-white uppercase font-black flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-user text-sky-400"></i> ${staff.name} (${staff.empID})
+                        </div>
+                        <div>
+                            <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Set Target Amount (₹)</label>
+                            <input type="number" id="input_target_${staff.id}" value="${savedValue}" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-hidden focus:border-sky-500 font-mono text-sm target-input-fields" data-staff-id="${staff.id}">
+                        </div>
+                    </div>
+                `;
+            });
+
+            gridContainer.innerHTML = html;
             updatePreviewBars();
         }
 
-        /* 👑 🛠️ SAVE FUNCTION: టార్గెట్ విలువలను లోకల్ సిస్టమ్‌లో భద్రపరచడం */
         window.saveAgentTargetsToSystem = function() {
-            const valNaresh = document.getElementById("targetNaresh").value;
-            const valSuresh = document.getElementById("targetSuresh").value;
-
-            localStorage.setItem("target_naresh", valNaresh);
-            localStorage.setItem("target_suresh", valSuresh);
-            
-            currentNareshTarget = Number(valNaresh);
-            currentSureshTarget = Number(valSuresh);
+            const fields = document.querySelectorAll(".target-input-fields");
+            fields.forEach(f => {
+                let id = f.getAttribute("data-staff-id");
+                localStorage.setItem("target_" + id, f.value);
+            });
 
             updatePreviewBars();
-            alert("Success: Agent targets updated successfully in global configurations!");
+            alert("Success: Agent targets updated automatically in global configurations!");
         }
 
-        function updatePreviewBars() {
-            let nareshCollected = 25000; // Live Mock from database
-            let sureshCollected = 0;
+        window.updatePreviewBars = function() {
+            const previewContainer = document.getElementById("dynamicTargetPreviewsContainer");
+            let html = "";
 
-            let nPercent = Math.min(Math.round((nareshCollected / currentNareshTarget) * 100), 100);
-            let sPercent = Math.min(Math.round((sureshCollected / currentSureshTarget) * 100), 100);
+            activeStaffCache.forEach(staff => {
+                let currentTarget = Number(localStorage.getItem("target_" + staff.id) || 50000);
+                let mockCollected = staff.name.toUpperCase() === "NARESH" ? 25000 : 0; // Simulated live status
+                let percent = Math.min(Math.round((mockCollected / currentTarget) * 100), 100);
 
-            document.getElementById("lblPreviewNaresh").innerText = "₹" + nareshCollected.toLocaleString('en-IN') + " / ₹" + currentNareshTarget.toLocaleString('en-IN') + " collected (" + nPercent + "%)";
-            document.getElementById("barPreviewNaresh").style.width = nPercent + "%";
+                html += `
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center font-bold">
+                            <div>
+                                <span class="text-white uppercase font-black">${staff.name}</span>
+                                <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: ${staff.empID}</span>
+                            </div>
+                            <span class="font-mono text-emerald-400">₹${mockCollected.toLocaleString('en-IN')} / ₹${currentTarget.toLocaleString('en-IN')} collected (${percent}%)</span>
+                        </div>
+                        <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
+                            <div class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full transition-all duration-500" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
 
-            document.getElementById("lblPreviewSuresh").innerText = "₹" + sureshCollected.toLocaleString('en-IN') + " / ₹" + currentSureshTarget.toLocaleString('en-IN') + " collected (" + sPercent + "%)";
-            document.getElementById("barPreviewSuresh").style.width = sPercent + "%";
+            previewContainer.innerHTML = html;
         }
 
-        function runAutomatedInterestEngine() {
+        window.runAutomatedInterestEngine = function() {
             const principal = Number(document.getElementById("calcPrincipal").value || 0);
             const rate = Number(document.getElementById("calcRate").value || 0);
             const resultEl = document.getElementById("lblMonthlyInterestResult");
@@ -209,7 +241,7 @@
             resultEl.innerText = "₹" + monthlyInterest.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        function applyRoleBasedAccessControl() {
+        window.applyRoleBasedAccessControl = function() {
             const selectedRole = document.getElementById("sessionRoleSelect").value;
             const restrictedZone = document.getElementById("restrictedAdminZone");
 
@@ -227,7 +259,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            initTargetsValuesOnLoad();
+            syncLiveEmployeesList();
             runAutomatedInterestEngine();
             applyRoleBasedAccessControl();
         });
