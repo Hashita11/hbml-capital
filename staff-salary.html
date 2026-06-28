@@ -11,6 +11,29 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        
+        /* 👑 🖨️ ADVANCED SINGLE PAGE PRINTING CONTROLS FOR SALARY BILL */
+        @media print {
+            html, body { 
+                background: white !important; 
+                color: black !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                height: auto !important;
+            }
+            .no-print, button, a { display: none !important; }
+            .bg-slate-900, .bg-slate-950, .bg-slate-50, .bg-slate-50/60 { background: transparent !important; border-color: #cbd5e1 !important; color: black !important; }
+            th { background-color: #f1f5f9 !important; color: black !important; border-bottom: 2px solid #cbd5e1 !important; }
+            td { border-bottom: 1px solid #e2e8f0 !important; color: black !important; }
+            div, h1, p, span { color: black !important; }
+            
+            /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా పేజీ బ్రేక్ కంట్రోల్ */
+            .bg-white { 
+                box-shadow: none !important; 
+                border: none !important; 
+                page-break-inside: avoid !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
@@ -18,20 +41,27 @@
     <div class="w-full max-w-6xl space-y-6">
         
         <!-- TOP CONTROL BAR -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center no-print">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition">
                 <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
             </a>
-            <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-1.5 rounded-full border border-purple-100 shadow-inner">
-                Payroll Engine (15-Day Minimum Lock)
-            </span>
+            
+            <div class="flex items-center gap-2">
+                <!-- 👑 🖨️ సింగిల్ క్లిక్‌తో పక్కాగా శాలరీ షీట్‌ను PDF లాగా డౌన్లోడ్ చేసే మాస్టర్ బటన్ -->
+                <button onclick="window.print()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95">
+                    <i class="fa-solid fa-file-pdf"></i> Export PDF
+                </button>
+                <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-2 rounded-full border border-purple-100 shadow-inner">
+                    Payroll Engine (9:00 AM Late Lock)
+                </span>
+            </div>
         </div>
 
         <!-- BRANDING HEADER -->
         <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-1.5">
             <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none';">
             <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">Staff Salary Management</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut) • Min 15 Days Work for Sunday/Festival Paid Leaves</p>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut)</p>
         </div>
 
         <!-- 📑 STAFF PAYROLL DIRECTORY CONTAINER -->
@@ -52,13 +82,13 @@
                             <th class="p-4 text-center">Duty Status<br><span class="text-[9px] text-slate-400">(On-Time / Late)</span></th>
                             <th class="p-4 text-center">Paid / Absent Days<br><span class="text-[9px] text-slate-400">(Sun & Fest Included)</span></th>
                             <th class="p-4">Net Payable Salary</th>
-                            <th class="p-4 text-center">Disbursal Actions</th>
+                            <th class="p-4 text-center no-print">Disbursal Actions</th>
                         </tr>
                     </thead>
                     <tbody id="salaryTableBody" class="divide-y divide-slate-50 font-medium text-slate-600">
                         <tr>
                             <td colspan="7" class="p-8 text-center text-slate-400 font-bold">
-                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ మరియు 15 రోజుల రూల్ ప్రకారం జీతాలు లెక్కిస్తున్నాము...
+                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ మరియు 15 రోజుల రూల్ ప్రకారం జీతాలు లекకిస్తున్నాము...
                             </td>
                         </tr>
                     </tbody>
@@ -175,16 +205,13 @@
 
                     let lateSalaryCutDays = Math.floor(totalLateDaysRecorded / 3);
 
-                    // 👑 🧮 15 DAYS WORK POLICY INJECTION
-                    // ఉద్యోగి కనీసం 15 రోజులు లేదా అంతకంటే ఎక్కువ ప్రెసెంట్ అయితేనే ఆదివారాలు, పండుగ సెలవులు లెక్కలోకి వస్తాయి.
                     let allowedHolidaysCount = 0;
                     if (actualDutyDaysPresent >= 15) {
                         allowedHolidaysCount = calendar.sundaysCount + calendar.festivalHolidaysCount;
                     } else {
-                        allowedHolidaysCount = 0; // 15 రోజుల కంటే తక్కువ వస్తే సెలవుల బెనిఫిట్ కట్
+                        allowedHolidaysCount = 0; 
                     }
 
-                    // నెట్ పెయిడ్ డేస్ లెక్కింపు
                     let totalPaidDaysAllowed = (actualDutyDaysPresent + allowedHolidaysCount) - lateSalaryCutDays;
                     
                     if(totalPaidDaysAllowed > calendar.totalDaysInMonth) {
@@ -194,7 +221,6 @@
 
                     let absentLwpDays = calendar.totalDaysInMonth - totalPaidDaysAllowed;
 
-                    // ఫైనల్ నెట్ శాలరీ క్యాలిక్యులేషన్
                     let perDaySalaryWeight = baseSalary / calendar.totalDaysInMonth;
                     let finalNetPayableSalary = totalPaidDaysAllowed > 0 ? Math.round(perDaySalaryWeight * totalPaidDaysAllowed) : 0;
 
@@ -232,7 +258,7 @@
                                 <div class="font-mono text-rose-500 text-[10px] font-bold">LWP Absent: ${absentLwpDays} Days</div>
                             </td>
                             <td class="p-4 font-mono font-black text-[#0b2964] text-sm">₹${finalNetPayableSalary.toLocaleString('en-IN')}</td>
-                            <td class="p-4 text-center flex flex-col items-center gap-1">${statusBadge} <div class="mt-1">${actionButton}</div></td>
+                            <td class="p-4 text-center flex flex-col items-center gap-1 no-print">${statusBadge} <div class="mt-1">${actionButton}</div></td>
                         </tr>
                     `;
                 });
