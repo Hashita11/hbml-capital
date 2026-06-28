@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - System Settings</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
 
     <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
         
-        <!-- TOP CONTROL NAVIGATION -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center w-full">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
@@ -23,7 +24,6 @@
             </span>
         </div>
 
-        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
@@ -31,8 +31,17 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Configure Enterprise Global Parameters</p>
         </div>
 
-        <!-- ⚙️ DATA INPUT FIELDS -->
-        <div class="space-y-4 text-left text-xs">
+        <div class="flex justify-between items-center p-3.5 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-left">
+            <div class="space-y-0.5">
+                <strong class="text-[11px] font-black text-white uppercase block">Application Interface Mode</strong>
+                <p class="text-[10px] text-slate-500 font-semibold leading-tight">Switch between forced high-contrast frameworks.</p>
+            </div>
+            <button onclick="toggleGlobalSystemMode()" class="bg-slate-900 border border-slate-700 hover:border-sky-500 text-sky-400 font-black text-[10px] uppercase tracking-wider px-3 py-2 rounded-xl transition cursor-pointer active:scale-95">
+                <i class="fa-solid fa-circle-half-stroke mr-1"></i> Switch Theme
+            </button>
+        </div>
+
+        <div class="space-y-4 text-left text-xs border-t border-slate-800/60 pt-4">
             
             <div class="space-y-1.5">
                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Company Name</label>
@@ -60,14 +69,12 @@
 
         </div>
 
-        <!-- DISPATCH SUBMIT TRIGGER -->
         <button onclick="updateSystemSettings()" id="btnSave" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
             <i class="fa-solid fa-floppy-disk" id="saveIcon"></i> Save System Config
         </button>
 
     </div>
 
-    <!-- FIREBASE PLATFORM ENGINE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -84,10 +91,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // మాస్టర్ డాక్యుమెంట్ రెఫరెన్స్ నోడ్
         const configDocRef = doc(db, "system_config", "global_settings");
 
-        /* 🔄 క్లౌడ్ నుండి పాత కాన్ఫిగరేషన్ ని లోడ్ చేసే ఫంక్షన్ */
         async function loadCurrentSystemSettings() {
             try {
                 const snap = await getDoc(configDocRef);
@@ -97,7 +102,6 @@
                     document.getElementById("txtInterestRate").value = data.defaultInterestRate || "24";
                     document.getElementById("txtAdminPassword").value = data.adminSecretKey || "9000";
                 } else {
-                    // డీఫాల్ట్ నింపడం
                     document.getElementById("txtCompanyName").value = "HBML CAPITAL";
                     document.getElementById("txtInterestRate").value = "24";
                     document.getElementById("txtAdminPassword").value = "9000";
@@ -107,7 +111,6 @@
             }
         }
 
-        /* 💾 క్లౌడ్ లోకి కొత్త కాన్ఫిగరేషన్ ని రైట్ చేసే ఫంక్షన్ */
         window.updateSystemSettings = async function() {
             let company = document.getElementById("txtCompanyName").value.trim();
             let rate = document.getElementById("txtInterestRate").value.trim();
@@ -139,6 +142,18 @@
                 btn.disabled = false;
                 btn.classList.remove("opacity-50");
                 icon.className = "fa-solid fa-floppy-disk";
+            }
+        }
+
+        /* 👑 🛠️ Theme Toggle Fallback Script Node */
+        window.toggleGlobalSystemMode = function() {
+            let current = localStorage.getItem('admin-dark-mode');
+            if(current === 'enabled') {
+                localStorage.setItem('admin-dark-mode', 'disabled');
+                alert("Theme setup preference configured successfully!");
+            } else {
+                localStorage.setItem('admin-dark-mode', 'enabled');
+                alert("High-contrast dark mode locked successfully!");
             }
         }
 
