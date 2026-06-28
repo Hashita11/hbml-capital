@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - View Employees</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <!-- TOP CONTROL NAVIGATION -->
         <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
@@ -23,7 +20,6 @@
             </span>
         </div>
 
-        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
@@ -31,10 +27,8 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Branch-Wise Staff Directory & Performance Nodes</p>
         </div>
 
-        <!-- 🔍 BRANCH & TEXT SEARCH CONTROL BOX -->
         <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3">
             
-            <!-- 🏢 బ్రాంచ్ సెలెక్టర్ ఫిల్టర్ (న్యూ ఫీచర్) -->
             <div class="sm:col-span-1">
                 <select id="filterBranch" onchange="filterStaffMaster()" class="w-full h-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-slate-300 cursor-pointer">
                     <option value="All">All Branches (అన్ని బ్రాంచ్‌లు)</option>
@@ -45,7 +39,6 @@
                 </select>
             </div>
 
-            <!-- పేరు లేదా రోల్ వెతికే బాక్స్ -->
             <div class="sm:col-span-2 relative">
                 <span class="absolute left-4 top-4 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" id="search" onkeyup="filterStaffMaster()" placeholder="Search employee name or role..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-white">
@@ -53,7 +46,6 @@
 
         </div>
 
-        <!-- 📑 EMPLOYEES DIRECTORY TABLE -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
             <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
@@ -63,18 +55,19 @@
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse min-w-[650px]">
+                <table class="w-full text-left text-xs border-collapse min-w-[700px]">
                     <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
                         <tr>
                             <th class="p-4">Employee Name</th>
                             <th class="p-4">Assigned Branch</th>
                             <th class="p-4">Contact / Email</th>
-                            <th class="p-4 text-right">Designated Role</th>
+                            <th class="p-4">Designated Role</th>
+                            <th class="p-4 text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="employeeTableBody" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-slate-500 font-bold">
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold">
                                 <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> ఫైర్‌బేస్ నుండి స్టాఫ్ వివరాలను లోడ్ చేస్తున్నాము...
                             </td>
                         </tr>
@@ -85,10 +78,66 @@
 
     </div>
 
-    <!-- FIREBASE PLATFORM DATA ARCHITECTURE MODULES -->
+    <div id="editModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-4 shadow-2xl relative text-left">
+            <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-base font-black uppercase tracking-tight text-white flex items-center gap-2">
+                <i class="fa-solid fa-user-gear text-sky-400"></i> Edit Staff Profile
+            </h3>
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800 pb-2" id="modalEmpId">EMP ID: —</p>
+            
+            <input type="hidden" id="editDocId">
+            
+            <div class="space-y-3 text-xs font-medium">
+                <div class="space-y-1">
+                    <label class="text-slate-400 font-bold">Full Name</label>
+                    <input type="text" id="editName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold text-white focus:outline-hidden focus:border-sky-500">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-slate-400 font-bold">Phone Number</label>
+                    <input type="number" id="editPhone" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-slate-400 font-bold">Email Address</label>
+                    <input type="email" id="editEmail" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-300 focus:outline-hidden focus:border-sky-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Assign Branch</label>
+                        <select id="editBranch" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
+                            <option value="Tanuku">Tanuku</option>
+                            <option value="Velpur">Velpur</option>
+                            <option value="Undrajavaram">Undrajavaram</option>
+                            <option value="Relangi">Relangi</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Monthly Salary</label>
+                        <input type="number" id="editSalary" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono font-bold text-emerald-400 focus:outline-hidden focus:border-sky-500">
+                    </div>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-slate-400 font-bold">Role Status</label>
+                    <select id="editRole" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
+                        <option value="Field Agent">Field Agent</option>
+                        <option value="Branch Manager">Branch Manager</option>
+                        <option value="Accountant">Accountant</option>
+                        <option value="VGA High School Staff">VGA School Staff</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="updateEmployeeCloudRecord()" id="btnSaveUpdate" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 rounded-xl transition text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-md">
+                <i class="fa-solid fa-floppy-disk" id="updateIcon"></i> Save Changes (అప్‌డేట్ చేయి)
+            </button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -102,29 +151,36 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        let localCachedStaffRecords = {};
+        let isUpdateGateLocked = false;
+
         async function loadEmployees() {
             const tbody = document.getElementById("employeeTableBody");
             try {
                 const querySnapshot = await getDocs(collection(db, "employees"));
                 
                 if(querySnapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center font-bold text-slate-500"><i class="fa-solid fa-user-slash mr-1"></i> No registered employees found in the cloud node.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center font-bold text-slate-500"><i class="fa-solid fa-user-slash mr-1"></i> No registered employees found.</td></tr>`;
                     return;
                 }
 
                 let html = "";
                 let totalCount = 0;
+                localCachedStaffRecords = {}; // Reset cache
 
-                querySnapshot.forEach((doc) => {
+                querySnapshot.forEach((docRecord) => {
                     totalCount++;
-                    const data = doc.data();
+                    const data = docRecord.data();
+                    const docId = docRecord.id;
+                    
+                    localCachedStaffRecords[docId] = { id: docId, ...data };
+
                     let name = data.name || "N/A";
                     let phone = data.phone || "—";
                     let email = data.email || "—";
                     let role = data.role || data.designation || "Field Agent";
-                    
-                    // 👑 🏢 బ్రాంచ్ పారామీటర్ రీడింగ్ (ఒకవేళ ఫీల్డ్ ఖాళీగా ఉంటే డీఫాల్ట్ గా 'Tanuku' హెడ్‌క్వార్టర్స్‌గా తీసుకుంటుంది)
                     let branch = data.branch || "Tanuku"; 
+                    let salary = Number(data.salary || 0);
 
                     html += `
                         <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 employee-row" data-branch="${branch.toLowerCase()}" data-search="${name.toLowerCase()} ${role.toLowerCase()}">
@@ -136,8 +192,13 @@
                                 <div>${phone}</div>
                                 <div class="text-[10px] text-slate-500 font-sans font-normal lowercase">${email}</div>
                             </td>
-                            <td class="p-4 text-right">
+                            <td class="p-4">
                                 <span class="bg-slate-800 text-sky-400 border border-slate-700 text-[10px] font-bold uppercase px-2.5 py-1 rounded-md tracking-wider">${role}</span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <button onclick="openEditModal('${docId}')" class="bg-sky-600/10 hover:bg-sky-600 text-sky-400 hover:text-white px-3 py-1.5 rounded-lg border border-sky-500/20 hover:border-sky-500 font-bold transition cursor-pointer text-[11px] flex items-center gap-1 mx-auto active:scale-95">
+                                    <i class="fa-solid fa-pencil text-[10px]"></i> Edit
+                                </button>
                             </td>
                         </tr>
                     `;
@@ -148,11 +209,81 @@
 
             } catch (error) {
                 console.error(error);
-                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-rose-500 font-bold">Error connecting to database node.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500 font-bold">Error connecting to database node.</td></tr>`;
             }
         }
 
-        /* 👑 🔍 ਬਰਾੰਚ ਅਤੇ ਟੈਕਸਟ ਸਰਚ ਦੋਵਾਂ ਨੂੰ ਇਕੱਠੇ ਫਿਲਟਰ ਕਰਨ ਵਾਲਾ ਮਾਸਟਰ ਫੰਕਸ਼ਨ */
+        /* 🚪 POPUP OPEN & CLOSE CONTROL */
+        window.openEditModal = function(docId) {
+            const emp = localCachedStaffRecords[docId];
+            if(!emp) return;
+
+            document.getElementById("editDocId").value = docId;
+            document.getElementById("modalEmpId").innerText = `EMP ID: ${emp.employeeId || 'N/A'}`;
+            document.getElementById("editName").value = emp.name || '';
+            document.getElementById("editPhone").value = emp.phone || '';
+            document.getElementById("editEmail").value = emp.email || '';
+            document.getElementById("editBranch").value = emp.branch || 'Tanuku';
+            document.getElementById("editSalary").value = emp.salary || 0;
+            document.getElementById("editRole").value = emp.role || 'Field Agent';
+
+            document.getElementById("editModal").classList.remove("hidden");
+        }
+
+        window.closeEditModal = function() {
+            document.getElementById("editModal").classList.add("hidden");
+        }
+
+        /* 💾 CLOUD RE-WRITE INTERACTION EXECUTION */
+        window.updateEmployeeCloudRecord = async function() {
+            if (isUpdateGateLocked) return;
+
+            let docId = document.getElementById("editDocId").value;
+            let name = document.getElementById("editName").value.trim();
+            let phone = document.getElementById("editPhone").value.trim();
+            let email = document.getElementById("editEmail").value.trim();
+            let branch = document.getElementById("editBranch").value;
+            let salary = Number(document.getElementById("editSalary").value);
+            let role = document.getElementById("editRole").value;
+
+            if(!name || !phone || !email || !salary) {
+                alert("Fields cannot be empty.");
+                return;
+            }
+
+            const btn = document.getElementById("btnSaveUpdate");
+            const icon = document.getElementById("updateIcon");
+
+            isUpdateGateLocked = true;
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
+
+            try {
+                const docRef = doc(db, "employees", docId);
+                await updateDoc(docRef, {
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    branch: branch,
+                    salary: salary,
+                    role: role
+                });
+
+                alert("Employee details updated successfully!");
+                closeEditModal();
+                loadEmployees(); // Reload list
+            } catch (error) {
+                alert("Update failed: " + error.message);
+            } finally {
+                isUpdateGateLocked = false;
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+                icon.className = "fa-solid fa-floppy-disk";
+            }
+        }
+
+        /* 🔍 LIVE MASTER FILTER */
         window.filterStaffMaster = function() {
             let selectedBranch = document.getElementById("filterBranch").value.toLowerCase();
             let textInput = document.getElementById("search").value.toLowerCase().trim();
