@@ -4,90 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Customer Self Ledger Panel</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col justify-center items-center" id="body-root">
 
-    <div class="w-full max-w-xl space-y-6">
-
-        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-3">
-            <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
-            <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
-            
-            <div class="space-y-1">
-                <h1 class="text-xl font-black text-slate-900 tracking-tight uppercase">HBML Customer Panel</h1>
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Welcome to your Personal Loan Dashboard</p>
-            </div>
+    <!-- 🔑 SECTION 1: CUSTOMER LOGIN GATEWAY (లాగిన్ స్క్రీన్) -->
+    <div id="customerLoginCard" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+        
+        <div class="text-center space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo-login').classList.remove('hidden')">
+            <div id="fallback-logo-login" class="h-14 w-14 bg-slate-950 text-sky-400 rounded-2xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 mx-auto hidden">H</div>
+            <h1 class="text-xl font-black tracking-tight text-white uppercase">HBML Customer Portal</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">మీ ఖాతా వివరాల డిజిటల్ పాస్‌బుక్</p>
         </div>
 
-        <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 flex items-center gap-4">
-            <div id="custAvatar" class="h-14 w-14 bg-[#0b2964] text-white rounded-full flex items-center justify-center text-2xl font-black uppercase shadow-inner">
-                -
+        <div class="space-y-4 text-xs font-bold text-left">
+            <div class="space-y-1.5">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Customer ID (ఖాతా సంఖ్య)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3.5 text-slate-500"><i class="fa-solid fa-id-card"></i></span>
+                    <input type="text" id="loginCustID" placeholder="e.g. HBML-CUST-01" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+                </div>
             </div>
-            <div class="space-y-0.5">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Account Holder</div>
-                <h2 id="custName" class="text-lg font-black text-slate-900 uppercase">Loading Profile...</h2>
-                <div class="flex gap-2 text-[9px] font-mono font-bold uppercase">
-                    <span id="custUID" class="text-sky-600 bg-sky-50 px-2 py-0.5 rounded">UID: Syncing...</span>
-                    <span id="custLoanType" class="text-slate-500 bg-slate-100 px-2 py-0.5 rounded">MICROFINANCE LOAN</span>
+
+            <div class="space-y-1.5">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Registered Mobile Number (ఫోన్ నెంబర్)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3.5 text-slate-500"><i class="fa-solid fa-phone"></i></span>
+                    <input type="tel" id="loginPhone" placeholder="Enter 10 Digit Number" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-            <div class="bg-white border border-slate-100 p-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] space-y-1">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block"><i class="fa-solid fa-wallet text-slate-400 mr-1"></i> Total Loan (+ Int)</span>
-                <h3 id="lblTotalLoan" class="text-lg font-black font-mono text-slate-900">₹0</h3>
-            </div>
-            <div class="bg-purple-50/40 border border-purple-100/60 p-4 rounded-2xl space-y-1">
-                <span class="text-[10px] font-bold text-purple-600 uppercase tracking-wider block"><i class="fa-solid fa-calendar-days text-purple-400 mr-1"></i> Monthly EMI</span>
-                <h3 id="lblEMI" class="text-lg font-black font-mono text-purple-700">₹0</h3>
-            </div>
-            <div class="bg-emerald-50/40 border border-emerald-100/60 p-4 rounded-2xl space-y-1">
-                <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Total Paid</span>
-                <h3 id="lblTotalPaid" class="text-lg font-black font-mono text-emerald-600">₹0</h3>
-            </div>
-            <div class="bg-amber-50/40 border border-amber-100/60 p-4 rounded-2xl space-y-1">
-                <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider block"><i class="fa-solid fa-scale-unbalanced text-amber-500 mr-1"></i> Outstanding</span>
-                <h3 id="lblOutstanding" class="text-lg font-black font-mono text-amber-600">₹0</h3>
+        <button onclick="processCustomerPortalLogin()" id="btnLoginTrigger" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black py-3.5 px-4 rounded-xl transition shadow-md tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-right-to-bracket" id="loginIcon"></i> Log In Account
+        </button>
+
+        <div class="text-[10px] text-slate-500 font-medium text-center">
+            <i class="fa-solid fa-lock mr-1"></i> Secured Multi-Node Server Verification.
+        </div>
+    </div>
+
+    <!-- 📊 SECTION 2: CUSTOMER DASHBOARD (లాగిన్ విజయవంతమయ్యాక కనిపించే లేఅవుట్ - దాగినది) -->
+    <div id="customerDashboardCard" class="w-full max-w-xl space-y-6 hidden transition-all duration-500">
+
+        <!-- HEADER BANNER BRANDING -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl text-center space-y-3 relative">
+            <button onclick="handleCustomerPortalLogout()" class="absolute top-4 right-4 text-xs font-bold text-rose-400 bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl transition hover:bg-rose-950/40 cursor-pointer">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i> Exit
+            </button>
+
+            <img src="logo.png" alt="HBML Capital Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-logo').classList.remove('hidden')">
+            <div id="fallback-logo" class="text-xs font-black tracking-widest text-slate-400 uppercase hidden">HBML CAPITAL</div>
+            
+            <div class="space-y-1">
+                <h1 class="text-xl font-black text-white tracking-tight uppercase">HBML Customer Panel</h1>
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Welcome to your Personal Loan Dashboard</p>
             </div>
         </div>
 
-        <div class="bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 overflow-hidden">
-            <div class="p-4 bg-slate-50/60 border-b border-slate-100 flex justify-between items-center">
-                <span class="text-xs font-black uppercase text-slate-500 tracking-wider"><i class="fa-solid fa-history text-slate-400 mr-1.5"></i> My Payment Logs</span>
-                <span class="text-[10px] bg-slate-200/60 text-slate-600 font-mono font-bold px-2 py-0.5 rounded-full uppercase" id="lblDueDay">Due: Day 2</span>
+        <!-- PROFILE RECOGNITION BLOCK -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl flex items-center gap-4 text-left">
+            <div id="custAvatar" class="h-14 w-14 bg-sky-950 text-sky-400 border border-sky-800 rounded-full flex items-center justify-center text-2xl font-black uppercase shadow-inner">
+                -
+            </div>
+            <div class="space-y-0.5">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Account Holder</div>
+                <h2 id="custName" class="text-lg font-black text-white uppercase">Loading Profile...</h2>
+                <div class="flex gap-2 text-[9px] font-mono font-bold uppercase">
+                    <span id="custUID" class="text-sky-400 bg-sky-950/40 border border-sky-900/30 px-2 py-0.5 rounded">UID: Syncing...</span>
+                    <span id="custLoanType" class="text-slate-400 bg-slate-950/40 border border-slate-800 px-2 py-0.5 rounded">MICROFINANCE LOAN</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4-GRID COUNTER CARDS PARAMS -->
+        <div class="grid grid-cols-2 gap-3 text-left">
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-1 shadow-md">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block"><i class="fa-solid fa-wallet text-sky-400 mr-1"></i> Total Loan (+ Int)</span>
+                <h3 id="lblTotalLoan" class="text-base md:text-lg font-black font-mono text-white">₹0</h3>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-1 shadow-md">
+                <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider block"><i class="fa-solid fa-calendar-days text-purple-400 mr-1"></i> Monthly EMI</span>
+                <h3 id="lblEMI" class="text-base md:text-lg font-black font-mono text-purple-400">₹0</h3>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-1 shadow-md">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block"><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Total Paid</span>
+                <h3 id="lblTotalPaid" class="text-base md:text-lg font-black font-mono text-emerald-400">₹0</h3>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-1 shadow-md">
+                <span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider block"><i class="fa-solid fa-scale-unbalanced text-amber-500 mr-1"></i> Outstanding</span>
+                <h3 id="lblOutstanding" class="text-base md:text-lg font-black font-mono text-amber-500">₹0</h3>
+            </div>
+        </div>
+
+        <!-- SUB-LEDGER HISTORY LOGS TABLE -->
+        <div class="bg-slate-900 rounded-3xl border border-slate-800 overflow-hidden text-left">
+            <div class="p-4 bg-slate-950/40 border-b border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-history text-slate-500 mr-1.5"></i> My Payment Logs</span>
+                <span class="text-[10px] bg-slate-950 text-slate-400 font-mono font-bold px-2.5 py-1 rounded-md border border-slate-800 uppercase" id="lblDueDay">Due: Syncing...</span>
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead class="bg-slate-950 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-800 text-xs">
                         <tr>
                             <th class="p-4">Payment Date</th>
                             <th class="p-4">Amount Paid</th>
                             <th class="p-4 text-right">Mode</th>
                         </tr>
                     </thead>
-                    <tbody id="customerPaymentTable" class="divide-y divide-slate-50 font-medium text-slate-600">
+                    <tbody id="customerPaymentTable" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
-                            <td colspan="3" class="p-6 text-center text-slate-400 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-sky-500"></i>  వివరాలు సేకరిస్తున్నాము...</td>
+                            <td colspan="3" class="p-6 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-sky-500"></i> లాగిన్ కోసం నిరీక్షిస్తున్నాము...</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <p class="text-[10px] text-center text-slate-400 font-medium px-6">
-            <i class="fa-solid fa-shield-halved mr-1 text-slate-300"></i> This is a secure digital ledger copy generated by HBML Capital node. For errors, contact your collection desk agent.
+        <p class="text-[10px] text-center text-slate-500 font-medium px-6">
+            <i class="fa-solid fa-shield-halved mr-1 text-slate-600"></i> This is a secure digital ledger copy generated by HBML Capital node. For errors, contact your collection desk agent.
         </p>
 
     </div>
 
+    <!-- FIREBASE AND CLIENT CORE PORTAL LOGIC MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -104,41 +153,63 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function initCustomerSelfPanel() {
+        /* 👑 🛡️ DUAL SECURITY VERIFICATION GATEWAY: లాగిన్ రన్ చేసే ఫంక్షన్ */
+        window.processCustomerPortalLogin = async function() {
+            const inputID = document.getElementById("loginCustID").value.trim().toUpperCase();
+            const inputPhone = document.getElementById("loginPhone").value.trim();
+
+            if(!inputID || !inputPhone) {
+                alert("Please enter both Customer ID and Registered Mobile Number.");
+                return;
+            }
+
+            const btn = document.getElementById("btnLoginTrigger");
+            const icon = document.getElementById("loginIcon");
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
+
             try {
-                const params = new URLSearchParams(window.location.search);
-                let id = params.get("id");
+                // ఫైర్‌బేస్ క్లౌడ్ లోని కస్టమర్ నోడ్స్ చెక్ చేయడం
+                const snap = await getDocs(collection(db, "customers"));
+                let targetCustomerIdNode = null;
+                let targetProfileData = null;
 
-                // సేఫ్ బ్యాకప్ మెమరీ రూట్ చెక్
-                if(!id) {
-                    id = localStorage.getItem("last_viewed_customer_id");
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    let checkID = (data.customerId || "").toUpperCase();
+                    let checkPhone = (data.phone || data.mobile || "");
+
+                    // మెంబర్ ఐడీ మరియు ఫోన్ నెంబర్ మ్యాచ్ పారామీటర్స్
+                    if(checkID === inputID && checkPhone.replace(/[^0-9]/g, "").includes(inputPhone.replace(/[^0-9]/g, ""))) {
+                        targetCustomerIdNode = doc.id;
+                        targetProfileData = data;
+                    }
+                });
+
+                if(targetCustomerIdNode && targetProfileData) {
+                    // లాగిన్ సక్సెస్ అయితే రికార్డులను లోడ్ చేయడం
+                    localStorage.setItem("last_viewed_customer_id", targetCustomerIdNode);
+                    document.getElementById("customerLoginCard").classList.add("hidden");
+                    document.getElementById("customerDashboardCard").classList.remove("hidden");
+                    
+                    await loadCustomerLedgerDataset(targetCustomerIdNode, targetProfileData);
                 } else {
-                    localStorage.setItem("last_viewed_customer_id", id);
+                    alert("Authentication Failure: Entered parameter keys are incorrect.");
+                    resetLoginTriggerState();
                 }
 
-                if(!id) {
-                    document.body.innerHTML = `
-                        <div class="bg-white p-8 rounded-3xl shadow-xl text-center max-w-sm border border-slate-100 space-y-4 m-auto mt-20">
-                            <div class="h-12 w-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-key"></i></div>
-                            <h2 class="text-lg font-black text-slate-900">Access Link Invalid</h2>
-                            <p class="text-xs text-slate-500 font-medium px-4">దయచేసి మీ లోన్ అకౌంట్ లింక్ ద్వారా లాగిన్ అవ్వండి.</p>
-                        </div>
-                    `;
-                    return;
-                }
+            } catch (error) {
+                console.error(error);
+                alert("Database synchronization failure.");
+                resetLoginTriggerState();
+            }
+        }
 
-                const docRef = doc(db, "customers", id);
-                const snap = await getDoc(docRef);
-
-                if(!snap.exists()) {
-                    document.getElementById("custName").innerText = "Account Broken";
-                    return;
-                }
-
-                const data = snap.data();
+        /* 🧮 CORE CALCULATOR & LEDGER RENDERING ENGINE */
+        async function loadCustomerLedgerDataset(id, data) {
+            try {
                 const cleanName = data.name || "Valued Customer";
-
-                // 1. హెడర్ డీటెయిల్స్ ఇన్జెక్షన్
                 document.getElementById("custName").innerText = cleanName;
                 document.getElementById("custAvatar").innerText = cleanName.charAt(0).toUpperCase();
                 
@@ -148,7 +219,6 @@
                 if(data.loanType) document.getElementById("custLoanType").innerText = data.loanType.toUpperCase();
                 document.getElementById("lblDueDay").innerText = "Due: Every Month " + (data.dueDay || "2") + "nd";
 
-                // 2. 🧮 స్మార్ట్ వడ్డీ + టెన్యూర్‌ క్యాలిక్యులేటర్ ఇంజిన్
                 let emiValue = Number(data.emi || 0);
                 let tenure = 12;
                 if (data.tenureMonths !== undefined && Number(data.tenureMonths) > 0) {
@@ -158,15 +228,13 @@
                 }
 
                 let totalLoanAmount = emiValue * tenure;
-                if (totalLoanAmount <= 0) {
-                    totalLoanAmount = Number(data.loanPrincipal || data.loan || 0);
-                }
+                if (totalLoanAmount <= 0) { totalLoanAmount = Number(data.loanPrincipal || data.loan || 0); }
 
-                // 3. సబ్‌కలెక్షన్ హిస్టరీ సమగ్రత చెక్
                 let totalPaidCalculated = 0;
                 const tbody = document.getElementById("customerPaymentTable");
                 tbody.innerHTML = "";
 
+                // సబ్‌కలెక్షన్ హిస్టరీ రికార్డులను లాగడం
                 const paymentSnap = await getDocs(collection(db, "customers", id, "payments"));
                 paymentSnap.forEach((pDoc) => {
                     const p = pDoc.data();
@@ -174,37 +242,65 @@
                     totalPaidCalculated += amt;
 
                     tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-50">
-                            <td class="p-4 font-mono font-bold text-slate-500">${p.date || 'N/A'}</td>
-                            <td class="p-4 font-mono font-black text-slate-800">₹${amt.toLocaleString('en-IN')}</td>
-                            <td class="p-4 text-right"><span class="bg-slate-100 px-2 py-0.5 rounded text-[10px] text-slate-500 font-bold uppercase">${p.mode || 'Cash'}</span></td>
+                        <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60">
+                            <td class="p-4 font-mono font-bold text-slate-400">${p.date || 'N/A'}</td>
+                            <td class="p-4 font-mono font-black text-white">₹${amt.toLocaleString('en-IN')}</td>
+                            <td class="p-4 text-right"><span class="bg-slate-950 px-2 py-0.5 rounded text-[10px] text-slate-400 border border-slate-800 font-bold uppercase">${p.mode || 'Cash'}</span></td>
                         </tr>
                     `;
                 });
 
                 if(tbody.innerHTML === "") {
-                    tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-400 font-bold">No payment entries recorded yet.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-500 font-bold">No payment entries recorded yet.</td></tr>`;
                 }
 
                 let finalOutstanding = totalLoanAmount - totalPaidCalculated;
                 if(finalOutstanding < 0) finalOutstanding = 0;
 
-                // 4. ఫైనల్ కార్డ్ కౌంటర్స్ లోడింగ్
                 document.getElementById("lblTotalLoan").innerText = "₹" + totalLoanAmount.toLocaleString('en-IN');
                 document.getElementById("lblEMI").innerText = "₹" + emiValue.toLocaleString('en-IN');
                 document.getElementById("lblTotalPaid").innerText = "₹" + totalPaidCalculated.toLocaleString('en-IN');
                 document.getElementById("lblOutstanding").innerText = "₹" + Math.round(finalOutstanding).toLocaleString('en-IN');
 
-            } catch (error) {
-                console.error(error);
+            } catch(e) {
+                console.error(e);
             }
         }
 
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initCustomerSelfPanel);
-        } else {
-            initCustomerSelfPanel();
+        window.handleCustomerPortalLogout = function() {
+            document.getElementById("customerDashboardCard").classList.add("hidden");
+            document.getElementById("customerLoginCard").classList.remove("hidden");
+            document.getElementById("loginCustID").value = "";
+            document.getElementById("loginPhone").value = "";
+            resetLoginTriggerState();
         }
+
+        function resetLoginTriggerState() {
+            const btn = document.getElementById("btnLoginTrigger");
+            const icon = document.getElementById("loginIcon");
+            btn.disabled = false;
+            btn.classList.remove("opacity-50");
+            icon.className = "fa-solid fa-right-to-bracket";
+        }
+
+        /* 👑 AUTO-LOGIN IF ID IS DIRECTLY PROVIDED IN URL PRE-LINK */
+        async function autoCheckUrlParametersOnLoad() {
+            const params = new URLSearchParams(window.location.search);
+            let urlId = params.get("id");
+            if(urlId) {
+                try {
+                    const docRef = doc(db, "customers", urlId);
+                    const snap = await getDoc(docRef);
+                    if(snap.exists()) {
+                        document.getElementById("customerLoginCard").classList.add("hidden");
+                        document.getElementById("customerDashboardCard").classList.remove("hidden");
+                        await loadCustomerLedgerDataset(urlId, snap.data());
+                    }
+                } catch(e) { console.error(e); }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', autoCheckUrlParametersOnLoad);
     </script>
 </body>
 </html>
