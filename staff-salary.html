@@ -3,105 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Staff Salary Management</title>
-    <!-- Modern Tailwind CSS V4 -->
+    <title>HBML Capital - Professional Salary Slip Engine</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
         
-        /* 👑 🖨️ ADVANCED SINGLE PAGE PRINTING CONTROLS FOR SALARY BILL */
+        /* 👑 Professional Print & PDF Layout Controls */
         @media print {
-            html, body { 
-                background: white !important; 
-                color: black !important; 
-                padding: 0 !important; 
+            html, body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
                 margin: 0 !important;
-                height: auto !important;
             }
-            .no-print, button, a { display: none !important; }
-            .bg-slate-900, .bg-slate-950, .bg-slate-50, .bg-slate-50/60 { background: transparent !important; border-color: #cbd5e1 !important; color: black !important; }
-            th { background-color: #f1f5f9 !important; color: black !important; border-bottom: 2px solid #cbd5e1 !important; }
-            td { border-bottom: 1px solid #e2e8f0 !important; color: black !important; }
-            div, h1, p, span { color: black !important; }
-            
-            /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా పేజీ బ్రేక్ కంట్రోల్ */
-            .bg-white { 
-                box-shadow: none !important; 
-                border: none !important; 
+            .no-print { display: none !important; }
+            .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; }
+            .salary-slip-card {
                 page-break-inside: avoid !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                margin-bottom: 20px !important;
+                background: white !important;
             }
+            th { background-color: #f8fafc !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; }
+            td { border: 1px solid #cbd5e1 !important; color: #334155 !important; }
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-6 flex flex-col items-center">
+<body class="bg-slate-100 text-slate-800 min-h-screen p-4 md:p-8 flex flex-col items-center">
 
-    <div class="w-full max-w-6xl space-y-6">
+    <div class="w-full max-w-4xl space-y-6 main-container">
         
-        <!-- TOP CONTROL BAR -->
-        <div class="flex justify-between items-center no-print">
-            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-xs transition">
-                <i class="fa-solid fa-arrow-left"></i> Admin Dashboard
+        <div class="flex justify-between items-center no-print bg-white p-4 rounded-2xl shadow-xs border border-slate-200/80 w-full">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-50 border border-slate-200 px-4 py-2.5 rounded-xl transition">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
             </a>
-            
-            <div class="flex items-center gap-2">
-                <!-- 👑 🖨️ సింగిల్ క్లిక్‌తో పక్కాగా శాలరీ షీట్‌ను PDF లాగా డౌన్లోడ్ చేసే మాస్టర్ బటన్ -->
-                <button onclick="window.print()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95">
-                    <i class="fa-solid fa-file-pdf"></i> Export PDF
+            <div class="flex items-center gap-3">
+                <button onclick="window.print()" class="text-xs font-bold text-white uppercase tracking-wider bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-2 shadow-md active:scale-95">
+                    <i class="fa-solid fa-print"></i> Print / Save professional PDF
                 </button>
-                <span class="text-[10px] font-black uppercase bg-purple-50 text-purple-600 px-3 py-2 rounded-full border border-purple-100 shadow-inner">
-                    Payroll Engine (9:00 AM Late Lock)
-                </span>
             </div>
         </div>
 
-        <!-- BRANDING HEADER -->
-        <div class="bg-white rounded-3xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 text-center space-y-1.5">
-            <img src="logo.png" alt="HBML Logo" class="h-12 w-auto mx-auto" onerror="this.style.display='none';">
-            <h1 class="text-xl font-black text-[#0b2964] tracking-tight uppercase">Staff Salary Management</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Late Calculated After 9:00 AM (3 Lates = 1 LWP Cut)</p>
-        </div>
-
-        <!-- 📑 STAFF PAYROLL DIRECTORY CONTAINER -->
-        <div class="bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-slate-100 overflow-hidden">
-            <div class="p-4 bg-slate-50/60 border-b border-slate-100 flex justify-between items-center">
-                <span class="text-xs font-black uppercase text-slate-500 tracking-wider">
-                    <i class="fa-solid fa-money-check-dollar text-[#0b2964] mr-1.5"></i> Employee Monthly Payroll Disbursal Queue
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/60 no-print space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h2 class="text-sm font-extrabold text-slate-800 uppercase tracking-tight flex items-center gap-2">
+                    <i class="fa-solid fa-id-card-clip text-indigo-600"></i> Generate Bank-Standard Salary Slips
+                </h2>
+                <span class="text-[10px] font-bold uppercase bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full border border-indigo-100">
+                    Verified Format
                 </span>
             </div>
             
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse min-w-[950px]">
-                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
-                        <tr>
-                            <th class="p-4">Employee Details</th>
-                            <th class="p-4">Assigned Branch</th>
-                            <th class="p-4">Base Scale</th>
-                            <th class="p-4 text-center">Duty Status<br><span class="text-[9px] text-slate-400">(On-Time / Late)</span></th>
-                            <th class="p-4 text-center">Paid / Absent Days<br><span class="text-[9px] text-slate-400">(Sun & Fest Included)</span></th>
-                            <th class="p-4">Net Payable Salary</th>
-                            <th class="p-4 text-center no-print">Disbursal Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="salaryTableBody" class="divide-y divide-slate-50 font-medium text-slate-600">
-                        <tr>
-                            <td colspan="7" class="p-8 text-center text-slate-400 font-bold">
-                                <i class="fa-solid fa-spinner animate-spin mr-1.5 text-[#0b2964]"></i> 9:00 AM లేట్ మరియు 15 రోజుల రూల్ ప్రకారం జీతాలు లекకిస్తున్నాము...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Disbursed Employee</label>
+                    <select id="employeeSelect" onchange="generateSalarySlipUI()" class="w-full text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 focus:outline-none focus:border-indigo-500 transition">
+                        <option value="">-- Loading Disbursed Database --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Salary Month & Year</label>
+                    <input type="month" id="salaryMonth" onchange="generateSalarySlipUI()" class="w-full text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-700 focus:outline-none focus:border-indigo-500 transition">
+                </div>
             </div>
+        </div>
+
+        <div id="salarySlipPrintArea" class="hidden">
+            </div>
+
+        <div id="emptyState" class="bg-white rounded-3xl p-12 text-center border border-slate-200/60 shadow-xs no-print">
+            <div class="w-16 h-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-slate-100">
+                <i class="fa-solid fa-file-invoice-dollar text-2xl"></i>
+            </div>
+            <h3 class="text-sm font-bold text-slate-700 uppercase">No Employee Selected</h3>
+            <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Please select a disbursed employee from the dropdown filter menu above to generate a professional bank-verified salary slip.</p>
         </div>
 
     </div>
 
-    <!-- FIREBASE ARCHITECTURE ENGINE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -115,197 +100,246 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const MAIN_FESTIVAL_HOLIDAYS = [
-            "2026-01-14", "2026-01-15", 
-            "2026-03-28", 
-            "2026-08-15", 
-            "2026-10-19", "2026-10-20", 
-            "2026-11-08"  
-        ];
+        let cachedDisbursements = [];
+        let cachedEmployees = {};
 
-        function calculateMonthCalendarMatrix() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth(); 
+        const now = new Date();
+        document.getElementById('salaryMonth').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
-            let sundaysCount = 0;
-            let festivalHolidaysCount = 0;
-
-            for (let day = 1; day <= totalDaysInMonth; day++) {
-                let checkDate = new Date(year, month, day);
-                if (checkDate.getDay() === 0) {
-                    sundaysCount++;
-                } else {
-                    let formattedDateStr = checkDate.toISOString().split('T')[0];
-                    if (MAIN_FESTIVAL_HOLIDAYS.includes(formattedDateStr)) {
-                        festivalHolidaysCount++;
-                    }
-                }
-            }
-            return { totalDaysInMonth, sundaysCount, festivalHolidaysCount };
-        }
-
-        async function loadStaffPayrollLedger() {
-            const tbody = document.getElementById("salaryTableBody");
+        async function initSalarySlipEngine() {
             try {
-                const calendar = calculateMonthCalendarMatrix();
-                
+                const selectEl = document.getElementById("employeeSelect");
                 const empSnap = await getDocs(collection(db, "employees"));
-                const attSnap = await getDocs(collection(db, "attendance")); 
+                empSnap.forEach(d => { cachedEmployees[d.id] = d.data(); });
 
-                if(empSnap.empty) {
-                    tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center font-bold text-slate-400">No employee records registered in system yet.</td></tr>`;
+                const { collection: col, getDocs: gDocs } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+                const disbSnap = await getDocs(collection(db, "salary_disbursements"));
+                
+                if (disbSnap.empty) {
+                    selectEl.innerHTML = `<option value="">No disbursed salaries found</option>`;
                     return;
                 }
 
-                let staffAttendanceMetrics = {};
-                
-                attSnap.forEach(doc => {
-                    let log = doc.data();
-                    let id = log.employeeDocId || log.employeeId;
-                    
-                    if(id && (log.status === "Present" || log.status === "Success")) {
-                        if(!staffAttendanceMetrics[id]) {
-                            staffAttendanceMetrics[id] = { presentDays: 0, lateDays: 0 };
-                        }
-                        
-                        staffAttendanceMetrics[id].presentDays++;
+                let dropdownHtml = `<option value="">-- Choose Disbursed Employee --</option>`;
+                cachedDisbursements = [];
 
-                        if(log.timestamp) {
-                            let logTime = new Date(log.timestamp);
-                            let logHours = logTime.getHours();
-                            let logMinutes = logTime.getMinutes();
-
-                            if (logHours > 9 || (logHours === 9 && logMinutes > 0)) {
-                                staffAttendanceMetrics[id].lateDays++;
-                            }
-                        } else if (log.isLate === true || log.late === true) {
-                            staffAttendanceMetrics[id].lateDays++;
-                        }
-                    }
-                });
-
-                let html = "";
-                
-                empSnap.forEach((docRecord) => {
+                disbSnap.forEach(docRecord => {
                     const data = docRecord.data();
-                    const docId = docRecord.id;
-
-                    let empName = data.name || "Unknown Staff";
-                    let empUID = data.employeeId || "EMP-" + docId.substring(0, 4).toUpperCase();
-                    let role = data.role || data.designation || "Field Agent";
-                    let branch = data.branch || "Tanuku";
-                    let baseSalary = Number(data.salary || 0);
-                    let currentStatus = data.salaryStatus || "Unpaid";
-
-                    let metrics = staffAttendanceMetrics[docId] || { presentDays: 0, lateDays: 0 };
-                    let actualDutyDaysPresent = metrics.presentDays;
-                    let totalLateDaysRecorded = metrics.lateDays;
-
-                    let lateSalaryCutDays = Math.floor(totalLateDaysRecorded / 3);
-
-                    let allowedHolidaysCount = 0;
-                    if (actualDutyDaysPresent >= 15) {
-                        allowedHolidaysCount = calendar.sundaysCount + calendar.festivalHolidaysCount;
-                    } else {
-                        allowedHolidaysCount = 0; 
-                    }
-
-                    let totalPaidDaysAllowed = (actualDutyDaysPresent + allowedHolidaysCount) - lateSalaryCutDays;
-                    
-                    if(totalPaidDaysAllowed > calendar.totalDaysInMonth) {
-                        totalPaidDaysAllowed = calendar.totalDaysInMonth;
-                    }
-                    if(totalPaidDaysAllowed < 0) totalPaidDaysAllowed = 0;
-
-                    let absentLwpDays = calendar.totalDaysInMonth - totalPaidDaysAllowed;
-
-                    let perDaySalaryWeight = baseSalary / calendar.totalDaysInMonth;
-                    let finalNetPayableSalary = totalPaidDaysAllowed > 0 ? Math.round(perDaySalaryWeight * totalPaidDaysAllowed) : 0;
-
-                    let statusBadge = "";
-                    let actionButton = "";
-
-                    if (currentStatus === "Paid") {
-                        statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider"><i class="fa-solid fa-circle-check mr-0.5"></i> Paid</span>`;
-                        actionButton = `<button disabled class="bg-slate-100 text-slate-400 font-bold text-[10px] px-4 py-2 rounded-lg uppercase tracking-wider cursor-not-allowed border border-slate-200">Disbursed</button>`;
-                    } else {
-                        statusBadge = `<span class="bg-amber-50 text-amber-600 border border-amber-100 text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider"><i class="fa-solid fa-clock mr-0.5"></i> Pending</span>`;
-                        actionButton = `
-                            <button id="btn-${docId}" onclick="disburseStaffSalary('${docId}', '${empName}', ${finalNetPayableSalary}, ${totalPaidDaysAllowed}, ${absentLwpDays}, ${totalLateDaysRecorded})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-4 py-2 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95 shadow-xs flex items-center gap-1 mx-auto">
-                                <i class="fa-solid fa-receipt"></i> Pay Salary
-                            </button>
-                        `;
-                    }
-
-                    html += `
-                        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                            <td class="p-4">
-                                <div class="font-bold text-slate-800 uppercase text-sm">${empName}</div>
-                                <div class="text-[10px] text-[#0b2964] font-mono font-bold">${empUID} — <span class="text-slate-400 font-sans">${role}</span></div>
-                            </td>
-                            <td class="p-4">
-                                <span class="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded"><i class="fa-solid fa-building text-[9px] mr-1"></i>${branch}</span>
-                            </td>
-                            <td class="p-4 font-mono font-bold text-slate-500">₹${baseSalary.toLocaleString('en-IN')}</td>
-                            <td class="p-4 text-center">
-                                <div class="font-mono font-bold text-slate-700 text-sm">Total Present: ${actualDutyDaysPresent} Days</div>
-                                <div class="text-[10px] mt-0.5 ${totalLateDaysRecorded > 0 ? 'text-amber-600 font-black' : 'text-slate-400'}"><i class="fa-solid fa-clock"></i> Late Marks: ${totalLateDaysRecorded} ${lateSalaryCutDays > 0 ? '(-'+lateSalaryCutDays+' Days Cut)' : ''}</div>
-                            </td>
-                            <td class="p-4 text-center">
-                                <div class="font-mono font-black text-emerald-600">Paid: ${totalPaidDaysAllowed} Days</div>
-                                <div class="font-mono text-rose-500 text-[10px] font-bold">LWP Absent: ${absentLwpDays} Days</div>
-                            </td>
-                            <td class="p-4 font-mono font-black text-[#0b2964] text-sm">₹${finalNetPayableSalary.toLocaleString('en-IN')}</td>
-                            <td class="p-4 text-center flex flex-col items-center gap-1 no-print">${statusBadge} <div class="mt-1">${actionButton}</div></td>
-                        </tr>
-                    `;
+                    const id = docRecord.id;
+                    cachedDisbursements.push({ id, ...data });
+                    dropdownHtml += `<option value="${id}">${data.employeeName} (₹${Number(data.amountPaid).toLocaleString('en-IN')})</option>`;
                 });
-
-                tbody.innerHTML = html;
-
+                selectEl.innerHTML = dropdownHtml;
             } catch (error) {
-                console.error(error);
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center font-bold text-rose-500">Cloud data network synchronization failure.</td></tr>`;
+                console.error("Error loading records:", error);
             }
         }
 
-        window.disburseStaffSalary = async function(docId, staffName, amount, paidDays, absentDays, lateDays) {
-            if(!confirm(`Are you sure you want to process salary disbursement of ₹${amount.toLocaleString('en-IN')} for ${staffName}? (${lateDays} Late Marks detected)`)) return;
+        window.generateSalarySlipUI = function() {
+            const selectId = document.getElementById("employeeSelect").value;
+            const printArea = document.getElementById("salarySlipPrintArea");
+            const emptyState = document.getElementById("emptyState");
 
-            const btn = document.getElementById(`btn-${docId}`);
-            if(btn) {
-                btn.disabled = true;
-                btn.className = "bg-slate-200 text-slate-400 font-bold text-[10px] px-4 py-2 rounded-lg uppercase tracking-wider cursor-not-allowed";
-                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing`;
+            if (!selectId) {
+                printArea.classList.add("hidden");
+                emptyState.classList.remove("hidden");
+                return;
             }
 
-            try {
-                await addDoc(collection(db, "salary_disbursements"), {
-                    employeeDocId: docId,
-                    employeeName: staffName,
-                    amountPaid: amount,
-                    calculatedPaidDays: paidDays,
-                    calculatedAbsentDays: absentDays,
-                    totalLateMarks: lateDays,
-                    disbursedAt: new Date()
-                });
+            const record = cachedDisbursements.find(r => r.id === selectId);
+            if (!record) return;
 
-                await updateDoc(doc(db, "employees", docId), {
-                    salaryStatus: "Paid"
-                });
-
-                alert(`Salary Disbursed Successfully for ${staffName}!`);
-                loadStaffPayrollLedger();
-
-            } catch (error) {
-                alert("Database write error: " + error.message);
-                loadStaffPayrollLedger();
+            const empMeta = cachedEmployees[record.employeeDocId] || {};
+            const empID = empMeta.employeeId || "EMP-" + record.employeeDocId.substring(0,4).toUpperCase();
+            const designation = empMeta.role || empMeta.designation || "Field Agent";
+            const branchLocation = empMeta.branch || "Tanuku H.O.";
+            const baseSalaryScale = Number(empMeta.salary || record.amountPaid);
+            
+            const monthInput = document.getElementById("salaryMonth").value;
+            const dateObj = new Date(monthInput + "-01");
+            const monthName = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+            
+            let disbursementDate = "N/A";
+            if (record.disbursedAt) {
+                const dDate = record.disbursedAt.toDate ? record.disbursedAt.toDate() : new Date(record.disbursedAt);
+                disbursementDate = dDate.toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
             }
+
+            const basicEarnings = Math.round(baseSalaryScale * 0.50);
+            const hraAllowance = Math.round(baseSalaryScale * 0.30);
+            const specialAllowances = baseSalaryScale - (basicEarnings + hraAllowance);
+            const totalDeductionsLoss = baseSalaryScale - Number(record.amountPaid);
+
+            function convertNumberToWords(num) {
+                const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+                const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+                if ((num = num.toString()).length > 9) return 'Overflow';
+                let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                if (!n) return ''; 
+                let str = '';
+                str += (Number(n[1]) != 0) ? (a[Number(n[1])] || b[n[1].charAt(0)] + ' ' + a[n[1].charAt(1)]) + 'Crore ' : '';
+                str += (Number(n[2]) != 0) ? (a[Number(n[2])] || b[n[2].charAt(0)] + ' ' + a[n[2].charAt(1)]) + 'Lakh ' : '';
+                str += (Number(n[3]) != 0) ? (a[Number(n[3])] || b[n[3].charAt(0)] + ' ' + a[n[3].charAt(1)]) + 'Thousand ' : '';
+                str += (Number(n[4]) != 0) ? (a[Number(n[4])] || b[n[4].charAt(0)] + ' ' + a[n[4].charAt(1)]) + 'Hundred ' : '';
+                str += (Number(n[5]) != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5].charAt(0)] + ' ' + a[n[5].charAt(1)]) + 'Only' : 'Only';
+                return str.trim();
+            }
+
+            printArea.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-xl border border-slate-200/70 p-6 md:p-8 space-y-6 salary-slip-card relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-2 bg-indigo-950"></div>
+
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-5 gap-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="bg-indigo-950 text-white w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm tracking-tighter">HB</div>
+                                <h1 class="text-xl font-extrabold text-slate-900 tracking-tight uppercase">Harshita Blooms Microloans Pvt Ltd</h1>
+                            </div>
+                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide px-1">
+                                <i class="fa-solid fa-location-dot text-indigo-950 mr-1"></i> Head Office: Tanuku, Andhra Pradesh, India
+                            </p>
+                        </div>
+                        <div class="text-left md:text-right">
+                            <h2 class="text-lg font-black text-indigo-950 uppercase tracking-tight">Payslip Statement</h2>
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Month: <span class="text-slate-800 font-extrabold">${monthName}</span></p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3.5 bg-slate-50/70 p-4 rounded-xl border border-slate-100 text-xs">
+                        <div class="flex justify-between items-center border-b border-slate-200/50 pb-1.5">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Employee ID</span>
+                            <span class="font-mono font-bold text-slate-800">${empID}</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/50 pb-1.5">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Branch Office</span>
+                            <span class="font-extrabold text-slate-800 uppercase">${branchLocation}</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/50 pb-1.5">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Staff Name</span>
+                            <span class="font-extrabold text-slate-900 uppercase">${record.employeeName}</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-200/50 pb-1.5">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Disbursal Date</span>
+                            <span class="font-bold text-slate-800">${disbursementDate}</span>
+                        </div>
+                        <div class="flex justify-between items-center md:border-none pb-1.5 md:pb-0">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Designation</span>
+                            <span class="font-bold text-slate-700 uppercase">${designation}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Total Late Marks</span>
+                            <span class="font-bold ${record.totalLateMarks > 0 ? 'text-amber-600 font-extrabold' : 'text-slate-700'}">${record.totalLateMarks} Marks</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200 border border-slate-200 rounded-xl overflow-hidden text-xs">
+                        <div class="bg-white p-0 flex flex-col justify-between">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 border-b border-slate-200 font-bold uppercase tracking-wider text-[10px] text-slate-500">
+                                    <tr>
+                                        <th class="p-3">Earnings Breakup</th>
+                                        <th class="p-3 text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-600">
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-700">Basic Salary (50%)</td>
+                                        <td class="p-3 text-right font-mono font-bold text-slate-800">₹${basicEarnings.toLocaleString('en-IN')}.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-700">HRA Allowance (30%)</td>
+                                        <td class="p-3 text-right font-mono font-bold text-slate-800">₹${hraAllowance.toLocaleString('en-IN')}.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-700">Special Allowances</td>
+                                        <td class="p-3 text-right font-mono font-bold text-slate-800">₹${specialAllowances.toLocaleString('en-IN')}.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="bg-slate-50/60 p-3 flex justify-between items-center font-bold border-t border-slate-200 text-slate-700 mt-auto">
+                                <span class="uppercase text-[10px]">Gross Scale Matrix:</span>
+                                <span class="font-mono font-extrabold">₹${baseSalaryScale.toLocaleString('en-IN')}.00</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-0 flex flex-col justify-between border-t md:border-t-0 md:border-l border-slate-200">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 border-b border-slate-200 font-bold uppercase tracking-wider text-[10px] text-slate-500">
+                                    <tr>
+                                        <th class="p-3">Deductions</th>
+                                        <th class="p-3 text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-600">
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-700">LWP / Absent Cuts</td>
+                                        <td class="p-3 text-right font-mono font-bold text-rose-600">₹${totalDeductionsLoss.toLocaleString('en-IN')}.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-400 italic">Professional Tax (PT)</td>
+                                        <td class="p-3 text-right font-mono text-slate-400">₹0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-400 italic">Provident Fund (PF)</td>
+                                        <td class="p-3 text-right font-mono text-slate-400">₹0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="bg-slate-50/60 p-3 flex justify-between items-center font-bold border-t border-slate-200 text-slate-700 mt-auto">
+                                <span class="uppercase text-[10px] text-rose-600">Total Deductions:</span>
+                                <span class="font-mono font-extrabold text-rose-600">₹${totalDeductionsLoss.toLocaleString('en-IN')}.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-950 rounded-xl p-4 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                        <div class="space-y-0.5">
+                            <span class="text-[9px] font-extrabold uppercase tracking-widest text-indigo-300">Amount Disbursed (In Words)</span>
+                            <div class="text-xs font-bold capitalize text-slate-100">${convertNumberToWords(record.amountPaid)}</div>
+                        </div>
+                        <div class="text-left md:text-right w-full md:w-auto border-t md:border-none border-indigo-900/60 pt-2.5 md:pt-0 flex justify-between md:block">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 md:block mr-2 md:mr-0">Net Disbursed Take-Home:</span>
+                            <span class="text-xl font-black font-mono tracking-tight text-white">₹${Number(record.amountPaid).toLocaleString('en-IN')}.00</span>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200/70 rounded-xl p-3.5 bg-slate-50/40 text-[11px] grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                        <div class="space-y-0.5">
+                            <span class="text-slate-400 font-bold uppercase text-[9px] tracking-wider block">Calculated Paid Days</span>
+                            <span class="font-bold text-slate-700 text-xs">${record.calculatedPaidDays} Days</span>
+                        </div>
+                        <div class="space-y-0.5 border-l border-slate-200">
+                            <span class="text-slate-400 font-bold uppercase text-[9px] tracking-wider block">LWP Days</span>
+                            <span class="font-bold text-rose-600 text-xs">${record.calculatedAbsentDays} Days</span>
+                        </div>
+                        <div class="space-y-0.5 border-t sm:border-t-0 sm:border-l border-slate-200 col-span-2 sm:col-span-1">
+                            <span class="text-slate-400 font-bold uppercase text-[9px] tracking-wider block">Payroll Status</span>
+                            <span class="text-emerald-600 font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Disbursed
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 flex justify-between items-end text-xs">
+                        <div class="text-center space-y-1.5 w-36">
+                            <div class="border-b border-slate-300 h-8"></div>
+                            <p class="font-bold text-slate-500 uppercase tracking-wider text-[9px]">Employee Signature</p>
+                        </div>
+                        <div class="text-center space-y-1.5 w-48 text-right">
+                            <div class="h-8 flex items-center justify-end">
+                                <span class="font-serif italic text-indigo-950 font-extrabold text-sm tracking-wide bg-slate-50 border border-slate-100 px-2 py-0.5 rounded shadow-2xs">For HBML Capital</span>
+                            </div>
+                            <p class="font-bold text-indigo-950 uppercase tracking-wider text-[9px]">Authorized Management Signatory</p>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+            printArea.classList.remove("hidden");
+            emptyState.classList.add("hidden");
         }
 
-        window.addEventListener('DOMContentLoaded', loadStaffPayrollLedger);
+        window.addEventListener('DOMContentLoaded', initSalarySlipEngine);
     </script>
 </body>
 </html>
