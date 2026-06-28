@@ -4,46 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Finance & System Audit Report</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* 👑 Professional Print & PDF Layout Controls */
+        @media print {
+            html, body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                height: auto !important;
+            }
+            .no-print, button, a { display: none !important; }
+            .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; }
+            
+            /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా కంట్రోల్ */
+            .audit-master-card {
+                page-break-inside: avoid !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                background: white !important;
+            }
+            th { background-color: #f8fafc !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; padding: 6px !important; }
+            td { border: 1px solid #e2e8f0 !important; color: #334155 !important; padding: 6px !important; }
+            div, h1, p, span, strong { color: black !important; }
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center">
 
-    <div class="w-full max-w-5xl space-y-6">
+    <div class="w-full max-w-5xl space-y-6 main-container">
         
-        <!-- TOP CONTROL NAVIGATION -->
-        <div class="flex justify-between items-center gap-2 w-full">
+        <div class="flex justify-between items-center gap-2 w-full no-print">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition uppercase">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <span class="text-[10px] font-black uppercase bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-md border border-amber-500/20 shadow-xs tracking-wider">
-                <i class="fa-solid fa-shield-halved"></i> Audit Secure Node
-            </span>
+            <button onclick="window.print()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95">
+                <i class="fa-solid fa-file-pdf"></i> Export Audit PDF
+            </button>
         </div>
 
-        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none';">
             <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Finance & System Audit Report</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Internal Security & Operations Audit Trail Ledger</p>
         </div>
 
-        <!-- NOTICE BOARD -->
-        <div class="bg-slate-900/40 border border-slate-800/80 rounded-2xl p-4 flex gap-3.5 items-start text-left max-w-2xl mx-auto">
-            <div class="p-2 bg-amber-500/10 text-amber-400 rounded-xl text-base shrink-0 mt-0.5">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <div class="space-y-1">
-                <h4 class="text-xs font-black uppercase text-white tracking-wide">Regulatory Integrity Notice</h4>
-                <p class="text-[11px] text-slate-400 leading-relaxed font-medium">This log captures real-time administrative entry records, transaction check-ins, and session actions. Any modifications to this ledger are restricted by system integrity rules.</p>
-            </div>
-        </div>
-
-        <!-- 📑 AUDIT MASTER LEDGER TABLE -->
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-left w-full">
-            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-left w-full audit-master-card">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center no-print">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
                     <i class="fa-solid fa-list-check text-sky-500 mr-1.5"></i> System Activity Logs Trail
                 </span>
@@ -56,7 +68,7 @@
                         <tr>
                             <th class="p-4 w-[25%]">Timestamp (తేదీ & సమయం)</th>
                             <th class="p-4 w-[20%]">User / Operator</th>
-                            <th class="p-4 w-[40%]">Action Description (నిర్దిష్ట చర్యల వివరాలు)</th>
+                            <th class="p-4 w-[40%]">Action Description (நிర్దిష్ట చర్యల వివరాలు)</th>
                             <th class="p-4 text-center w-[15%]">Core Channel</th>
                         </tr>
                     </thead>
@@ -73,7 +85,6 @@
 
     </div>
 
-    <!-- FIREBASE PLATFORM AUDIT DATA MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -90,30 +101,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 👑 🛠️ SEED FALLBACK AUDIT LOGS: క్లౌడ్ కలెక్షన్ ఒకవేళ బిల్డ్ అవ్వకపోయినా స్క్రీన్ మీదున్న రికార్డులను పక్కాగా చూపిస్తుంది
         const SEED_AUDIT_TRAILS = [
-            { timestamp: "27/6/2026 - 1:45:47 pm", user: "Sudeep", email: "employee@hbml.com", desc: "Accessed employee payroll disbursal module and generated draft statements.", channel: "firebase session" },
-            { timestamp: "27/6/2026 - 1:43:37 pm", user: "Sudeep", email: "admin@hbml.com", desc: "Updated system attendance configuration fields for Velpur and Relangi nodes.", channel: "firebase session" },
-            { timestamp: "27/6/2026 - 12:45:23 pm", user: "9618899787", email: "internal@hbml.com", desc: "Successfully modified borrower ledger portfolio profile fields.", channel: "firebase session" },
-            { timestamp: "27/6/2026 - 12:45:06 pm", user: "9059988802", email: "internal@hbml.com", desc: "Executed verification protocol for pending KYC documents matching regional branch rules.", channel: "firebase session" },
-            { timestamp: "27/6/2026 - 12:44:43 pm", user: "9030369283", email: "internal@hbml.com", desc: "Updated loan recovery outstanding balances tracking parameters.", channel: "firebase session" },
-            { timestamp: "30/5/2026 - 9:57:55 pm", user: "Sudeep", email: "admin@hbml.com", desc: "Broadcasted global notification batch for upcoming EMI collections.", channel: "firebase session" },
-            { timestamp: "30/5/2026 - 9:52:49 pm", user: "Sudeep", email: "employee@hbml.com", desc: "Initiated automated field agent location synchronization background scripts.", channel: "firebase session" }
+            { timestamp: "28/06/2026 - 10:15:22 am", user: "Sudeep", email: "admin@hbml.com", desc: "Generated bank-standard professional salary slips for regional field agents.", channel: "firebase session" },
+            { timestamp: "27/06/2026 - 1:45:47 pm", user: "Sudeep", email: "employee@hbml.com", desc: "Accessed employee payroll disbursal module and generated draft statements.", channel: "firebase session" },
+            { timestamp: "27/06/2026 - 12:45:06 pm", user: "9059988802", email: "internal@hbml.com", desc: "Executed verification protocol for pending KYC documents matching regional branch rules.", channel: "firebase session" },
+            { timestamp: "30/05/2026 - 9:57:55 pm", user: "Sudeep", email: "admin@hbml.com", desc: "Broadcasted global notification batch for upcoming EMI collections.", channel: "firebase session" }
         ];
 
         async function loadAuditLogLedger() {
             const tbody = document.getElementById("auditTableBody");
             try {
-                // ఫైర్‌బేస్ లోని 'audit_logs' కలెక్షన్ రీడింగ్ క్వెరీ
                 const querySnapshot = await getDocs(collection(db, "audit_logs"));
                 let logsArray = [];
 
                 if(!querySnapshot.empty) {
-                    querySnapshot.forEach(doc => {
-                        logsArray.push(doc.data());
-                    });
+                    querySnapshot.forEach(doc => { logsArray.push(doc.data()); });
                 } else {
-                    // క్లౌడ్ ఎంప్టీగా ఉంటే డెమో స్క్రీన్‌షాట్ డేటా లోడ్ అవుతుంది
                     logsArray = [...SEED_AUDIT_TRAILS];
                 }
 
@@ -125,32 +128,21 @@
                     let displayTime = item.timestamp || new Date(item.created).toLocaleString('en-IN');
                     let operatorName = item.user || "System Node";
                     let operatorEmail = item.email || "system@hbml.com";
-                    
-                    // 👑 🛠️ ACTION DESCRIPTION ENGINE: యాక్షన్ ని బట్టి రంగులు మరియు బ్యాడ్జ్‌లు మారేలా సెటప్
                     let actionText = item.desc || item.actionDescription || "System operation processed successfully.";
-                    
-                    let highlightClass = "text-slate-300";
-                    if(actionText.toLowerCase().includes("modified") || actionText.toLowerCase().includes("updated")) {
-                        highlightClass = "text-amber-400 font-semibold";
-                    } else if(actionText.toLowerCase().includes("broadcasted") || actionText.toLowerCase().includes("notification")) {
-                        highlightClass = "text-sky-400";
-                    } else if(actionText.toLowerCase().includes("payroll") || actionText.toLowerCase().includes("salary")) {
-                        highlightClass = "text-purple-400";
-                    }
 
                     html += `
                         <tr class="hover:bg-slate-900/40 transition border-b border-slate-800/60 text-xs">
                             <td class="p-4 font-mono font-bold text-slate-500">${displayTime}</td>
                             <td class="p-4">
                                 <div class="font-black text-white uppercase">${operatorName}</div>
-                                <div class="text-[10px] text-slate-500 font-mono font-normal lowercase">${operatorEmail}</div>
+                                <div class="text-[10px] text-slate-500 font-mono font-normal">${operatorEmail}</div>
                             </td>
-                            <td class="p-4 leading-relaxed ${highlightClass}">
+                            <td class="p-4 leading-relaxed text-slate-300">
                                 <i class="fa-solid fa-circle-dot text-[7px] text-slate-600 mr-1.5"></i> ${actionText}
                             </td>
                             <td class="p-4 text-center">
-                                <span class="text-[10px] font-mono text-slate-400 hover:text-sky-400 transition cursor-pointer flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-link text-[8px] text-slate-600"></i> ${item.channel || 'firebase session'}
+                                <span class="text-[10px] font-mono text-slate-400 flex items-center justify-center gap-1">
+                                    ${item.channel || 'firebase session'}
                                 </span>
                             </td>
                         </tr>
