@@ -6,36 +6,89 @@
     <title>HBML Capital - Branch Management Console</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* 👑 Professional Print & PDF Layout Controls */
+        @media print {
+            html, body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print, button, a { display: none !important; }
+            .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; }
+            
+            /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా గ్రిడ్ కంట్రోల్ */
+            #branchesGrid {
+                display: grid !important;
+                grid-cols: 2 gap-4 !important;
+                page-break-inside: avoid !important;
+            }
+            .bg-slate-900 {
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+                padding: 14px !important;
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+            }
+            .bg-slate-950\/40 {
+                background: white !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            th { background-color: #f8fafc !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; }
+            td { border: 1px solid #e2e8f0 !important; color: #334155 !important; }
+            div, h1, h3, p, span, strong { color: black !important; }
+            
+            /* VISIBILITY FIX: ప్రింట్ లో రంగుల షేడ్స్ ముదురు రంగుల్లోకి లాక్ అవుతాయి */
+            .text-white { color: #0f172a !important; }
+            .text-sky-400 { color: #1d4ed8 !important; }
+            .text-emerald-400 { color: #166534 !important; font-weight: 900 !important; }
+            .text-slate-200 { color: #1e293b !important; }
+            .text-slate-500 { color: #475569 !important; }
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-4xl mx-auto space-y-6 main-container">
         
-        <div class="flex justify-between items-center gap-2">
+        <div class="flex justify-between items-center gap-2 no-print w-full">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <button onclick="refreshBranchMetrics()" id="btnBranchRefresh" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer flex items-center gap-1.5 active:scale-95">
-                <i class="fa-solid fa-arrows-rotate" id="branchRefreshIcon"></i> Refresh Branches
-            </button>
+            <div class="flex items-center gap-2">
+                <button onclick="window.print()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95">
+                    <i class="fa-solid fa-file-pdf"></i> Export Branch PDF
+                </button>
+                <button onclick="refreshBranchMetrics()" id="btnBranchRefresh" class="text-xs font-black text-sky-400 bg-slate-900 border border-slate-800 px-4 py-2 rounded-xl transition hover:border-sky-500/50 cursor-pointer flex items-center gap-1.5 active:scale-95">
+                    <i class="fa-solid fa-arrows-rotate" id="branchRefreshIcon"></i> Refresh Branches
+                </button>
+            </div>
         </div>
 
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
-            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
-            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Branch Operations System</h1>
+            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">Branch Operations System</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Regional Portfolios & Local Performance</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="branchesGrid">
             
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between text-left">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="text-lg font-black text-white">Tanuku Branch</h3>
                         <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider mt-0.5"><i class="fa-solid fa-star text-amber-400 mr-1"></i> Headquarters</p>
                     </div>
-                    <div class="h-9 w-9 bg-sky-950/40 text-sky-400 rounded-xl flex items-center justify-center text-sm border border-sky-900/30"><i class="fa-solid fa-building"></i></div>
+                    <div class="h-9 w-9 bg-sky-950/40 text-sky-400 rounded-xl flex items-center justify-center text-sm border border-sky-900/30 no-print"><i class="fa-solid fa-building"></i></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
                     <div>
@@ -49,13 +102,13 @@
                 </div>
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between text-left">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="text-lg font-black text-white">Velpur Branch</h3>
                         <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
                     </div>
-                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800 no-print"><i class="fa-solid fa-code-branch"></i></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
                     <div>
@@ -69,13 +122,13 @@
                 </div>
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between text-left">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="text-lg font-black text-white">Undrajavaram Branch</h3>
                         <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
                     </div>
-                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800 no-print"><i class="fa-solid fa-code-branch"></i></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
                     <div>
@@ -89,13 +142,13 @@
                 </div>
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-lg space-y-4 flex flex-col justify-between text-left">
                 <div class="flex justify-between items-start">
                     <div>
                         <h3 class="text-lg font-black text-white">Relangi Branch</h3>
                         <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Regional Office</p>
                     </div>
-                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800"><i class="fa-solid fa-code-branch"></i></div>
+                    <div class="h-9 w-9 bg-slate-950/40 text-slate-400 rounded-xl flex items-center justify-center text-sm border border-slate-800 no-print"><i class="fa-solid fa-code-branch"></i></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-medium text-xs">
                     <div>
@@ -133,7 +186,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // బ్రాంచ్‌ల డీఫాల్ట్ మ్యాపింగ్ స్ట్రక్చర్ (Fallback values)
         const initialSetup = {
             "Tanuku": { count: 120, amount: 850000 },
             "Velpur": { count: 45, amount: 280000 },
@@ -141,7 +193,6 @@
             "Relangi": { count: 32, amount: 195000 }
         };
 
-        /* ⚡ SPINNING REFRESH CONTROLLER */
         window.refreshBranchMetrics = async function() {
             const icon = document.getElementById("branchRefreshIcon");
             const btn = document.getElementById("btnBranchRefresh");
@@ -157,7 +208,6 @@
             }, 600);
         }
 
-        /* 🧮 CALCULATION LOGIC: MAP DATA TO GEOGRAPHICAL REGIONS */
         async function calculateLiveBranchData() {
             let branchPool = {
                 "Tanuku": { count: 0, amount: 0 },
@@ -167,7 +217,6 @@
             };
 
             try {
-                // 1. Individual Borrowers లెక్కించడం
                 const snap = await getDocs(collection(db, "customers"));
                 
                 if(!snap.empty) {
@@ -176,7 +225,6 @@
                         let principal = Number(data.loanPrincipal || data.loan || 0);
                         let addressStr = (data.address || "").toLowerCase();
 
-                        // అడ్రస్ ఆధారంగా ఏ బ్రాంచ్ కి వెళ్లాలో మ్యాచ్ చేయడం
                         if(addressStr.includes("velpur")) {
                             branchPool["Velpur"].count++;
                             branchPool["Velpur"].amount += principal;
@@ -187,14 +235,12 @@
                             branchPool["Relangi"].count++;
                             branchPool["Relangi"].amount += principal;
                         } else {
-                            // మిగతావన్నీ హెడ్‌క్వార్టర్స్ తణుకు కిందకు వస్తాయి
                             branchPool["Tanuku"].count++;
                             branchPool["Tanuku"].amount += principal;
                         }
                     });
                 }
 
-                // ఒకవేళ డేటాబేస్ లో రికార్డులు శూన్యంగా ఉంటే డీఫాల్ట్ స్టాటిక్ వ్యాల్యూస్ సెట్ చేయడం
                 const keys = Object.keys(branchPool);
                 keys.forEach(branch => {
                     if(branchPool[branch].count === 0 && branchPool[branch].amount === 0) {
@@ -203,7 +249,6 @@
                     }
                 });
 
-                // UI కార్డులలో మార్పులను అప్‌డేట్ చేయడం
                 keys.forEach(branch => {
                     document.getElementById(`count-${branch}`).innerText = branchPool[branch].count + " Users";
                     document.getElementById(`amt-${branch}`).innerText = "₹" + Math.round(branchPool[branch].amount).toLocaleString('en-IN');
