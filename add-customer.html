@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4" id="body-root">
 
     <div class="w-full max-w-xl mb-4 flex justify-between items-center">
         <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
@@ -27,6 +27,21 @@
 
         <div class="space-y-4 text-left">
             
+            <!-- 👑 🏢 NEW REGIONAL BRANCH OPERATIONS SELECTOR -->
+            <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/60">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-amber-400 block mb-1.5"><i class="fa-solid fa-code-branch mr-1"></i> Assign Regional Branch (బ్రాంచ్ ఎంపిక)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-building"></i></span>
+                    <select id="ddlBranch" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-hidden focus:border-sky-500 appearance-none cursor-pointer font-bold text-slate-200">
+                        <option value="Tanuku">Tanuku Branch (Headquarters)</option>
+                        <option value="Velpur">Velpur Branch (Regional Office)</option>
+                        <option value="Undrajavaram">Undrajavaram Branch (Regional Office)</option>
+                        <option value="Relangi">Relangi Branch (Regional Office)</option>
+                    </select>
+                    <span class="absolute inset-y-0 right-4 flex items-center text-slate-500 text-[10px] pointer-events-none"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+            </div>
+
             <div>
                 <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Customer ID (Auto-Generated)</label>
                 <div class="relative">
@@ -40,7 +55,7 @@
                     <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Customer Name</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="name" placeholder="Enter Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-hidden focus:border-sky-500 transition">
+                        <input type="text" id="name" placeholder="Enter Full Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:outline-hidden focus:border-sky-500 transition uppercase">
                     </div>
                 </div>
                 <div>
@@ -84,7 +99,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-folder-open"></i></span>
                         <select id="loanType" onchange="handleLoanTypeChange()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-hidden focus:border-sky-500 appearance-none cursor-pointer font-bold text-slate-300">
                             <option value="Microfinance Loan">Microfinance Loan (మైక్రోఫైనాన్స్ లోన్)</option>
-                            <option value="Gold Loan">Gold Loan (బಂಗారు తాకట్టు లోన్)</option>
+                            <option value="Gold Loan">Gold Loan (బంగారు తాకట్టు లోన్)</option>
                             <option value="Personal Loan">Personal Loan (వ్యక్తిగత లోన్)</option>
                             <option value="Business Loan">Business Loan (వ్యాపార లోన్)</option>
                             <option value="Vehicle Loan">Vehicle Loan (వాహన లోన్)</option>
@@ -93,7 +108,7 @@
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Interest Method (වడ్డీ విధానం)</label>
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Interest Method (వడ్డీ విధానం)</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500 text-xs"><i class="fa-solid fa-gears"></i></span>
                         <select id="interestMethod" onchange="calculateAutoEMI()" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3 text-xs focus:outline-hidden focus:border-sky-500 appearance-none cursor-pointer font-bold text-sky-400">
@@ -109,7 +124,7 @@
                 <label class="text-[10px] font-black uppercase tracking-wider text-amber-400 block mb-1.5"><i class="fa-solid fa-coins"></i> Gold Loan Repayment Term</label>
                 <div class="relative">
                     <select id="goldRepaymentTerm" onchange="handleGoldRepaymentLogic()" class="w-full bg-slate-950 border border-amber-900/30 rounded-xl px-3 py-2.5 text-xs focus:outline-hidden focus:border-amber-500 appearance-none cursor-pointer font-bold text-slate-200">
-                        <option value="EveryMonth">Every Month EMI (నెలనెలా వڈడీ/EMI విధానం)</option>
+                        <option value="EveryMonth">Every Month EMI (నెలనెలా వడ్డీ/EMI విధానం)</option>
                         <option value="6Months">6 Months Bullet Payment (6 నెలల ఒకేసారి చెల్లింపు)</option>
                         <option value="1Year">1 Year Bullet Payment (1 సంవత్సరం ఒకేసారి చెల్లింపు)</option>
                     </select>
@@ -175,15 +190,15 @@
 
         </div>
 
-        <button onclick="saveCustomer()" class="w-full mt-6 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-xs cursor-pointer flex items-center justify-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> SAVE CUSTOMER PROFILE
+        <button id="btnSaveButton" onclick="saveCustomer()" class="w-full mt-6 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-md tracking-wide text-xs cursor-pointer flex items-center justify-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up" id="saveIcon"></i> SAVE CUSTOMER PROFILE
         </button>
 
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -196,6 +211,8 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        let isSubmittingGate = false;
 
         function generateCustomerID() {
             const randomNumber = Math.floor(1000 + Math.random() * 9000); 
@@ -275,7 +292,6 @@
             }
         }
 
-        // 👑 ఏజెంట్లు ఒకవేళ మాన్యువల్‌గా EMI ని ఎడిట్ చేస్తే టోటల్ పేయబుల్‌ను రీ-క్యాలిక్యులేట్ చేసే సేఫ్ లాజిక్
         window.handleManualEMIChange = function() {
             let manualEmi = Number(document.getElementById("emi").value || 0);
             let months = Number(document.getElementById("tenure").value || 1);
@@ -290,10 +306,13 @@
         window.addEventListener('DOMContentLoaded', generateCustomerID);
 
         window.saveCustomer = async function() {
+            if (isSubmittingGate) return;
+
             try {
+                let selectedBranch = document.getElementById("ddlBranch").value;
                 let customerId = document.getElementById("customerId").value;
                 let name = document.getElementById("name").value.trim();
-                let phone = document.getElementById("phone").value.trim();
+                let phone = document.getElementById("txtPhone") ? document.getElementById("txtPhone").value.trim() : document.getElementById("phone").value.trim();
                 let aadhaar = document.getElementById("aadhaar").value.trim();
                 let pan = document.getElementById("pan").value.trim().toUpperCase();
                 let address = document.getElementById("address").value.trim();
@@ -317,13 +336,22 @@
                 if(phone.length !== 10) return alert("Please enter a valid 10-digit mobile number.");
                 if(aadhaar.length !== 12) return alert("Aadhaar Number must be exactly 12 digits.");
 
-                // 👑 👑 మాస్టర్ ఫిక్స్: ఫామ్‌లో ఏ వివరాలు కనిపిస్తున్నాయో (Screen Values), వాటిని మాత్రమే క్లౌడ్‌లోకి పంపుతుంది.
+                const btn = document.getElementById("btnSaveButton");
+                const icon = document.getElementById("saveIcon");
+
+                isSubmittingGate = true;
+                btn.disabled = true;
+                btn.classList.add("opacity-50", "cursor-not-allowed");
+                icon.className = "fa-solid fa-spinner animate-spin";
+
                 let finalEmi = Number(emi);
                 let finalTenure = Number(tenureMonths);
                 let finalLoanAmountValue = Number(totalPayable);
 
+                // 👑 🏢 NEW SYNC PARAMETER: బ్రాంచ్‌తో సహా డాక్యుమెంట్ క్లౌడ్ లోకి వెళ్తుంది
                 await addDoc(collection(db, "customers"), {
                     customerId: customerId,
+                    branch: selectedBranch,
                     name: name,
                     phone: phone,
                     aadhaar: aadhaar,
@@ -335,17 +363,18 @@
                     loanPrincipal: Number(loanPrincipal),
                     interestRate: Number(interestRate),
                     tenureMonths: finalTenure,
-                    loan: finalLoanAmountValue, // ఫామ్ లో ఉన్న వాల్యూ వెళ్తుంది
+                    loan: finalLoanAmountValue, 
                     emi: finalEmi,
                     dueDay: Number(dueDay),
                     paid: 0,
-                    balance: finalLoanAmountValue, // ఆటోమేటిక్ ప్రారంభ ఔట్‌స్టాండింగ్
+                    balance: finalLoanAmountValue, 
                     created: new Date()
                 });
 
-                alert("Customer Profile [ " + customerId + " ] Saved Successfully!");
+                alert("Customer Profile [ " + customerId + " ] Allocated to " + selectedBranch + " Branch Successfully!");
 
                 document.getElementById("name").value = "";
+                if(document.getElementById("txtPhone")) document.getElementById("txtPhone").value = "";
                 document.getElementById("phone").value = "";
                 document.getElementById("aadhaar").value = "";
                 document.getElementById("pan").value = "";
@@ -353,10 +382,22 @@
                 document.getElementById("loan").value = "";
                 document.getElementById("totalPayable").value = "";
                 document.getElementById("emi").value = "";
+                
+                isSubmittingGate = false;
+                btn.disabled = false;
+                btn.classList.remove("opacity-50", "cursor-not-allowed");
+                icon.className = "fa-solid fa-cloud-arrow-up";
+                
                 generateCustomerID();
 
             } catch(error) {
                 alert("Error writing document: " + error.message);
+                isSubmittingGate = false;
+                const btn = document.getElementById("btnSaveButton");
+                const icon = document.getElementById("saveIcon");
+                btn.disabled = false;
+                btn.classList.remove("opacity-50", "cursor-not-allowed");
+                icon.className = "fa-solid fa-cloud-arrow-up";
             }
         }
     </script>
