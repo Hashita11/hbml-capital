@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - Registered Borrowers Directory</title>
+    <title>HBML Capital - View Customers</title>
+    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto space-y-6">
         
-        <!-- TOP CONTROL NAVIGATION WITH MASTER COUNT METRICS -->
+        <!-- TOP CONTROL NAVIGATION -->
         <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
@@ -30,9 +32,8 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Search active profiles or view digital profile cards</p>
         </div>
 
-        <!-- 🔍 BRANCH NETWORKS & TEXT SEARCH GATEWAY -->
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <!-- 🏢 బ్రాంచ్ వైజ్ డ్రాప్‌డౌన్ ఫిల్టర్ -->
+        <!-- 🔍 BRANCH & TEXT SEARCH CONTROL BOX -->
+        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div class="sm:col-span-1">
                 <select id="filterBranch" onchange="filterCustomerMaster()" class="w-full h-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-slate-300 cursor-pointer">
                     <option value="All">All Branches (అన్ని బ్రాంచ్‌లు)</option>
@@ -48,7 +49,7 @@
             </div>
         </div>
 
-        <!-- 📑 ACTIVE LEDGERS CONTAINER -->
+        <!-- 📑 CUSTOMERS MASTER DIRECTORY TABLE -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
             <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-address-book text-sky-500 mr-1.5"></i> Active Borrower Ledgers</span>
@@ -64,14 +65,14 @@
 
     </div>
 
-    <!-- 👑 🛠️ EDIT BORROWER PROFILE MODAL (POPUP DIALOG) -->
+    <!-- 👑 🛠️ EDIT CUSTOMER MODAL -->
     <div id="editCustomerModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 space-y-4 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
             <button onclick="closeEditCustomerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <h3 class="text-base font-black uppercase tracking-tight text-white flex items-center gap-2">
-                <i class="fa-solid fa-user-pen text-sky-400"></i> Edit Borrower Core Profile
+                <i class="fa-solid fa-user-pen text-sky-400"></i> Edit Borrower Profile
             </h3>
             <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800 pb-2" id="modalCustId">ACCOUNT: —</p>
             
@@ -91,11 +92,12 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60">
                     <div class="space-y-1">
-                        <label class="text-slate-500 font-bold">Aadhaar Number (Secure Mode)</label>
-                        <input type="text" id="editCustAadhaar" class="w-full bg-slate-900/50 border border-slate-800 rounded-xl p-2.5 font-mono text-slate-500 outline-none cursor-not-allowed" readonly placeholder="[Aadhaar Redacted]">
+                        <!-- 👑 🛠️ ఆధార్ బాక్స్‌ను అన్‌లాక్ చేసాము (Removes readonly & resets placeholders) -->
+                        <label class="text-slate-400 font-bold">Aadhaar Number</label>
+                        <input type="text" id="editCustAadhaar" maxlength="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-slate-400 font-bold">PAN Card Number</label>
+                        <label class="text-slate-400 font-bold">PAN Card Code</label>
                         <input type="text" id="editCustPan" maxlength="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 uppercase">
                     </div>
                 </div>
@@ -107,7 +109,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="space-y-1">
-                        <label class="text-slate-400 font-bold">Regional Branch Location</label>
+                        <label class="text-slate-400 font-bold">Regional Branch</label>
                         <select id="editCustBranch" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
                             <option value="Tanuku">Tanuku</option>
                             <option value="Velpur">Velpur</option>
@@ -129,12 +131,11 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-mono">
                     <div class="space-y-1">
-                        <!-- Redacted/Omitted identification labels preserved symmetrically without digits -->
                         <label class="text-slate-400 font-bold text-[10px]">Principal (₹)</label>
                         <input type="number" id="editCustPrincipal" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-white focus:outline-hidden focus:border-sky-500">
                     </div>
                     <div class="space-y-1">
-                        <label class="text-slate-400 font-bold text-[10px]">Monthly EMI (₹)</label>
+                        <label class="text-slate-400 font-bold text-[10px]">Target EMI (₹)</label>
                         <input type="number" id="editCustEmi" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-sky-400 focus:outline-hidden focus:border-sky-500">
                     </div>
                     <div class="space-y-1">
@@ -183,13 +184,12 @@
                 let html = "";
                 let totalCustomers = 0;
                 let totalLoanAmountSum = 0;
-                localCachedCustomerRecords = {}; // Reset local runtime cache
+                localCachedCustomerRecords = {}; 
                 
                 snap.forEach((docRecord) => {
                     const data = docRecord.data();
                     const docId = docRecord.id; 
                     
-                    // Cache item synchronization
                     localCachedCustomerRecords[docId] = { id: docId, ...data };
 
                     const cleanName = data.name || "Unknown Borrower";
@@ -234,7 +234,6 @@
                                     <div class="text-xs font-mono font-black text-rose-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <!-- 👑 🛠️ ఎడిట్ పాపప్ ట్రిగ్గర్ బటన్ -->
                                     <button onclick="openEditCustomerModal('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-amber-400 hover:text-white border border-slate-800 hover:border-amber-500/40 font-bold text-[11px] py-1.5 px-2.5 rounded-lg transition cursor-pointer flex items-center gap-1 active:scale-95 shrink-0">
                                         <i class="fa-solid fa-user-pen text-[9px]"></i> Edit
                                     </button>
@@ -259,7 +258,7 @@
             }
         }
 
-        /* 🚪 POPUP INTERACTION CONTROLS */
+        /* 🚪 POPUP CONTEXT GATE CONTROLS */
         window.openEditCustomerModal = function(docId) {
             const cust = localCachedCustomerRecords[docId];
             if(!cust) return;
@@ -276,8 +275,8 @@
             document.getElementById("editCustBalance").value = cust.balance !== undefined ? cust.balance : (cust.loanPrincipal || 0);
             document.getElementById("editCustPan").value = cust.pan || '';
             
-            // Secure clean state for masked entity fields
-            document.getElementById("editCustAadhaar").value = "";
+            // 👑 🛠️ డేటాబేస్ లో ఉన్న ఒరిజినల్ వాల్యూని ఇక్కడ ఇన్పుట్ బాక్స్ లోపల డైరెక్ట్ గా లోడ్ చేస్తున్నాము
+            document.getElementById("editCustAadhaar").value = cust.aadhaar || '';
 
             document.getElementById("editCustomerModal").classList.remove("hidden");
         }
@@ -293,6 +292,7 @@
             let docId = document.getElementById("editCustDocId").value;
             let name = document.getElementById("editCustName").value.trim();
             let phone = document.getElementById("editCustPhone").value.trim();
+            let aadhaar = document.getElementById("editCustAadhaar").value.trim();
             let address = document.getElementById("editCustAddress").value.trim();
             let branch = document.getElementById("editCustBranch").value;
             let loanType = document.getElementById("editCustLoanType").value;
@@ -301,10 +301,13 @@
             let balance = Number(document.getElementById("editCustBalance").value);
             let pan = document.getElementById("editCustPan").value.trim().toUpperCase();
 
-            if(!name || !phone || !principal || !emi) {
-                alert("Mandatory fields cannot be blank.");
+            if(!name || !phone || !aadhaar || !principal || !emi) {
+                alert("Core portfolio validation items cannot be blank.");
                 return;
             }
+
+            if(phone.length !== 10) return alert("Please specify a functional 10-digit primary number.");
+            if(aadhaar.length !== 12) return alert("Aadhaar Number must be exactly 12 digits.");
 
             const btn = document.getElementById("btnSaveCustUpdate");
             const icon = document.getElementById("updateCustIcon");
@@ -316,9 +319,12 @@
 
             try {
                 const docRef = doc(db, "customers", docId);
+                
+                // 👑 🛠️ ఆధార్ ఫీల్డ్ (aadhaar: aadhaar) కూడా క్లౌడ్ లోకి సక్సెస్ ఫుల్ గా సేవ్ అవుతుంది
                 await updateDoc(docRef, {
                     name: name,
                     phone: phone,
+                    aadhaar: aadhaar,
                     address: address,
                     branch: branch,
                     loanType: loanType,
@@ -330,9 +336,9 @@
 
                 alert("Customer master record updated successfully!");
                 closeEditCustomerModal();
-                loadBorrowersDirectory(); // Fresh reload
+                loadBorrowersDirectory(); 
             } catch (error) {
-                alert("Update failure: " + error.message);
+                alert("Cloud write fault: " + error.message);
             } finally {
                 isUpdateGateLocked = false;
                 btn.disabled = false;
@@ -341,7 +347,7 @@
             }
         }
 
-        /* 👑 🔍 MULTI-PARAM DUAL SEARCH ENGINE FILTER (BRANCH + TEXT FILTER) */
+        /* 👑 🔍 MULTI-PARAM DUAL SEARCH ENGINE FILTER */
         window.filterCustomerMaster = function() {
             let selectedBranch = document.getElementById("filterBranch").value.toLowerCase();
             let textInput = document.getElementById("search").value.toLowerCase().trim();
