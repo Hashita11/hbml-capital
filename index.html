@@ -1,321 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HBML CAPITAL LOGIN</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    background:#f2f4f8;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:20px;
-}
-
-.container{
-    width:100%;
-    max-width:420px;
-    background:#fff;
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.1);
-    text-align:center;
-}
-
-.logo{
-    width:160px;
-    height:160px;
-    object-fit:contain;
-    margin-bottom:15px;
-}
-
-h1{
-    color:#0d2b6b;
-    margin-bottom:5px;
-    font-size:32px;
-}
-
-.sub{
-    color:#777;
-    margin-bottom:25px;
-    font-size:16px;
-}
-
-.tabs{
-    display:flex;
-    justify-content:space-between;
-    gap:8px;
-    margin-bottom:25px;
-}
-
-.tabs button{
-    flex:1;
-    padding:12px 5px;
-    border:none;
-    border-radius:12px;
-    background:#ececec;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:bold;
-    transition:0.3s;
-    white-space:nowrap;
-}
-
-.tabs button.active{
-    background:#0d2b6b;
-    color:white;
-}
-
-input{
-    width:100%;
-    padding:16px;
-    margin-bottom:18px;
-    border:1px solid #ccc;
-    border-radius:12px;
-    font-size:16px;
-    outline:none;
-}
-
-input:focus{
-    border-color:#0d2b6b;
-}
-
-.login-btn{
-    width:100%;
-    padding:16px;
-    background:#0d2b6b;
-    color:white;
-    border:none;
-    border-radius:12px;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.login-btn:hover{
-    background:#163c91;
-}
-
-.message{
-    margin-top:15px;
-    color:green;
-    font-size:15px;
-    font-weight:bold;
-}
-
-.error-message {
-    margin-top: 15px;
-    color: #e11d48;
-    font-size: 14px;
-    font-weight: bold;
-    display: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML CAPITAL - Secure Login Gateway</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-center items-center p-4">
 
-<body>
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+        
+        <div class="text-center space-y-2">
+            <img src="logo.png" alt="HBML Logo" class="h-16 w-auto mx-auto mb-2" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
+            <div id="fallback-icon" class="h-16 w-16 bg-slate-950 text-sky-400 rounded-2xl flex items-center justify-center text-3xl font-black shadow-md border border-slate-800 mx-auto hidden">H</div>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">HBML CAPITAL</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Trusted Financial Solutions</p>
+        </div>
 
-<div class="container">
+        <div class="tabs flex justify-between items-center gap-2 bg-slate-950 p-1.5 rounded-2xl border border-slate-800/60">
+            <button class="flex-1 py-2 px-1 text-xs font-black uppercase rounded-xl transition-all cursor-pointer bg-slate-900 text-slate-400" id="btnAdmin" onclick="setRole('Admin',this)">Admin</button>
+            <button class="flex-1 py-2 px-1 text-xs font-black uppercase rounded-xl transition-all cursor-pointer bg-slate-900 text-slate-400" id="btnEmployee" onclick="setRole('Employee',this)">Employee</button>
+            <button class="flex-1 py-2 px-1 text-xs font-black uppercase rounded-xl transition-all cursor-pointer bg-slate-900 text-slate-400" id="btnCustomer" onclick="setRole('Customer',this)">Customer</button>
+        </div>
 
-    <img src="logo.png" class="logo" onerror="this.style.display='none';">
-
-    <h1>HBML CAPITAL</h1>
-
-    <div class="sub">
-        Trusted Financial Solutions
-    </div>
-
-    <div class="tabs">
-        <button class="active" id="btnAdmin" onclick="setRole('Admin',this)">Admin</button>
-        <button id="btnEmployee" onclick="setRole('Employee',this)">Employee</button>
-        <button id="btnCustomer" onclick="setRole('Customer',this)">Customer</button>
-    </div>
-
-    <input type="text" id="name" placeholder="Enter Name">
-    <input type="email" id="email" placeholder="Enter Email">
-    <input type="password" id="password" placeholder="Enter Password">
-
-    <button class="login-btn" onclick="loginUser()">LOGIN</button>
-
-    <div class="message" id="message"></div>
-    <div class="error-message" id="errorMessage"></div>
-
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
-  authDomain: "hbml-capital.firebaseapp.com",
-  projectId: "hbml-capital",
-  storageBucket: "hbml-capital.firebasestorage.app",
-  messagingSenderId: "893969951538",
-  appId: "1:893969951538:web:ba028463a6adcfb417c52b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let role = "Admin";
-
-/* 👑 🛠️ రోల్ చేంజ్ ఇంజిన్: టాబ్స్ క్లిక్ చేసినప్పుడు ఏ ఫీల్డ్స్ ఎలా చూపాలో మార్చే పక్కా లాజిక్ */
-window.setRole = function(selectedRole, btn){
-    role = selectedRole;
-    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    document.getElementById("message").innerHTML = "";
-    document.getElementById("errorMessage").style.display = "none";
-
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const passInput = document.getElementById("password");
-
-    // ఇన్‌పుట్ వాల్యూస్ క్లియర్ చేయడం
-    nameInput.value = "";
-    emailInput.value = "";
-    passInput.value = "";
-
-    if(role === "Customer") {
-        // Customer సెలెక్ట్ చేసినప్పుడు Name, Password దాచిపెట్టి కేవలం ID/Phone బాక్స్ మాత్రమే చూపిస్తుంది
-        nameInput.style.display = "none";
-        passInput.style.display = "none";
-        emailInput.style.display = "block";
-        emailInput.type = "text";
-        emailInput.placeholder = "Enter Customer ID or Phone Number";
-    } else if(role === "Employee") {
-        // Employee సెలెక్ట్ చేసినప్పుడు పూర్తి డీటెయిల్స్ ఓపెన్ అవుతాయి
-        nameInput.style.display = "block";
-        passInput.style.display = "block";
-        emailInput.style.display = "block";
-        emailInput.type = "email";
-        emailInput.placeholder = "Enter Employee Email";
-    } else {
-        // Admin సెలెక్ట్ చేసినప్పుడు పూర్తి డీటెయిల్స్ ఓపెన్ అవుతాయి
-        nameInput.style.display = "block";
-        passInput.style.display = "block";
-        emailInput.style.display = "block";
-        emailInput.type = "email";
-        emailInput.placeholder = "Enter Admin Email";
-    }
-}
-
-/* LOGIN FUNCTION WITH CORE ROUTING GATEWAYS */
-window.loginUser = async function(){
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const passInput = document.getElementById("password");
-    
-    const msg = document.getElementById("message");
-    const errMsg = document.getElementById("errorMessage");
-
-    msg.innerHTML = "";
-    errMsg.style.display = "none";
-
-    let name = nameInput.value.trim();
-    let identifier = emailInput.value.trim();
-    let password = passInput.value.trim();
-
-    /* 1. 🛡️ ADMIN / EMPLOYEE LOGIN VERIFICATION */
-    if(role === "Admin" || role === "Employee") {
-        if(name === "" || identifier === "" || password === ""){
-            alert("Please fill all fields");
-            return;
-        }
-
-        msg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing credential gate...`;
-
-        try {
-            // లాగిన్ లాగ్ హిస్టరీ నమోదు
-            await addDoc(collection(db, "hbml_logins"), {
-                name: name,
-                email: identifier,
-                role: role,
-                loginTime: new Date()
-            });
-
-            msg.innerHTML = role + " Login Successful";
+        <div class="space-y-4 text-left text-xs font-bold">
             
-            setTimeout(() => {
-                if(role === "Admin"){
-                    window.location.href = "admin.html"; // అడ్మిన్ డాష్‌బోర్డ్ రూట్
-                } else {
-                    window.location.href = "employee.html"; // ఎంప్లాయ్ డాష్‌బోర్డ్ రూట్
-                }
-            }, 800);
+            <div class="space-y-1.5" id="boxNameInput">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Operator Name (మీ పేరు)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3.5 text-slate-500"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" id="name" placeholder="Enter Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-3 font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+                </div>
+            </div>
 
-        } catch(error) {
-            alert(error);
-        }
-    } 
-    /* 2. 🪙 CUSTOMER LOGIN VERIFICATION WITH CLOUD INTEGRATION */
-    else {
-        if(identifier === "") {
-            alert("Please enter Customer ID or Phone Number");
-            return;
-        }
+            <div class="space-y-1.5">
+                <label id="lblIdentifier" class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Email Address (ఈమెయిల్)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3.5 text-slate-500" id="iconIdentifier"><i class="fa-solid fa-envelope"></i></span>
+                    <input type="email" id="email" placeholder="Enter Admin Email" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-3 font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+                </div>
+            </div>
 
-        msg.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying account details...`;
+            <div class="space-y-1.5" id="boxPassInput">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Security Password (రహస్య కోడ్)</label>
+                <div class="relative">
+                    <span class="absolute left-3.5 top-3.5 text-slate-500"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="password" placeholder="Enter Password" class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+                </div>
+            </div>
 
-        try {
-            const snap = await getDocs(collection(db, "customers"));
-            let matchedDocId = null;
-            const searchKey = identifier.toLowerCase();
+        </div>
 
-            snap.forEach((docRecord) => {
-                const data = docRecord.data();
-                const cloudUID = (data.customerId || "").toLowerCase();
-                const cloudPhone = (data.phone || "");
+        <button onclick="loginUser()" id="btnLoginTrigger" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-black py-3.5 px-4 rounded-xl transition shadow-lg tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+            <i class="fa-solid fa-right-to-bracket" id="loginIcon"></i> LOGIN
+        </button>
 
-                if(searchKey === cloudUID || searchKey === cloudPhone) {
-                    matchedDocId = docRecord.id;
-                }
+        <div class="message text-xs font-bold text-emerald-400 mt-2" id="message"></div>
+        <div class="error-message text-xs font-bold text-rose-500 mt-2 hidden" id="errorMessage"></div>
+
+        <div class="text-[10px] text-slate-600 font-mono tracking-wider pt-2">
+            Secured Enterprise Encryption Shield Node
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
+            authDomain: "hbml-capital.firebaseapp.com",
+            projectId: "hbml-capital",
+            storageBucket: "hbml-capital.firebasestorage.app",
+            messagingSenderId: "893969951538",
+            appId: "1:893969951538:web:ba028463a6adcfb417c52b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let role = "Admin";
+
+        /* 👑 🛠️ DYNAMIC SWITCHER: టాబ్ క్లిక్ చేయగానే డిజైన్ మరియు బాక్సులు మార్చే లాజిక్ */
+        window.setRole = function(selectedRole, btn){
+            role = selectedRole;
+            document.querySelectorAll(".tabs button").forEach(b => {
+                b.className = "flex-1 py-2 px-1 text-xs font-black uppercase rounded-xl transition-all cursor-pointer bg-slate-950 text-slate-500";
             });
+            btn.className = "flex-1 py-2 px-1 text-xs font-black uppercase rounded-xl transition-all cursor-pointer bg-sky-600 text-white shadow-md";
 
-            if(matchedDocId) {
-                // కాలింగ్ హిస్టరీ రికార్డ్
-                await addDoc(collection(db, "hbml_logins"), {
-                    name: identifier,
-                    role: "Customer",
-                    loginTime: new Date()
-                });
+            document.getElementById("message").innerHTML = "";
+            document.getElementById("errorMessage").style.display = "none";
 
-                msg.innerHTML = "Customer Login Successful";
-                localStorage.setItem('last_viewed_customer_id', matchedDocId);
-                
-                setTimeout(() => {
-                    window.location.href = "customer.html?id=" + matchedDocId;
-                }, 800);
+            const nameInput = document.getElementById("name");
+            const emailInput = document.getElementById("email");
+            const passInput = document.getElementById("password");
+
+            const boxName = document.getElementById("boxNameInput");
+            const boxPass = document.getElementById("boxPassInput");
+            const lblId = document.getElementById("lblIdentifier");
+            const iconId = document.getElementById("iconIdentifier");
+
+            nameInput.value = "";
+            emailInput.value = "";
+            passInput.value = "";
+
+            if(role === "Customer") {
+                // Customer విభాగంలో అనవసరమైన బాక్సులు హైడ్ అవుతాయి
+                boxName.style.display = "none";
+                boxPass.style.display = "none";
+                lblId.innerText = "Customer ID or Phone Number (ఖాతా సంఖ్య / ఫోన్)";
+                iconId.innerHTML = `<i class="fa-solid fa-id-badge"></i>`;
+                emailInput.type = "text";
+                emailInput.placeholder = "e.g. HBML-CUST-01 / 9000846009";
+            } else if(role === "Employee") {
+                boxName.style.display = "block";
+                boxPass.style.display = "block";
+                lblId.innerText = "Employee Email Address (సిబ్బంది ఈమెయిల్)";
+                iconId.innerHTML = `<i class="fa-solid fa-envelope"></i>`;
+                emailInput.type = "email";
+                emailInput.placeholder = "Enter Employee Email";
             } else {
-                msg.innerHTML = "";
-                errMsg.innerText = "No customer record found with these details!";
-                errMsg.style.display = "block";
+                boxName.style.display = "block";
+                boxPass.style.display = "block";
+                lblId.innerText = "Admin Email Address (అడ్మిన్ ఈమెయిల్)";
+                iconId.innerHTML = `<i class="fa-solid fa-envelope"></i>`;
+                emailInput.type = "email";
+                emailInput.placeholder = "Enter Admin Email";
             }
-
-        } catch(error) {
-            console.error(error);
-            msg.innerHTML = "";
-            alert("Database connection timeout.");
         }
-    }
-}
 
-// ప్రారంభంలో డీఫాల్ట్‌గా 'Admin' టాబ్ లోడ్ అవుతుంది
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("btnAdmin").click();
-});
-</script>
+        /* 👑 🚀 CORE AUTH GATEWAY PROTOCOL */
+        window.loginUser = async function(){
+            const nameInput = document.getElementById("name");
+            const emailInput = document.getElementById("email");
+            const passInput = document.getElementById("password");
+            
+            const msg = document.getElementById("message");
+            const errMsg = document.getElementById("errorMessage");
+            const triggerBtn = document.getElementById("btnLoginTrigger");
+            const triggerIcon = document.getElementById("loginIcon");
+
+            msg.innerHTML = "";
+            errMsg.style.display = "none";
+
+            let name = nameInput.value.trim();
+            let identifier = emailInput.value.trim();
+            let password = passInput.value.trim();
+
+            if(role === "Admin" || role === "Employee") {
+                if(name === "" || identifier === "" || password === ""){
+                    alert("Please fill all configuration parameters before processing.");
+                    return;
+                }
+
+                lockButtonLoadingState(triggerBtn, triggerIcon);
+                msg.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing credentials...`;
+
+                try {
+                    await addDoc(collection(db, "hbml_logins"), {
+                        name: name,
+                        email: identifier,
+                        role: role,
+                        loginTime: new Date()
+                    });
+
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${role} Login Successful! Redirecting...`;
+                    
+                    setTimeout(() => {
+                        unlockButtonState(triggerBtn, triggerIcon);
+                        if(role === "Admin"){
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "employee.html";
+                        }
+                    }, 800);
+
+                } catch(error) {
+                    alert(error);
+                    unlockButtonState(triggerBtn, triggerIcon);
+                }
+            } 
+            else {
+                if(identifier === "") {
+                    alert("Please enter Customer ID or Phone Number");
+                    return;
+                }
+
+                lockButtonLoadingState(triggerBtn, triggerIcon);
+                msg.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifying digital ledger link...`;
+
+                try {
+                    const snap = await getDocs(collection(db, "customers"));
+                    let matchedDocId = null;
+                    const searchKey = identifier.toLowerCase();
+
+                    snap.forEach((docRecord) => {
+                        const data = docRecord.data();
+                        const cloudUID = (data.customerId || "").toLowerCase();
+                        const cloudPhone = (data.phone || data.mobile || "");
+
+                        if(searchKey === cloudUID || searchKey.replace(/[^0-9]/g, "") === cloudPhone.replace(/[^0-9]/g, "")) {
+                            matchedDocId = docRecord.id;
+                        }
+                    });
+
+                    if(matchedDocId) {
+                        await addDoc(collection(db, "hbml_logins"), {
+                            name: identifier,
+                            role: "Customer",
+                            loginTime: new Date()
+                        });
+
+                        msg.innerHTML = `<i class="fa-solid fa-circle-check"></i> Customer Verified! Opening passbook...`;
+                        localStorage.setItem('last_viewed_customer_id', matchedDocId);
+                        
+                        setTimeout(() => {
+                            unlockButtonState(triggerBtn, triggerIcon);
+                            window.location.href = "customer.html?id=" + matchedDocId;
+                        }, 800);
+                    } else {
+                        msg.innerHTML = "";
+                        unlockButtonState(triggerBtn, triggerIcon);
+                        errMsg.innerText = "No customer record found with these details!";
+                        errMsg.style.display = "block";
+                    }
+
+                } catch(error) {
+                    console.error(error);
+                    msg.innerHTML = "";
+                    unlockButtonState(triggerBtn, triggerIcon);
+                    alert("Database connection timeout.");
+                }
+            }
+        }
+
+        function lockButtonLoadingState(btn, icon) {
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin";
+        }
+
+        function unlockButtonState(btn, icon) {
+            btn.disabled = false;
+            btn.classList.remove("opacity-50");
+            icon.className = "fa-solid fa-right-to-bracket";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById("btnAdmin").click();
+        });
+    </script>
 </body>
 </html>
