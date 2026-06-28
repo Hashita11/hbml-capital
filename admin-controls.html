@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBML Capital - Advanced Control Panel</title>
+    <!-- Modern Tailwind CSS V4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center">
+
+    <div class="w-full max-w-4xl space-y-6">
+        
+        <!-- TOP CONTROL NAVIGATION -->
+        <div class="flex justify-between items-center gap-2 w-full">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition uppercase">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            
+            <!-- 🛡️ FEATURE 1: ROLE-BASED ACCESS CONTROL CONTROLLER -->
+            <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold text-slate-500 uppercase">Current Session Role:</span>
+                <select id="sessionRoleSelect" onchange="applyRoleBasedAccessControl()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-sky-400 focus:outline-hidden cursor-pointer">
+                    <option value="Admin">🔑 Admin (Full Access)</option>
+                    <option value="FieldAgent">🏃 Field Agent (Restricted)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- BRANDING HEADER -->
+        <div class="text-center space-y-2 py-2">
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase"><i class="fa-solid fa-gears text-indigo-500 mr-2"></i>HBML Advanced System Core</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Automated Interest, Live Targets & Role Guards</p>
+        </div>
+
+        <!-- 👑 FEATURE 2: AUTOMATED INTEREST CALCULATOR NODE -->
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl">
+            <h3 class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
+                <i class="fa-solid fa-calculator"></i> 1. Automated Monthly Interest Engine (వడ్డీ లెక్కలు)
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-bold">
+                <div>
+                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Loan Principal (అసలు ముక్క)</label>
+                    <input type="number" id="calcPrincipal" value="100000" oninput="runAutomatedInterestEngine()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-hidden focus:border-amber-500 font-mono text-sm">
+                </div>
+                <div>
+                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Annual Interest Rate (వడ్డీ రేటు %)</label>
+                    <input type="number" id="calcRate" value="12" oninput="runAutomatedInterestEngine()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-hidden focus:border-amber-500 font-mono text-sm">
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60 flex flex-col justify-center">
+                    <span class="text-slate-500 uppercase text-[9px] tracking-wider">Auto Calculated Monthly Interest</span>
+                    <span id="lblMonthlyInterestResult" class="text-lg font-black font-mono text-amber-400 mt-0.5">₹1,000.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 FEATURE 3: LIVE COLLECTION TARGET TRACKING PROGRESS -->
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl">
+            <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
+                <i class="fa-solid fa-chart-line"></i> 2. Live Field Agent Collection Targets (లైవ్ వసూళ్ల టార్గెట్)
+            </h3>
+            
+            <div class="space-y-4 text-xs">
+                <!-- Agent 1 Row -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between items-center font-bold">
+                        <div>
+                            <span class="text-white uppercase font-black">Naresh</span>
+                            <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-LJHEP</span>
+                        </div>
+                        <span class="font-mono text-emerald-400">₹35,000 / ₹50,000 collected (70%)</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
+                        <div class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full" style="width: 70%"></div>
+                    </div>
+                </div>
+
+                <!-- Agent 2 Row -->
+                <div class="space-y-1.5">
+                    <div class="flex justify-between items-center font-bold">
+                        <div>
+                            <span class="text-white uppercase font-black">Suresh Kumar</span>
+                            <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-EMP-02</span>
+                        </div>
+                        <span class="font-mono text-emerald-400">₹15,000 / ₹50,000 collected (30%)</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
+                        <div class="bg-gradient-to-r from-emerald-600 to-amber-500 h-full rounded-full" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔒 SENSITIVE ADMIN ZONE (Role-Based Protected Area) -->
+        <div id="restrictedAdminZone" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl transition-all duration-300">
+            <h3 class="text-xs font-black uppercase tracking-wider text-rose-500 flex items-center gap-2 border-b border-slate-800 pb-2.5">
+                <i class="fa-solid fa-shield-halved"></i> 3. Secure Admin Audit Terminal (సెన్సిటివ్ ఆడిట్ సెక్షన్)
+            </h3>
+            <p class="text-xs text-slate-400 font-medium">This section contains highly confidential company analytics. Only visible to verified Admin role tokens.</p>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-bold text-center">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/40">
+                    <span class="text-slate-500 block uppercase text-[9px]">Total System Capital</span>
+                    <span class="font-mono text-sm text-white block mt-0.5">₹25,80,000</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/40 flex flex-col justify-center">
+                    <span class="text-slate-500 uppercase text-[9px] block">Net Profit Margin</span>
+                    <span class="font-mono text-emerald-500 text-sm block mt-0.5">₹4,25,000</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/40 flex flex-col justify-center col-span-2 sm:col-span-1">
+                    <span class="text-slate-500 uppercase text-[9px] block">System Ledger Integrity</span>
+                    <span class="text-teal-400 uppercase text-[10px] mt-0.5"><i class="fa-solid fa-circle-check"></i> Secure Node</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ADVANCED MANAGEMENT RUNTIME ENGINES -->
+    <script>
+        /* 👑 🛠️ ENGINE 1: AUTOMATED INTEREST CALCULATOR LOGIC */
+        function runAutomatedInterestEngine() {
+            const principal = Number(document.getElementById("calcPrincipal").value || 0);
+            const rate = Number(document.getElementById("calcRate").value || 0);
+            const resultEl = document.getElementById("lblMonthlyInterestResult");
+
+            // Reducing/Flat Standard Monthly Formula Matrix: Interest = P * (R / 12) / 100
+            let monthlyInterest = principal * (rate / 100) / 12;
+            
+            if (monthlyInterestResult < 0 || isNaN(monthlyInterestResult)) monthlyInterestResult = 0;
+            lblMonthlyInterestResult.innerText = "₹" + monthlyInterestResult.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        /* 👑 🛡️ ENGINE 2: ROLE-BASED ACCESS CONTROL (RBAC) LOGIC */
+        function applyRoleBasedAccessControl() {
+            const selectedRole = document.getElementById("sessionRoleSelect").value;
+            const auditZone = document.getElementById("auditMasterZoneBlock") || document.querySelector(".audit-master-card") || document.querySelector(".bg-slate-900:last-of-type");
+
+            if (selectedRole === "FieldAgent") {
+                // ఫీల్డ్ ఏజెంట్ లాగిన్ లో ఉంటే సెన్సిటివ్ ఆడిట్ బ్లాక్ ని పూర్తిగా హైడ్ చేయడం
+                if(auditZone) {
+                    auditZone.style.opacity = "0.2";
+                    auditZone.style.pointerEvents = "none";
+                    alert("Access Restriction: Field Agents cannot view internal corporate audit data nodes.");
+                }
+            } else {
+                // అడ్మిన్ లాగిన్ లో ఉన్నప్పుడు ఫుల్ యాక్సెస్ ఇవ్వడం
+                if(auditZone) {
+                    auditZone.style.opacity = "1";
+                    auditZone.style.pointerEvents = "auto";
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            runAutomatedInterestEngine();
+            applyRoleBasedAccessControl();
+        });
+    </script>
+</body>
+</html>
