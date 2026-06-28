@@ -7,16 +7,31 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 👑 🖨️ PDF ప్రింటింగ్ సమయంలో అడ్మిన్ కంట్రోల్స్ దాచి, టేబుల్ నీట్‌గా వైట్ పేజీగా రావడానికి ప్రింట్ స్టైల్స్ */
+        /* 👑 🖨️ ADVANCED SINGLE PAGE PRINTING CONTROLS */
         @media print {
-            body { background: white !important; color: black !important; padding: 0 !important; }
+            html, body { 
+                background: white !important; 
+                color: black !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                height: auto !important;
+            }
             .no-print, button, a, #tabSingle, #tabGroup { display: none !important; }
             .bg-slate-900, .bg-slate-950, .bg-slate-950/60 { background: transparent !important; border-color: #cbd5e1 !important; color: black !important; }
             th { background-color: #f1f5f9 !important; color: black !important; border-bottom: 2px solid #cbd5e1 !important; }
             td { border-bottom: 1px solid #e2e8f0 !important; color: black !important; }
             div, h1, h3, p { color: black !important; }
-            #reportSingleContainer, #reportGroupContainer { display: block !important; border: none !important; }
+            
+            /* ❌ రెండవ ఖాళీ పేజీ రాకుండా పేజీ బ్రేక్స్ మరియు మార్జిన్స్ లాక్ చేయడం */
+            #reportSingleContainer, #reportGroupContainer { 
+                display: block !important; 
+                border: none !important; 
+                page-break-inside: avoid !important;
+            }
             .hidden { display: none !important; }
+            
+            /* ఎక్స్‌ట్రా మార్జిన్ కట్ కంట్రోల్ */
+            .max-w-4xl { max-w: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
         }
     </style>
 </head>
@@ -24,14 +39,13 @@
 
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <!-- TOP CONTROL NAVIGATION & NEW PDF EXPORT BUTTON -->
+        <!-- TOP CONTROL NAVIGATION -->
         <div class="flex justify-between items-center gap-2 no-print">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
             
             <div class="flex items-center gap-2">
-                <!-- 👑 🖨️ ఏ ఎక్స్టర్నల్ ఫైల్ అవసరం లేకుండా 100% సేఫ్‌గా PDF ఎక్స్‌పోర్ట్ చేసే సరికొత్త అడ్వాన్స్‌డ్ బటన్ -->
                 <button onclick="exportReportToStandardPDF()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-3 py-2 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-md">
                     <i class="fa-solid fa-file-pdf"></i> Export PDF
                 </button>
@@ -90,7 +104,7 @@
         <div id="reportSingleContainer" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
             <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-table-list text-sky-500 mr-1"></i> Individual Ledger Rows</span>
-                <span class="text-[9px] font-mono text-slate-500 uppercase no-print" id="lblSingleDate"></span>
+                <span class="text-[9px] font-mono text-slate-500 uppercase" id="lblSingleDate"></span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs border-collapse min-w-[500px]">
@@ -116,7 +130,7 @@
         <div id="reportGroupContainer" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden hidden">
             <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-users-viewfinder text-emerald-500 mr-1"></i> Joint Liability Groups Rowset</span>
-                <span class="text-[9px] font-mono text-slate-500 uppercase no-print" id="lblGroupDate"></span>
+                <span class="text-[9px] font-mono text-slate-500 uppercase" id="lblGroupDate"></span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs border-collapse min-w-[500px]">
@@ -156,11 +170,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // రన్‌టైమ్ గ్లోబల్ ట్యాబ్ ట్రాకర్
-        let currentActiveTab = 'single';
-
         window.switchReportTab = function(type) {
-            currentActiveTab = type;
             const singleContainer = document.getElementById("reportSingleContainer");
             const groupContainer = document.getElementById("reportGroupContainer");
             const tabSingle = document.getElementById("tabSingle");
@@ -179,14 +189,10 @@
             }
         }
 
-        /* 👑 🖨️ SMART EXPORT PDF CONTROLLER */
         window.exportReportToStandardPDF = function() {
-            // ప్రింట్ చేయడానికి ముందే రిపోర్ట్ తేదీలను సిస్టమ్‌లో లోడ్ చేయడం
             let nowStr = new Date().toLocaleDateString('en-IN') + " - " + new Date().toLocaleTimeString('en-IN');
             document.getElementById("lblSingleDate").innerText = "As of: " + nowStr;
             document.getElementById("lblGroupDate").innerText = "As of: " + nowStr;
-            
-            // ఆటోమేటిక్‌గా బ్రౌజర్ పిడిఎఫ్ జనరేషన్ విండో ఓపెన్ అవుతుంది
             window.print();
         }
 
