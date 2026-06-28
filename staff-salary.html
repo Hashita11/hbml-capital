@@ -67,7 +67,7 @@
                 <div>
                     <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-1.5">Select Disbursed Employee</label>
                     <select id="employeeSelect" onchange="generateSalarySlipUI()" class="w-full text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 focus:outline-none focus:border-indigo-500 transition cursor-pointer">
-                        <!-- Loading dynamic option -->
+                        <option value="">-- Choose Disbursed Employee --</option>
                     </select>
                 </div>
                 <div>
@@ -111,14 +111,6 @@
         let cachedDisbursements = [];
         let cachedEmployees = {};
 
-        // 👑 🛠️ SEED FALLBACK DATA: ఒకవేళ ఫైర్‌బేస్ ఖాళీగా ఉన్నా ప్రింటింగ్ టెస్ట్ కోసం ఉపయోగపడే అఫీషియల్ ప్రొఫైల్స్
-        const SEED_DISBURSED_MOCK = [
-            { id: "demo-naresh", employeeDocId: "naresh_id", employeeName: "NARESH", amountPaid: 12500, calculatedPaidDays: 25, calculatedAbsentDays: 5, totalLateMarks: 1, disbursedAt: new Date().getTime() }
-        ];
-        const SEED_EMPLOYEE_META = {
-            "demo-naresh": { employeeId: "HBML-EMP-08", name: "NARESH", role: "Field Agent", branch: "Tanuku Head Office", salary: 15000 }
-        };
-
         const now = new Date();
         document.getElementById('salaryMonth').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -126,9 +118,11 @@
             try {
                 const selectEl = document.getElementById("employeeSelect");
                 
+                // 1. Employees లిస్ట్ లోడ్ చేయడం
                 const empSnap = await getDocs(collection(db, "employees"));
                 empSnap.forEach(d => { cachedEmployees[d.id] = d.data(); });
 
+                // 2. Disbursements లిస్ట్ లోడ్ చేయడం
                 const disbSnap = await getDocs(collection(db, "salary_disbursements"));
                 cachedDisbursements = [];
 
@@ -138,44 +132,47 @@
                         cachedDisbursements.push({ id: docRecord.id, ...data });
                     });
                 } else {
-                    // ఫైర్‌బేస్ ఎంప్టీగా ఉంటే డెమో లోడ్ అవుతుంది
-                    cachedDisbursements = [{ ...SEED_AUDIT_FALLBACK_RECORD() }];
-                    cachedEmployees[SEED_AUDIT_TRAILS_ID()] = { name: "NARESH", employeeId: "HBML-LJHEP", role: "Field Agent - Collection Staff", branch: "Tanuku HQ", salary: 15000 };
+                    // క్లౌడ్ లో రికార్డులు లేకపోతే ప్రదర్శన కోసం డెమో డేటా లోడ్ అవుతుంది
+                    cachedDisbursements = [{
+                        id: "DEMO-LEGER-01",
+                        employeeDocId: "demo_naresh",
+                        employeeName: "NARESH",
+                        amountPaid: 12500,
+                        calculatedPaidDays: 25,
+                        calculatedAbsentDays: 5,
+                        totalLateMarks: 1,
+                        disbursedAt: new Date()
+                    }];
+                    cachedEmployees["demo_naresh"] = { employeeId: "HBML-LJHEP", name: "NARESH", role: "Field Agent", branch: "Tanuku Head Office", salary: 15000 };
                 }
 
                 let dropdownHtml = `<option value="">-- Choose Disbursed Employee --</option>`;
-                cachedDisbursements.forEach(data => {
-                    dropdownHtml += `<option value="${data.id}">${data.employeeName} (₹${Number(data.amountPaid).toLocaleString('en-IN')})</option>`;
+                cachedDisbursements.forEach(res => {
+                    dropdownHtml += `<option value="${res.id}">${res.employeeName} (₹${Number(res.amountPaid).toLocaleString('en-IN')})</option>`;
                 });
-
                 selectEl.innerHTML = dropdownHtml;
+
             } catch (error) {
-                console.error(error);
+                console.error("Error loading records:", error);
                 // నెట్‌వర్క్ ఎర్రర్ వస్తే డెమో ప్యానెల్ ఆక్టివేట్ అవుతుంది
-                loadFallbackEngineState();
+                cachedDisbursements = [{
+                    id: "DEMO-LEGER-01",
+                    employeeDocId: "demo_naresh",
+                    employeeName: "NARESH",
+                    amountPaid: 12500,
+                    calculatedPaidDays: 25,
+                    calculatedAbsentDays: 5,
+                    totalLateMarks: 1,
+                    disbursedAt: new Date()
+                }];
+                cachedEmployees["demo_naresh"] = { employeeId: "HBML-LJHEP", name: "NARESH", role: "Field Agent", branch: "Tanuku Head Office", salary: 15000 };
+                
+                let dropdownHtml = `<option value="">-- Choose Disbursed Employee --</option>`;
+                cachedDisbursements.forEach(res => {
+                    dropdownHtml += `<option value="${res.id}">${res.employeeName} (₹${Number(res.amountPaid).toLocaleString('en-IN')})</option>`;
+                });
+                document.getElementById("employeeSelect").innerHTML = dropdownHtml;
             }
-        }
-
-        const fallbackId = "demo-disb-node";
-        function loadFallbackEngineState() {
-            const selectEl = document.getElementById("employeeSelect");
-            cachedDisbursements = [{
-                id: "demo-disb-id",
-                employeeDocId: "demo-emp-id",
-                employeeName: "NARESH",
-                amountPaid: 12500,
-                calculatedPaidDays: 25,
-                calculatedAbsentDays: 5,
-                totalLateMarks: 1,
-                disbursedAt: new Date().getTime()
-            }];
-            cachedEmployees["demo-ref-id"] = { employeeId: "HBML-LJHEP", role: "Field Agent - Collection Staff", branch: "Tanuku", salary: 15000 };
-            cachedDisbursements[0].employeeDocId = "demo-ref-id";
-
-            selectEl.innerHTML = `
-                <option value="">-- Choose Disbursed Employee --</option>
-                <option value="demo-id">NARESH (₹12,500)</option>
-            `;
         }
 
         window.generateSalarySlipUI = function() {
@@ -189,10 +186,10 @@
                 return;
             }
 
-            const record = cachedDisbursements.find(r => r.id === selectId) || cachedDisbursements[0];
+            const record = cachedDisbursements.find(r => r.id === selectId);
             if (!record) return;
 
-            const empMeta = cachedEmployees[record.employeeDocId] || { name: "Naresh", employeeId: "HBML-LJHEP", branch: "Tanuku", salary: 15000 };
+            const empMeta = cachedEmployees[record.employeeDocId] || { name: "Naresh", employeeId: "HBML-LJHEP", branch: "Tanuku HQ", salary: 15000 };
             const empID = empMeta.employeeId || "HBML-LJHEP";
             const designation = empMeta.role || empMeta.designation || "Field Agent";
             const branchLocation = empMeta.branch || "Tanuku HQ";
@@ -225,14 +222,15 @@
             }
 
             printArea.innerHTML = `
-                <div class="bg-white rounded-2xl shadow-xl border border-slate-200/70 p-6 md:p-8 space-y-6 salary-slip-card relative overflow-hidden text-left">
+                <div class="bg-white rounded-2xl shadow-xl border border-slate-200/70 p-6 md:p-8 space-y-6 salary-slip-card relative overflow-hidden text-left mt-4">
                     <div class="absolute top-0 left-0 right-0 h-2 bg-indigo-950"></div>
 
-                    <!-- CORPORATE HEADER -->
+                    <!-- CORPORATE HEADER & LOGO -->
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-5 gap-4">
                         <div class="space-y-1">
                             <div class="flex items-center gap-2">
-                                <div class="bg-indigo-950 text-white w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm tracking-tighter">HB</div>
+                                <img src="logo.png" alt="HBML Logo" class="h-10 w-auto" onerror="this.style.display='none'; document.getElementById('slip-fallback-icon').classList.remove('hidden')">
+                                <div id="slip-fallback-icon" class="bg-indigo-950 text-white w-7 h-7 rounded-lg flex items-center justify-center font-black text-sm tracking-tighter hidden">HB</div>
                                 <h1 class="text-xl font-extrabold text-slate-900 tracking-tight uppercase">Harshita Blooms Microloans Pvt Ltd</h1>
                             </div>
                             <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide px-1">
@@ -382,46 +380,6 @@
             `;
             printArea.classList.remove("hidden");
             emptyState.classList.add("hidden");
-        }
-
-        async function initSalarySlipEngine() {
-            try {
-                const selectEl = document.getElementById("employeeSelect");
-                const empSnap = await getDocs(collection(db, "employees"));
-                empSnap.forEach(d => { cachedEmployees[d.id] = d.data(); });
-
-                const disbSnap = await getDocs(collection(db, "salary_disbursements"));
-                cachedDisbursements = [];
-
-                // 👑 🛠️ క్లౌడ్ ఖాళీగా ఉంటే ఆటోమేటిక్‌గా డెమో బ్యాకప్ డేటా లోడ్ అవుతుంది
-                if (disbSnap.empty) {
-                    cachedDisbursements = [{
-                        id: "DEMO-LEGER-01",
-                        employeeDocId: "demo_naresh",
-                        employeeName: "NARESH (FIELD AGENT)",
-                        amountPaid: 15000,
-                        calculatedPaidDays: 26,
-                        calculatedAbsentDays: 4,
-                        totalLateMarks: 1,
-                        disbursedAt: new Date()
-                    }];
-                    cachedEmployees["record.employeeDocId"] = { salary: 15000, branch: "Tanuku Head Office", role: "Field Agent" };
-                } else {
-                    disbSnap.forEach(docRecord => {
-                        const data = docRecord.data();
-                        cachedDisbursements.push({ id: docRecord.id, ...data });
-                    });
-                }
-
-                let dropdownHtml = `<option value="">-- Choose Disbursed Employee --</option>`;
-                cachedDisbursements.forEach(res => {
-                    dropdownHtml += `<option value="${res.id}">${res.employeeName} (₹${Number(res.amountPaid).toLocaleString('en-IN')})</option>`;
-                });
-                selectEl.innerHTML = dropdownHtml;
-
-            } catch (error) {
-                console.error("Error loading records:", error);
-            }
         }
 
         window.addEventListener('DOMContentLoaded', initSalarySlipEngine);
