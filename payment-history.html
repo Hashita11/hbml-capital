@@ -4,36 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Capital - Live Payment History</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.googleapis.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* 👑 Professional Print & PDF Layout Controls */
+        @media print {
+            html, body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print, button, a { display: none !important; }
+            .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; }
+            
+            /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా పేజీ బ్రేక్ నియంత్రణ */
+            .history-master-card {
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                background: white !important;
+                padding: 12px !important;
+            }
+            th { background-color: #f8fafc !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; padding: 6px !important; }
+            td { border: 1px solid #e2e8f0 !important; color: #334155 !important; padding: 6px !important; }
+            div, h1, p, span, strong { color: black !important; }
+            
+            /* VISIBILITY FIX: ప్రింట్ అయ్యేటప్పుడు టెక్స్ట్ కలర్స్ ముదురు నలుపు షేడ్‌లోకి లాక్ అవుతాయి */
+            .text-white { color: #0f172a !important; }
+            .text-slate-300 { color: #334155 !important; }
+            .text-slate-400 { color: #475569 !important; }
+            .text-emerald-400 { color: #166534 !important; font-weight: 800 !important; }
+            .text-amber-500 { color: #9a3412 !important; font-weight: 800 !important; }
+            .bg-slate-800 { background: transparent !important; border: 1px solid #cbd5e1 !important; color: black !important; }
+        }
+    </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-4xl mx-auto space-y-6 main-container">
         
-        <!-- TOP CONTROL NAVIGATION -->
-        <div class="flex justify-between items-center gap-2">
+        <div class="flex justify-between items-center gap-2 no-print w-full">
             <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు
             </a>
-            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
-                Live Audit Stream
-            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="window.print()" class="text-xs font-black text-white uppercase tracking-wider bg-rose-600 hover:bg-rose-500 px-4 py-2.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md active:scale-95">
+                    <i class="fa-solid fa-file-pdf"></i> Export Statement PDF
+                </button>
+                <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
+                    Live Audit Stream
+                </span>
+            </div>
         </div>
 
-        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
-            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Global Payment History</h1>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">Global Payment History</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Real-Time Daily Collection Day Book</p>
         </div>
 
-        <!-- 📑 HISTORY DIRECTORY CONTAINER -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden history-master-card">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center no-print">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
                     <i class="fa-solid fa-clock-history text-sky-500 mr-1.5"></i> All Received Transactions Log
                 </span>
@@ -64,7 +105,6 @@
 
     </div>
 
-    <!-- FIREBASE DATA PLATFORM ARCHITECTURE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -84,7 +124,6 @@
         async function streamGlobalPaymentHistory() {
             const tbody = document.getElementById("tblHistoryBody");
             try {
-                // గ్లోబల్ కలెక్షన్స్ నోడ్ నుండి డేటాను లాగడం
                 const ref = collection(db, "emi_collections");
                 const snap = await getDocs(ref);
 
@@ -99,7 +138,6 @@
                     records.push({ id: doc.id, ...doc.data() });
                 });
 
-                // లేటెస్ట్ పేమెంట్లు పైకి వచ్చేలా క్రమబద్ధీకరించడం
                 records.sort((a, b) => {
                     let dateA = a.date?.seconds ? a.date.seconds : new Date(a.date || 0).getTime();
                     let dateB = b.date?.seconds ? b.date.seconds : new Date(b.date || 0).getTime();
