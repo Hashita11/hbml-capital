@@ -18,6 +18,9 @@
                 padding: 0 !important;
                 margin: 0 !important;
                 height: auto !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .no-print, button, a { display: none !important; }
             .main-container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; border: none !important; box-shadow: none !important; }
@@ -25,13 +28,20 @@
             /* ❌ అదనపు ఖాళీ తెల్ల పేజీలు రాకుండా కంట్రోల్ */
             .audit-master-card {
                 page-break-inside: avoid !important;
+                page-break-after: avoid !important;
                 border: 1px solid #cbd5e1 !important;
                 box-shadow: none !important;
                 background: white !important;
+                padding: 12px !important;
             }
             th { background-color: #f8fafc !important; color: #0f172a !important; border: 1px solid #cbd5e1 !important; padding: 6px !important; }
             td { border: 1px solid #e2e8f0 !important; color: #334155 !important; padding: 6px !important; }
             div, h1, p, span, strong { color: black !important; }
+            
+            /* VISIBILITY FIX: ప్రింట్ అయ్యేటప్పుడు టెక్స్ట్ కలర్స్ ముదురు నలుపు షేడ్‌లోకి లాక్ అవుతాయి */
+            .text-white { color: #0f172a !important; }
+            .text-slate-300 { color: #334155 !important; }
+            .text-slate-500 { color: #475569 !important; }
         }
     </style>
 </head>
@@ -50,7 +60,7 @@
 
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none';">
-            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">Finance & System Audit Report</h1>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase">Finance & System Audit Report</h1>
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Internal Security & Operations Audit Trail Ledger</p>
         </div>
 
@@ -68,7 +78,7 @@
                         <tr>
                             <th class="p-4 w-[25%]">Timestamp (తేదీ & సమయం)</th>
                             <th class="p-4 w-[20%]">User / Operator</th>
-                            <th class="p-4 w-[40%]">Action Description (நிర్దిష్ట చర్యల వివరాలు)</th>
+                            <th class="p-4 w-[40%]">Action Description (నిర్దిష్ట చర్యల వివరాలు)</th>
                             <th class="p-4 text-center w-[15%]">Core Channel</th>
                         </tr>
                     </thead>
@@ -101,10 +111,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // 👑 🛠️ క్లౌడ్ లో ఏవైనా లాగ్స్ మిస్ అయితే డెమో వెరిఫికేషన్ కోసం బ్యాకప్ ఆడిట్ డేటా
         const SEED_AUDIT_TRAILS = [
             { timestamp: "28/06/2026 - 10:15:22 am", user: "Sudeep", email: "admin@hbml.com", desc: "Generated bank-standard professional salary slips for regional field agents.", channel: "firebase session" },
             { timestamp: "27/06/2026 - 1:45:47 pm", user: "Sudeep", email: "employee@hbml.com", desc: "Accessed employee payroll disbursal module and generated draft statements.", channel: "firebase session" },
-            { timestamp: "27/06/2026 - 12:45:06 pm", user: "9059988802", email: "internal@hbml.com", desc: "Executed verification protocol for pending KYC documents matching regional branch rules.", channel: "firebase session" },
+            { timestamp: "27/06/2026 - 12:45:06 pm", user: "9000846009", email: "internal@hbml.com", desc: "Executed verification protocol for pending KYC documents matching regional branch rules.", channel: "firebase session" },
             { timestamp: "30/05/2026 - 9:57:55 pm", user: "Sudeep", email: "admin@hbml.com", desc: "Broadcasted global notification batch for upcoming EMI collections.", channel: "firebase session" }
         ];
 
