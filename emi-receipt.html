@@ -11,10 +11,30 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        
+        /* 👑 🖨️ ADVANCED SINGLE PAGE RECEIPT PRINTING CONTROLS */
         @media print {
+            html, body { 
+                background: white !important; 
+                color: black !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                height: auto !important;
+            }
             .no-print { display: none !important; }
-            body { background: white; padding: 0; }
-            .receipt-box { border: none; shadow: none; max-width: 100%; padding: 10px; }
+            
+            /* ఎక్స్‌ట్రా తెల్ల పేజీ రాకుండా మార్జిన్స్ ని నియంత్రించడం */
+            .receipt-box { 
+                border: none !important; 
+                box-shadow: none !important; 
+                max-width: 100% !important; 
+                padding: 15px !important;
+                margin: 0 auto !important;
+                page-break-inside: avoid !important;
+            }
+            div, h1, h2, h3, p, strong, span { color: black !important; }
+            .bg-slate-50 { background: transparent !important; border-color: #e2e8f0 !important; }
+            .bg-emerald-50 { background: transparent !important; border: 1px solid #cbd5e1 !important; color: black !important; }
         }
     </style>
 </head>
@@ -129,7 +149,6 @@
                     return;
                 }
 
-                // 1. కస్టమర్ మాస్టర్ డేటా మరియు కరెంట్ బ్యాలెన్స్ లోడింగ్
                 const custRef = doc(db, "customers", customerDocId);
                 const custSnap = await getDoc(custRef);
 
@@ -139,7 +158,6 @@
                 }
                 const custData = custSnap.data();
 
-                // 2. సబ్‌కలెక్షన్ లోని అత్యంత లేటెస్ట్ పేమెంట్ రికార్డ్ లాగడం
                 const pRef = collection(db, "customers", customerDocId, "payments");
                 const q = query(pRef, orderBy("timestamp", "desc"), limit(1));
                 const pSnap = await getDocs(q);
@@ -161,7 +179,6 @@
 
                 let netTotalPaid = emiAmount + penaltyAmount;
 
-                // 3. UI స్క్రీన్ లోపలికి లైవ్ డేటా ఇంజెక్షన్
                 document.getElementById("lblCustName").innerText = custData.name || "Valued Borrower";
                 document.getElementById("lblCustUID").innerText = custData.customerId || "HBML-" + customerDocId.substring(0,5).toUpperCase();
                 
