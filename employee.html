@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HBML Employee Dashboard</title>
-    <!-- Modern Tailwind CSS V4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
@@ -15,7 +13,6 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col md:flex-row">
 
-    <!-- 📲 SIDEBAR NAVIGATION VERTICAL PANEL -->
     <div class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 p-5 flex flex-col justify-between shrink-0 shadow-2xl">
         <div class="space-y-6">
             <div class="text-center py-2 space-y-2 border-b border-slate-800 pb-4">
@@ -55,21 +52,18 @@
         </div>
     </div>
 
-    <!-- 📊 MAIN CONTROL DASHBOARD WORKSPACE -->
     <div class="flex-1 p-4 md:p-6 space-y-6 overflow-x-hidden">
         
-        <!-- TOP CONTROL STATUS HEADER -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-xl text-left w-full">
             <h1 class="text-lg font-black text-white uppercase tracking-tight">Employee Collection Desk</h1>
             <div class="clock text-sm font-black text-sky-400 font-mono bg-slate-950 border border-slate-800 px-4 py-1.5 rounded-full" id="clock">00:00:00 PM</div>
         </div>
 
-        <!-- WELCOME CARD NODE -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl flex flex-col sm:flex-row justify-between items-center gap-4 text-left">
             <div class="flex items-center gap-4 flex-col sm:flex-row text-center sm:text-left">
                 <div class="h-14 w-14 bg-slate-950 text-sky-400 border border-slate-800 rounded-full flex items-center justify-center text-2xl font-black shadow-md uppercase">E</div>
                 <div class="space-y-0.5">
-                    <h2 class="text-lg font-black text-white uppercase">Welcome Employee</h2>
+                    <h2 id="lblLoggedAgentName" class="text-lg font-black text-white uppercase">Welcome Employee</h2>
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Field Collection Agent Ledger</p>
                 </div>
             </div>
@@ -78,27 +72,31 @@
             </button>
         </div>
 
-        <!-- 4-GRID MATRIX METRICS STATS COUNTERS -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-md space-y-1">
-                <h3 id="lblTotalCustomers" class="text-2xl font-black font-mono text-white">0</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md space-y-1">
+                <h3 id="lblTotalCustomers" class="text-xl font-black font-mono text-white">0</h3>
                 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Customers</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-md space-y-1">
-                <h3 id="lblMonthlyEmiSum" class="text-2xl font-black font-mono text-purple-400">₹0</h3>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md space-y-1">
+                <h3 id="lblMonthlyEmiSum" class="text-xl font-black font-mono text-purple-400">₹0</h3>
                 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Book EMI Value</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-md space-y-1">
-                <h3 id="lblTotalBookSum" class="text-2xl font-black font-mono text-emerald-400">₹0</h3>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md space-y-1">
+                <h3 id="lblTotalBookSum" class="text-xl font-black font-mono text-emerald-400">₹0</h3>
                 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Book Capital</p>
             </div>
-            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-md space-y-1">
-                <h3 id="lblActiveLoans" class="text-2xl font-black font-mono text-amber-500">0</h3>
-                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Loan Ledgers</p>
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md space-y-1">
+                <h3 id="lblActiveLoans" class="text-xl font-black font-mono text-amber-500">0</h3>
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Active Loans</p>
+            </div>
+            <div class="bg-gradient-to-br from-emerald-950/40 to-slate-900 border border-emerald-800/60 p-4 rounded-2xl shadow-lg space-y-1 col-span-2 md:col-span-1">
+                <h3 id="lblTodayCollectionSum" class="text-xl font-black font-mono text-teal-400">₹0</h3>
+                <p class="text-[10px] font-black text-teal-500 uppercase tracking-wider flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-bolt animate-pulse"></i> Today's Collected
+                </p>
             </div>
         </div>
 
-        <!-- LIVE LIVE SEARCH FILTER INTERFACE -->
         <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl shadow-md">
             <div class="relative">
                 <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -106,14 +104,13 @@
             </div>
         </div>
 
-        <!-- ACCOUNT LOG DIRECTORY MATRIX TABLE -->
         <div class="bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden text-left">
             <div class="p-4 bg-slate-950/40 border-b border-slate-800">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-address-book text-sky-400 mr-1.5"></i> Assigned Field EMI Targets</span>
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm border-collapse min-w-[600px]">
+                <table class="w-full text-left text-sm border-collapse min-w-[650px]">
                     <thead class="bg-slate-950 text-slate-500 font-bold uppercase tracking-wider border-b border-slate-800 text-xs">
                         <tr>
                             <th class="p-4">Customer ID</th>
@@ -125,7 +122,7 @@
                     </thead>
                     <tbody id="employeeTableContainer" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
-                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-sky-500"></i> ఫైర్‌బేస్ సింక్ ఆക്టివేట్ అవుతోంది...</td>
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-sky-500"></i> ఫైర్‌బేస్ సింక్ ఆక్టివేట్ అవుతోంది...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -134,7 +131,6 @@
 
     </div>
 
-    <!-- FIREBASE SYSTEM ENGINE SCRIPTS -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -152,7 +148,13 @@
         const db = getFirestore(app);
 
         async function streamEmployeeDashboard() {
+            // లాగిన్ ఐడెంటిటీ సెట్ చేయడం
+            let savedName = localStorage.getItem("last_logged_in_name") || "HBML Agent";
+            document.getElementById("lblLoggedAgentName").innerText = "Welcome " + savedName;
+
             const tbody = document.getElementById("employeeTableContainer");
+            const todayDateStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
             try {
                 const snap = await getDocs(collection(db, "customers"));
                 
@@ -165,11 +167,14 @@
                 let totalCustCount = 0;
                 let totalEmiSum = 0;
                 let totalBookSum = 0;
+                let todayGlobalCollectionTotal = 0;
 
-                snap.forEach((docRecord) => {
+                // Loop records through cloud snap node
+                for (const docRecord of snap.docs) {
                     const data = docRecord.data();
                     const docId = docRecord.id;
                     const cleanName = data.name || "Unknown Borrower";
+                    const phoneNum = data.phone || data.mobile || "";
                     
                     let principal = Number(data.loanPrincipal || data.loan || 0);
                     let emiValue = Number(data.emi || 0);
@@ -178,7 +183,21 @@
                     totalEmiSum += emiValue;
                     totalBookSum += principal;
 
+                    // Subcollection Payments లో నుండి ఈరోజు కలెక్షన్ లెక్కించడం
+                    try {
+                        const paySnap = await getDocs(collection(db, "customers", docId, "payments"));
+                        paySnap.forEach(pDoc => {
+                            const pData = pDoc.data();
+                            if(pData.date === todayDateStr) {
+                                todayGlobalCollectionTotal += Number(pData.amount || 0);
+                            }
+                        });
+                    } catch(err) { console.error("Subcollection scan fault: ", err); }
+
                     let displayUID = data.customerId || "HBML-" + docId.substring(0, 5).toUpperCase();
+
+                    // 👑 FEATURE 2: QUICK WHATSAPP REMINDER TEXT (తెలుగు బటన్ లింక్)
+                    let encodedMsg = encodeURIComponent(`HBML Capital: నమస్కారం, మీ ఈ నెలకు సంబంధించిన లోన్ EMI వాయిదా మొత్తం ₹${emiValue.toLocaleString('en-IN')} బాకీ ఉంది. దయచేసి మా వసూళ్ల ఏజెంట్‌కు చెల్లించగలరు. ధన్యవాదాలు!`);
 
                     html += `
                         <tr class="hover:bg-slate-800/40 transition border-b border-slate-800/60 target-row-item" data-search="${cleanName.toLowerCase()}">
@@ -186,24 +205,29 @@
                             <td class="p-4 font-black text-white uppercase">${cleanName}</td>
                             <td class="p-4 font-mono font-bold text-slate-300">₹${principal.toLocaleString('en-IN')}</td>
                             <td class="p-4 font-mono font-black text-purple-400">₹${emiValue.toLocaleString('en-IN')}</td>
-                            <td class="p-4 text-center space-x-2">
+                            <td class="p-4 text-center flex items-center justify-center gap-1.5">
                                 <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='collect-emi.html?id=${docId}'" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] px-3 py-1.5 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95">
-                                    <i class="fa-solid fa-coins mr-0.5"></i> Collect
+                                    <i class="fa-solid fa-coins"></i> Collect
                                 </button>
-                                <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='customer-profile.html?id=${docId}'" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-white font-bold text-[11px] px-3 py-1.5 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95">
-                                    Profile <i class="fa-solid fa-chevron-right text-[9px] ml-0.5"></i>
+                                <a href="https://wa.me/91${phoneNum}?text=${encodedMsg}" target="_blank" class="bg-teal-600 hover:bg-teal-500 text-white font-black text-[11px] px-2.5 py-1.5 rounded-lg transition uppercase tracking-wider flex items-center justify-center shadow-md">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </a>
+                                <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='customer-profile.html?id=${docId}'" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-white font-bold text-[11px] px-2 py-1.5 rounded-lg transition uppercase tracking-wider cursor-pointer active:scale-95">
+                                    <i class="fa-solid fa-user text-[10px]"></i>
                                 </button>
                             </td>
                         </tr>
                     `;
-                });
+                }
 
                 tbody.innerHTML = html;
 
+                // Counters Render Setup
                 document.getElementById("lblTotalCustomers").innerText = totalCustCount;
                 document.getElementById("lblActiveLoans").innerText = totalCustCount;
                 document.getElementById("lblMonthlyEmiSum").innerText = "₹" + totalEmiSum.toLocaleString('en-IN');
                 document.getElementById("lblTotalBookSum").innerText = "₹" + totalBookSum.toLocaleString('en-IN');
+                document.getElementById("lblTodayCollectionSum").innerText = "₹" + todayGlobalCollectionTotal.toLocaleString('en-IN');
 
             } catch (e) {
                 console.error(e);
@@ -228,7 +252,6 @@
         window.addEventListener('DOMContentLoaded', streamEmployeeDashboard);
     </script>
 
-    <!-- SYSTEM RUNTIME CLOCK CONTROLLER -->
     <script>
         function updateClock(){
             const now = new Date();
