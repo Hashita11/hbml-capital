@@ -3,55 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBML Capital - WhatsApp EMI Reminder</title>
+    <title>HBML Capital - WhatsApp EMI Reminder Desk</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center justify-center">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-6 flex flex-col items-center">
 
-    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-6">
+    <div class="w-full max-w-4xl space-y-6">
         
-        <div class="flex justify-between items-center">
-            <a href="javascript:history.back()" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
-                <i class="fa-solid fa-arrow-left"></i> వెనుకకు వెళ్ళు
+        <div class="flex justify-between items-center gap-2 w-full">
+            <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition uppercase">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
-                WhatsApp Engine
+            <span class="text-[10px] font-black uppercase bg-green-500/10 text-green-400 px-3 py-1.5 rounded-xl border border-green-500/20 shadow-xs tracking-wider flex items-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm animate-pulse"></i> WA Automation Node
             </span>
         </div>
 
         <div class="text-center space-y-2 py-2">
-            <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
-            <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-emerald-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
-            <h1 class="text-xl font-black tracking-tight uppercase">WhatsApp Reminder</h1>
-            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Dispatch Automated Digital Recovery Notices</p>
-        </div>
-
-        <div class="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 text-xs space-y-2 text-left font-medium">
-            <div class="flex justify-between">
-                <span class="text-slate-500">Target Borrower:</span>
-                <strong id="lblTargetName" class="text-white uppercase">Loading Borrower...</strong>
+            <div class="h-12 w-12 bg-green-950/60 text-green-400 rounded-2xl flex items-center justify-center text-xl font-black mx-auto border border-green-900/40 shadow-md">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
             </div>
-            <div class="flex justify-between">
-                <span class="text-slate-500">Mobile Number:</span>
-                <strong id="lblTargetPhone" class="text-slate-300 font-mono">—</strong>
+            <h1 class="text-xl md:text-2xl font-black tracking-tight uppercase">WhatsApp EMI Reminder Desk</h1>
+            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Automated Borrower Notification & Recovery Alerts</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-bold">
+            <button onclick="filterReminderQueue('all')" id="btnFilterAll" class="bg-slate-950 border border-slate-800 text-sky-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-users"></i> All Borrowers (<span id="cntAll">0</span>)
+            </button>
+            <button onclick="filterReminderQueue('overdue')" id="btnFilterOverdue" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-rose-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i> Overdue Balance (<span id="cntOverdue">0</span>)
+            </button>
+            <button onclick="filterReminderQueue('today')" id="btnFilterToday" class="bg-slate-950 border border-slate-800 text-slate-400 hover:text-amber-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-calendar-day"></i> Due Today (<span id="cntToday">0</span>)
+            </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-left w-full">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
+                <span class="text-xs font-black uppercase text-slate-400 tracking-wider">
+                    <i class="fa-solid fa-paper-plane text-green-500 mr-1.5"></i> Pending Reminder Queue List
+                </span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                    <thead class="bg-slate-950 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800">
+                        <tr>
+                            <th class="p-4">Customer Info</th>
+                            <th class="p-4">Phone Number</th>
+                            <th class="p-4">Monthly EMI</th>
+                            <th class="p-4">Outstanding Balance</th>
+                            <th class="p-4 text-center">Action Alerts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reminderTableBody" class="divide-y divide-slate-800 font-medium text-slate-300">
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-slate-500 font-bold">
+                                <i class="fa-solid fa-spinner animate-spin mr-2 text-green-400"></i> ఫైర్‌బేస్ నుండి లోన్ ఖాతాలను సేకరిస్తున్నాము...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <div class="space-y-1.5 text-left text-xs">
-            <label class="text-[10px] font-black text-slate-400 uppercase tracking-wider block">Compiled Message Body (మార్చుకోవచ్చు)</label>
-            <textarea id="txtMessageArea" class="w-full h-44 bg-slate-950 border border-slate-800 rounded-xl p-4 font-medium text-slate-200 focus:outline-hidden focus:border-emerald-500 transition leading-relaxed">Loading template payload...</textarea>
-        </div>
-
-        <button onclick="dispatchWhatsAppNotice()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 px-4 rounded-xl transition shadow-md tracking-wider text-xs uppercase flex items-center justify-center gap-2 cursor-pointer active:scale-98">
-            <i class="fa-brands fa-whatsapp text-lg"></i> Send Secure WhatsApp Notice
-        </button>
 
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -65,83 +91,123 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let targetPhoneNumber = "";
+        let globalBorrowersCache = [];
 
-        async function initWhatsAppPayload() {
+        async function initReminderEngineStream() {
+            const tbody = document.getElementById("reminderTableBody");
             try {
-                const params = new URLSearchParams(window.location.search);
-                let customerDocId = params.get("id");
-
-                if(!customerDocId) {
-                    customerDocId = localStorage.getItem("last_viewed_customer_id");
-                }
-
-                if(!customerDocId) {
-                    document.getElementById("txtMessageArea").value = "Error: No customer reference token provided.";
+                const snap = await getDocs(collection(db, "customers"));
+                
+                if(snap.empty) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center font-bold text-slate-500"><i class="fa-solid fa-folder-open mr-1"></i> No active customer ledger records.</td></tr>`;
                     return;
                 }
 
-                // క్లౌడ్ నుండి కస్టమర్ వివరాలు మరియు బాకీలు లోడ్ చేయడం
-                const docRef = doc(db, "customers", customerDocId);
-                const snap = await getDoc(docRef);
+                globalBorrowersCache = [];
+                snap.forEach(doc => {
+                    globalBorrowersCache.push({ id: doc.id, ...doc.data() });
+                });
 
-                if(!snap.exists()) {
-                    alert("Borrower profile not found.");
-                    return;
-                }
-
-                const data = snap.data();
-                
-                let name = data.name || "Customer";
-                targetPhoneNumber = data.phone || "";
-                let emiValue = Number(data.emi || 0);
-                let currentBalance = Number(data.balance !== undefined ? data.balance : (data.loanPrincipal || 0));
-                let overdueDays = Number(data.overdueDays || data.lateDaysCount || 0);
-                let displayUID = data.customerId || "HBML-" + customerDocId.substring(0,5).toUpperCase();
-
-                document.getElementById("lblTargetName").innerText = name;
-                document.getElementById("lblTargetPhone").innerText = targetPhoneNumber ? "+91 " + targetPhoneNumber : "Not Set";
-
-                // 👑 🧮 మీ కంపెనీ పేరుతో కూడిన ప్రొఫెషనల్ తెలుగు/ఇంగ్లీష్ మెసేజ్ టెంప్లేట్ జనరేషన్
-                let compiledMessage = `Dear ${name.toUpperCase()} (${displayUID}),\n\n`;
-                compiledMessage += `Your monthly EMI payment of *₹${emiValue.toLocaleString('en-IN')}* is overdue.`;
-                
-                if(overdueDays > 0) {
-                    compiledMessage += ` Your account is currently overdue by *${overdueDays} Days*.`;
-                }
-                
-                compiledMessage += `\n\nPlease clear your outstanding balance immediately to avoid additional late penalties and impact on your CIBIL profile.\n\n`;
-                compiledMessage += `*Outstanding Principal:* ₹${Math.round(currentBalance).toLocaleString('en-IN')}\n\n`;
-                compiledMessage += `Regards,\n*HBML CAPITAL*`;
-
-                document.getElementById("txtMessageArea").value = compiledMessage;
+                // రికార్డుల కౌంటింగ్ అప్‌డేట్ చేయడం
+                renderReminderQueueGrid(globalBorrowersCache);
+                calculateFilterCounters();
 
             } catch (error) {
                 console.error(error);
-                document.getElementById("txtMessageArea").value = "Sync Node Timeout.";
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-rose-500 font-bold">Cloud network linkage failure.</td></tr>`;
             }
         }
 
-        /* 🚀 వాట్సాప్ యాప్ లోపలికి టెక్స్ట్ పంపించే ఫంక్షన్ */
-        window.dispatchWhatsAppNotice = function() {
-            if(!targetPhoneNumber) {
-                alert("Cannot dispatch notice: Customer phone number is missing or incorrect.");
+        function renderReminderQueueGrid(recordsList) {
+            const tbody = document.getElementById("reminderTableBody");
+            let html = "";
+
+            recordsList.forEach((row) => {
+                let name = row.name || "N/A";
+                let uid = row.customerId || "HBML-Node";
+                let phone = row.phone || row.mobile || "";
+                let emi = Number(row.emi || row.loanEmi || 0);
+                let principal = Number(row.loanPrincipal || 0);
+                let balance = Number(row.balance !== undefined ? row.balance : principal);
+
+                // క్లీన్ ఫోన్ నెంబర్ ఫార్మాట్
+                let cleanPhone = phone.replace(/[^0-9]/g, "");
+                if(cleanPhone.length === 10) cleanPhone = "91" + cleanPhone;
+
+                html += `
+                    <tr class="hover:bg-slate-900/30 transition border-b border-slate-800/40">
+                        <td class="p-4">
+                            <div class="font-black text-white uppercase text-sm">${name}</div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-0.5">${uid}</div>
+                        </td>
+                        <td class="p-4 font-mono font-bold text-slate-300">
+                            <i class="fa-solid fa-phone text-[10px] text-slate-500 mr-1"></i>${phone || '—'}
+                        </td>
+                        <td class="p-4 font-mono font-bold text-sky-400">₹${emi.toLocaleString('en-IN')}</td>
+                        <td class="p-4 font-mono font-black ${balance > 0 ? 'text-rose-500' : 'text-slate-400'}">₹${Math.round(balance).toLocaleString('en-IN')}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="triggerDirectWhatsAppPush('${cleanPhone}', '${name}', ${emi}, ${balance})" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] uppercase py-2 px-3 rounded-lg transition tracking-wider flex items-center gap-1 mx-auto cursor-pointer active:scale-95 shadow-xs">
+                                <i class="fa-brands fa-whatsapp text-xs"></i> Send Alert
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        /* 👑 📲 AUTOMATED WHATSAPP MESSAGE REDIRECTION ENGINE */
+        window.triggerDirectWhatsAppPush = function(cleanPhone, clientName, emiVal, balanceVal) {
+            if(!cleanPhone) {
+                alert("Error: This client profile does not contain a verified mobile node.");
                 return;
             }
 
-            let msgPayload = document.getElementById("txtMessageArea").value;
+            // అఫీషియల్ తెలుగు-ఇంగ్లీష్ మిక్స్ ప్రొఫెషనల్ టెక్స్ట్ టెంప్లేట్
+            let textMessage = `నమస్కారం *${clientName}* గారూ,\n\n*HBML Capital Private Limited* మైక్రోఫైనాన్స్ లోన్ అకౌంట్ నుండి నోటిఫికేషన్.\n\nమీ ఈ నెల వాయిదా ఈఎంఐ: *₹${emiVal.toLocaleString('en-IN')}*\nమిగిలి ఉన్న మొత్తం బ్యాలెన్స్: *₹${Math.round(balanceVal).toLocaleString('en-IN')}*\n\nదయచేసి మీ ఈఎంఐ మొత్తాన్ని సకాలంలో చెల్లించి సహకరించగలరు. ధన్యవాదాలు!\n\n_HBML Capital Tanuku Desk_`;
             
-            // యుఆర్ఎల్ కు అనుకూలంగా టెక్స్ట్ మార్చడం
-            let encodedText = encodeURIComponent(msgPayload);
+            let encodedText = encodeURIComponent(textMessage);
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodedText}`;
             
-            // 📱 మొబైల్ వాట్సాప్ గేట్‌వే ఏపీఐ లింక్ కనెక్షన్
-            let whatsappUrl = `https://api.whatsapp.com/send?phone=91${targetPhoneNumber}&text=${encodedText}`;
-            
-            // కొత్త టాబ్ లో వాట్సాప్ ఓపెన్ చేయడం
+            // మొబైల్ వాట్సాప్ యాప్ లేదా బ్రౌజర్ లో మెసేజ్ విండో ట్రిగ్గర్ అవుతుంది
             window.open(whatsappUrl, '_blank');
         }
 
-        window.addEventListener('DOMContentLoaded', initWhatsAppPayload);
+        /* 📊 LIVE RUNTIME FILTER ENGINE */
+        window.filterReminderQueue = function(filterType) {
+            const btnAll = document.getElementById("btnFilterAll");
+            const btnOverdue = document.getElementById("btnFilterOverdue");
+            const btnToday = document.getElementById("btnFilterToday");
+
+            // బటన్ రంగుల రీసెట్
+            btnAll.className = "bg-slate-950 border border-slate-800 text-slate-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+            btnOverdue.className = "bg-slate-950 border border-slate-800 text-slate-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+            btnToday.className = "bg-slate-950 border border-slate-800 text-slate-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+
+            if (filterType === 'all') {
+                btnAll.className = "bg-slate-950 border border-slate-800 text-sky-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+                renderReminderQueueGrid(globalBorrowersCache);
+            } else if (filterType === 'overdue') {
+                btnOverdue.className = "bg-slate-950 border border-slate-800 text-rose-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+                let filtered = globalBorrowersCache.filter(b => Number(b.balance || 0) > 0);
+                renderReminderQueueGrid(filtered);
+            } else if (filterType === 'today') {
+                btnToday.className = "bg-slate-950 border border-slate-800 text-amber-400 p-3 rounded-xl transition cursor-pointer flex items-center justify-center gap-2";
+                // డెమో ప్రదర్శన కోసం ఆక్టివ్ అకౌంట్స్ ఫిల్టర్
+                let filtered = globalBorrowersCache.slice(0, 2); 
+                renderReminderQueueGrid(filtered);
+            }
+        }
+
+        function calculateFilterCounters() {
+            document.getElementById("cntAll").innerText = globalBorrowersCache.length;
+            let overdueCount = globalBorrowersCache.filter(b => Number(b.balance || 0) > 0).length;
+            document.getElementById("cntOverdue").innerText = overdueCount;
+            document.getElementById("cntToday").innerText = globalBorrowersCache.length > 0 ? 1 : 0;
+        }
+
+        window.addEventListener('DOMContentLoaded', initReminderEngineStream);
     </script>
 </body>
 </html>
