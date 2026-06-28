@@ -87,7 +87,7 @@
 
         let role = "Admin";
 
-        /* 👑 🛠️ DYNAMIC SWITCHER: టాబ్ క్లిక్ చేయగానే డిజైన్ మరియు బాక్సులు మార్చే లాజిక్ */
+        /* 🎛️ DYNAMIC SWITCHER: టాబ్ క్లిక్ చేయగానే డిజైన్ మరియు బాక్సులు మార్చే లాజిక్ */
         window.setRole = function(selectedRole, btn){
             role = selectedRole;
             document.querySelectorAll(".tabs button").forEach(b => {
@@ -112,7 +112,6 @@
             passInput.value = "";
 
             if(role === "Customer") {
-                // Customer విభాగంలో అనవసరమైన బాక్సులు హైడ్ అవుతాయి
                 boxName.style.display = "none";
                 boxPass.style.display = "none";
                 lblId.innerText = "Customer ID or Phone Number (ఖాతా సంఖ్య / ఫోన్)";
@@ -136,7 +135,7 @@
             }
         }
 
-        /* 👑 🚀 CORE AUTH GATEWAY PROTOCOL */
+        /* 👑 🚀 CORE AUTH GATEWAY PROTOCOL WITH ADVANCED LOCALSTORAGE CACHING */
         window.loginUser = async function(){
             const nameInput = document.getElementById("name");
             const emailInput = document.getElementById("email");
@@ -173,12 +172,15 @@
 
                     msg.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${role} Login Successful! Redirecting...`;
                     
+                    // 👑 🛠️ ఎంప్లాయ్ పేరు డ్యాష్‌బోర్డ్‌లో కనిపించేలా లోకల్ మొబైల్ మెమరీలో సేవ్ చేయడం
+                    localStorage.setItem("last_logged_in_name", name);
+
                     setTimeout(() => {
                         unlockButtonState(triggerBtn, triggerIcon);
                         if(role === "Admin"){
                             window.location.href = "admin.html";
                         } else {
-                            window.location.href = "employee.html";
+                            window.location.href = "employee.html"; // ఎంప్లాయ్ డ్యాష్‌బోర్డ్ కనెక్షన్
                         }
                     }, 800);
 
