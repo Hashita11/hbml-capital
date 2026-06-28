@@ -11,6 +11,7 @@
 
     <div class="max-w-4xl mx-auto space-y-6">
         
+        <!-- TOP CONTROL NAVIGATION WITH MASTER COUNT METRICS -->
         <div class="flex justify-between items-center gap-2">
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
@@ -21,6 +22,7 @@
             </div>
         </div>
 
+        <!-- BRANDING HEADER -->
         <div class="text-center space-y-2 py-2">
             <img src="logo.png" alt="HBML Logo" class="h-14 w-auto mx-auto" onerror="this.style.display='none'; document.getElementById('fallback-icon').classList.remove('hidden')">
             <div id="fallback-icon" class="h-14 w-14 bg-slate-900 text-sky-400 rounded-xl flex items-center justify-center text-2xl font-black shadow-md border border-slate-800 hidden mx-auto">H</div>
@@ -28,16 +30,29 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Search active profiles or view digital profile cards</p>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl shadow-md">
-            <div class="relative">
-                <span class="absolute left-4 top-3.5 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" id="search" onkeyup="searchCustomer()" placeholder="Search borrower by name or phone number..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
+        <!-- 🔍 BRANCH NETWORKS & TEXT SEARCH GATEWAY -->
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl shadow-md grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- 🏢 బ్రాంచ్ వైజ్ డ్రాప్‌డౌన్ ఫిల్టర్ -->
+            <div class="sm:col-span-1">
+                <select id="filterBranch" onchange="filterCustomerMaster()" class="w-full h-full text-xs bg-slate-950 border border-slate-800 rounded-xl px-3 py-3.5 font-bold focus:outline-hidden focus:border-sky-500 transition text-slate-300 cursor-pointer">
+                    <option value="All">All Branches (అన్ని బ్రాంచ్‌లు)</option>
+                    <option value="Tanuku">Tanuku (Headquarters)</option>
+                    <option value="Velpur">Velpur Branch</option>
+                    <option value="Undrajavaram">Undrajavaram Branch</option>
+                    <option value="Relangi">Relangi Branch</option>
+                </select>
+            </div>
+            <div class="sm:col-span-2 relative">
+                <span class="absolute left-4 top-4 text-slate-500 text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" id="search" onkeyup="filterCustomerMaster()" placeholder="Search borrower by name or phone number..." class="w-full text-xs bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-3.5 font-bold text-white focus:outline-hidden focus:border-sky-500 transition">
             </div>
         </div>
 
+        <!-- 📑 ACTIVE LEDGERS CONTAINER -->
         <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
-            <div class="p-4 bg-slate-900/40 border-b border-slate-800">
+            <div class="p-4 bg-slate-900/40 border-b border-slate-800 flex justify-between items-center">
                 <span class="text-xs font-black uppercase text-slate-400 tracking-wider"><i class="fa-solid fa-address-book text-sky-500 mr-1.5"></i> Active Borrower Ledgers</span>
+                <span id="lblVisibleCounter" class="text-[10px] font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800 text-slate-500">Showing: 0</span>
             </div>
             
             <div id="customerListContainer" class="divide-y divide-slate-800/60 font-medium">
@@ -49,9 +64,96 @@
 
     </div>
 
+    <!-- 👑 🛠️ EDIT BORROWER PROFILE MODAL (POPUP DIALOG) -->
+    <div id="editCustomerModal" class="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 space-y-4 shadow-2xl relative text-left max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditCustomerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-base font-black uppercase tracking-tight text-white flex items-center gap-2">
+                <i class="fa-solid fa-user-pen text-sky-400"></i> Edit Borrower Core Profile
+            </h3>
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider border-b border-slate-800 pb-2" id="modalCustId">ACCOUNT: —</p>
+            
+            <input type="hidden" id="editCustDocId">
+            
+            <div class="space-y-3 text-xs font-medium">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Customer Full Name</label>
+                        <input type="text" id="editCustName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold text-white focus:outline-hidden focus:border-sky-500 uppercase">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Phone Number</label>
+                        <input type="number" id="editCustPhone" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60">
+                    <div class="space-y-1">
+                        <label class="text-slate-500 font-bold">Aadhaar Number (Secure Mode)</label>
+                        <input type="text" id="editCustAadhaar" class="w-full bg-slate-900/50 border border-slate-800 rounded-xl p-2.5 font-mono text-slate-500 outline-none cursor-not-allowed" readonly placeholder="[Aadhaar Redacted]">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">PAN Card Number</label>
+                        <input type="text" id="editCustPan" maxlength="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 font-mono font-bold text-white focus:outline-hidden focus:border-sky-500 uppercase">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-slate-400 font-bold">Permanent Address</label>
+                    <input type="text" id="editCustAddress" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-300 focus:outline-hidden focus:border-sky-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Regional Branch Location</label>
+                        <select id="editCustBranch" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
+                            <option value="Tanuku">Tanuku</option>
+                            <option value="Velpur">Velpur</option>
+                            <option value="Undrajavaram">Undrajavaram</option>
+                            <option value="Relangi">Relangi</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold">Loan Type Segment</label>
+                        <select id="editCustLoanType" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-bold focus:outline-hidden text-slate-300">
+                            <option value="Microfinance Loan">Microfinance Loan</option>
+                            <option value="Gold Loan">Gold Loan</option>
+                            <option value="Personal Loan">Personal Loan</option>
+                            <option value="Business Loan">Business Loan</option>
+                            <option value="Vehicle Loan">Vehicle Loan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 font-mono">
+                    <div class="space-y-1">
+                        <!-- Redacted/Omitted identification labels preserved symmetrically without digits -->
+                        <label class="text-slate-400 font-bold text-[10px]">Principal (₹)</label>
+                        <input type="number" id="editCustPrincipal" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-white focus:outline-hidden focus:border-sky-500">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold text-[10px]">Monthly EMI (₹)</label>
+                        <input type="number" id="editCustEmi" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-sky-400 focus:outline-hidden focus:border-sky-500">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-slate-400 font-bold text-[10px]">Net Balance (₹)</label>
+                        <input type="number" id="editCustBalance" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-rose-500 focus:outline-hidden focus:border-sky-500">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="updateCustomerCloudRecord()" id="btnSaveCustUpdate" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3.5 rounded-xl transition text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer shadow-md">
+                <i class="fa-solid fa-floppy-disk" id="updateCustIcon"></i> Save Account Updates
+            </button>
+        </div>
+    </div>
+
+    <!-- FIREBASE PLATFORM DATA ARCHITECTURE MODULES -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAZ3Rm_gyY8RgUJUI_AqxeCFpYJIAaWGsk",
@@ -64,6 +166,9 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        let localCachedCustomerRecords = {};
+        let isUpdateGateLocked = false;
 
         async function loadBorrowersDirectory() {
             const container = document.getElementById("customerListContainer");
@@ -78,11 +183,17 @@
                 let html = "";
                 let totalCustomers = 0;
                 let totalLoanAmountSum = 0;
+                localCachedCustomerRecords = {}; // Reset local runtime cache
                 
                 snap.forEach((docRecord) => {
                     const data = docRecord.data();
                     const docId = docRecord.id; 
+                    
+                    // Cache item synchronization
+                    localCachedCustomerRecords[docId] = { id: docId, ...data };
+
                     const cleanName = data.name || "Unknown Borrower";
+                    let branch = data.branch || "Tanuku"; 
                     
                     let emiValue = Number(data.emi || 0);
                     let tenure = Number(data.tenureMonths || data.months || 12);
@@ -101,11 +212,13 @@
 
                     let displayUID = data.customerId || "HBML-" + docId.substring(0, 5).toUpperCase();
 
-                    // 👑 🛠️ ఇక్కడ బటన్ ఆన్‌క్లిక్ లోపల డైరెక్ట్‌గా రూటింగ్ లింక్‌ను ఇంజెక్ట్ చేశాను, ఫంక్షన్ల క్లాష్ రాదు!
                     html += `
-                        <div class="p-4 flex justify-between items-center bg-slate-900/40 hover:bg-slate-900 transition gap-4 client-row-item" data-name="${cleanName.toLowerCase()}" data-phone="${(data.phone || '').toLowerCase()}">
-                            <div class="space-y-0.5">
-                                <div class="font-black text-white text-sm uppercase">${cleanName}</div>
+                        <div class="p-4 flex flex-col sm:flex-row justify-between sm:items-center bg-slate-900/40 hover:bg-slate-900 transition gap-4 client-row-item" data-branch="${branch.toLowerCase()}" data-name="${cleanName.toLowerCase()}" data-phone="${(data.phone || '').toLowerCase()} ${displayUID.toLowerCase()}">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-black text-white text-sm uppercase tracking-wide">${cleanName}</span>
+                                    <span class="bg-slate-950 text-amber-400 border border-slate-800 text-[9px] font-bold uppercase px-2 py-0.5 rounded-md"><i class="fa-solid fa-building text-[8px] mr-0.5"></i> ${branch}</span>
+                                </div>
                                 <div class="flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] font-mono font-bold text-slate-500 uppercase">
                                     <span class="text-sky-400">${displayUID}</span>
                                     <span>•</span>
@@ -115,14 +228,20 @@
                                 </div>
                             </div>
                             
-                            <div class="flex items-center gap-3">
-                                <div class="hidden sm:block text-right">
+                            <div class="flex items-center justify-between sm:justify-end gap-4">
+                                <div class="text-left sm:text-right">
                                     <div class="text-[9px] font-bold text-slate-500 uppercase">Outstanding</div>
-                                    <div class="text-xs font-mono font-black text-amber-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
+                                    <div class="text-xs font-mono font-black text-rose-500">₹${Math.round(balance).toLocaleString('en-IN')}</div>
                                 </div>
-                                <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='customer-profile.html?id=${docId}'" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-xs py-2 px-3.5 rounded-xl transition cursor-pointer flex items-center gap-1.5 active:scale-95 shrink-0">
-                                    Profile Card <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                                </button>
+                                <div class="flex items-center gap-2">
+                                    <!-- 👑 🛠️ ఎడిట్ పాపప్ ట్రిగ్గర్ బటన్ -->
+                                    <button onclick="openEditCustomerModal('${docId}')" class="bg-slate-950 hover:bg-slate-800 text-amber-400 hover:text-white border border-slate-800 hover:border-amber-500/40 font-bold text-[11px] py-1.5 px-2.5 rounded-lg transition cursor-pointer flex items-center gap-1 active:scale-95 shrink-0">
+                                        <i class="fa-solid fa-user-pen text-[9px]"></i> Edit
+                                    </button>
+                                    <button onclick="localStorage.setItem('last_viewed_customer_id', '${docId}'); window.location.href='customer-profile.html?id=${docId}'" class="bg-slate-950 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 hover:border-sky-500/40 font-bold text-[11px] py-1.5 px-2.5 rounded-lg transition cursor-pointer flex items-center gap-1 shrink-0 active:scale-95">
+                                        Profile <i class="fa-solid fa-chevron-right text-[8px]"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -132,6 +251,7 @@
 
                 document.getElementById("totalCustomers").innerText = totalCustomers;
                 document.getElementById("totalLoan").innerText = "₹" + totalLoanAmountSum.toLocaleString('en-IN');
+                document.getElementById("lblVisibleCounter").innerText = "Showing: " + totalCustomers;
 
             } catch (error) {
                 console.error(error);
@@ -139,20 +259,111 @@
             }
         }
 
-        window.searchCustomer = function() {
-            let filter = document.getElementById("search").value.toLowerCase().trim();
+        /* 🚪 POPUP INTERACTION CONTROLS */
+        window.openEditCustomerModal = function(docId) {
+            const cust = localCachedCustomerRecords[docId];
+            if(!cust) return;
+
+            document.getElementById("editCustDocId").value = docId;
+            document.getElementById("modalCustId").innerText = `ACCOUNT ID: ${cust.customerId || 'N/A'}`;
+            document.getElementById("editCustName").value = cust.name || '';
+            document.getElementById("editCustPhone").value = cust.phone || '';
+            document.getElementById("editCustAddress").value = cust.address || '';
+            document.getElementById("editCustBranch").value = cust.branch || 'Tanuku';
+            document.getElementById("editCustLoanType").value = cust.loanType || 'Microfinance Loan';
+            document.getElementById("editCustPrincipal").value = cust.loanPrincipal || 0;
+            document.getElementById("editCustEmi").value = cust.emi || 0;
+            document.getElementById("editCustBalance").value = cust.balance !== undefined ? cust.balance : (cust.loanPrincipal || 0);
+            document.getElementById("editCustPan").value = cust.pan || '';
+            
+            // Secure clean state for masked entity fields
+            document.getElementById("editCustAadhaar").value = "";
+
+            document.getElementById("editCustomerModal").classList.remove("hidden");
+        }
+
+        window.closeEditCustomerModal = function() {
+            document.getElementById("editCustomerModal").classList.add("hidden");
+        }
+
+        /* 💾 CLOUD DISPATCH UPDATE ENGINE */
+        window.updateCustomerCloudRecord = async function() {
+            if (isUpdateGateLocked) return;
+
+            let docId = document.getElementById("editCustDocId").value;
+            let name = document.getElementById("editCustName").value.trim();
+            let phone = document.getElementById("editCustPhone").value.trim();
+            let address = document.getElementById("editCustAddress").value.trim();
+            let branch = document.getElementById("editCustBranch").value;
+            let loanType = document.getElementById("editCustLoanType").value;
+            let principal = Number(document.getElementById("editCustPrincipal").value);
+            let emi = Number(document.getElementById("editCustEmi").value);
+            let balance = Number(document.getElementById("editCustBalance").value);
+            let pan = document.getElementById("editCustPan").value.trim().toUpperCase();
+
+            if(!name || !phone || !principal || !emi) {
+                alert("Mandatory fields cannot be blank.");
+                return;
+            }
+
+            const btn = document.getElementById("btnSaveCustUpdate");
+            const icon = document.getElementById("updateCustIcon");
+
+            isUpdateGateLocked = true;
+            btn.disabled = true;
+            btn.classList.add("opacity-50");
+            icon.className = "fa-solid fa-spinner animate-spin mr-1.5";
+
+            try {
+                const docRef = doc(db, "customers", docId);
+                await updateDoc(docRef, {
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    branch: branch,
+                    loanType: loanType,
+                    loanPrincipal: principal,
+                    emi: emi,
+                    balance: balance,
+                    pan: pan
+                });
+
+                alert("Customer master record updated successfully!");
+                closeEditCustomerModal();
+                loadBorrowersDirectory(); // Fresh reload
+            } catch (error) {
+                alert("Update failure: " + error.message);
+            } finally {
+                isUpdateGateLocked = false;
+                btn.disabled = false;
+                btn.classList.remove("opacity-50");
+                icon.className = "fa-solid fa-floppy-disk";
+            }
+        }
+
+        /* 👑 🔍 MULTI-PARAM DUAL SEARCH ENGINE FILTER (BRANCH + TEXT FILTER) */
+        window.filterCustomerMaster = function() {
+            let selectedBranch = document.getElementById("filterBranch").value.toLowerCase();
+            let textInput = document.getElementById("search").value.toLowerCase().trim();
             let rows = document.getElementsByClassName("client-row-item");
+            let visibleCount = 0;
 
             for (let i = 0; i < rows.length; i++) {
-                let nameAttr = rows[i].getAttribute("data-name") || "";
-                let phoneAttr = rows[i].getAttribute("data-phone") || "";
+                let rowBranch = rows[i].getAttribute("data-branch") || "";
+                let rowName = rows[i].getAttribute("data-name") || "";
+                let rowPhone = rows[i].getAttribute("data-phone") || "";
 
-                if (nameAttr.includes(filter) || phoneAttr.includes(filter)) {
+                let branchMatch = (selectedBranch === "all" || rowBranch === selectedBranch);
+                let textMatch = (rowName.includes(textInput) || rowPhone.includes(textInput));
+
+                if (branchMatch && textMatch) {
                     rows[i].style.setProperty("display", "flex", "important");
+                    visibleCount++;
                 } else {
                     rows[i].style.setProperty("display", "none", "important");
                 }
             }
+            document.getElementById("lblVisibleCounter").innerText = "Showing: " + visibleCount;
         }
 
         window.addEventListener('DOMContentLoaded', loadBorrowersDirectory);
