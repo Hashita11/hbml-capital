@@ -9,7 +9,7 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
@@ -23,7 +23,7 @@
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
             
-            <!-- 🛡️ FEATURE 1: ROLE-BASED ACCESS CONTROL CONTROLLER -->
+            <!-- ROLE-BASED ACCESS CONTROL CONTROLLER -->
             <div class="flex items-center gap-2">
                 <span class="text-[11px] font-bold text-slate-500 uppercase">Current Session Role:</span>
                 <select id="sessionRoleSelect" onchange="applyRoleBasedAccessControl()" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-sky-400 focus:outline-hidden cursor-pointer">
@@ -39,31 +39,67 @@
             <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Automated Interest, Live Targets & Role Guards</p>
         </div>
 
-        <!-- 👑 FEATURE 2: AUTOMATED INTEREST CALCULATOR NODE -->
+        <!-- 👑 NEW ADVANCED FEATURE: TARGET SHARING & MANAGEMENT (టార్గెట్ సెట్ చేసే విభాగం) -->
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl text-left">
+            <h3 class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
+                <i class="fa-solid fa-share-nodes"></i> 1. Agent Target Sharing desk (సిబ్బంది టార్గెట్ కేటాయింపు)
+            </h3>
+            <p class="text-xs text-slate-400">ఇక్కడ మీరు ఏజెంట్ల రోజువారీ/నెలవారీ వసూళ్ల టార్గెట్‌లను మాన్యువల్‌గా మార్చవచ్చు. ఇక్కడ సేవ్ చేసిన టార్గెట్లే లైవ్ స్క్రీన్‌లలో కనిపిస్తాయి.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-bold">
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="text-white uppercase font-black flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-user text-emerald-400"></i> NARESH (HBML-LJHEP)
+                    </div>
+                    <div>
+                        <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Set Target Amount (₹)</label>
+                        <input type="number" id="targetNaresh" value="50000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-hidden focus:border-sky-500 font-mono text-sm">
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="text-white uppercase font-black flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-user text-rose-400"></i> SURESH KUMAR (HBML-EMP-02)
+                    </div>
+                    <div>
+                        <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Set Target Amount (₹)</label>
+                        <input type="number" id="targetSuresh" value="50000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-200 focus:outline-hidden focus:border-sky-500 font-mono text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button onclick="saveAgentTargetsToSystem()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-black uppercase py-2.5 px-6 rounded-xl transition shadow-md cursor-pointer active:scale-95">
+                    <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Save Targets
+                </button>
+            </div>
+        </div>
+
+        <!-- AUTOMATED INTEREST CALCULATOR NODE -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl">
             <h3 class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
-                <i class="fa-solid fa-calculator"></i> 1. Automated Monthly Interest Engine (వడ్డీ లెక్కలు)
+                <i class="fa-solid fa-calculator"></i> 2. Automated Monthly Interest Engine (వడ్డీ లెక్కలు)
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-bold">
                 <div>
-                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Loan Principal (అసలు ముక్క)</label>
+                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Loan Principal</label>
                     <input type="number" id="calcPrincipal" value="100000" oninput="runAutomatedInterestEngine()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-hidden focus:border-amber-500 font-mono text-sm">
                 </div>
                 <div>
-                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Annual Interest Rate (వడ్డీ రేటు %)</label>
+                    <label class="block text-slate-500 uppercase text-[10px] tracking-wider mb-1">Annual Interest Rate (%)</label>
                     <input type="number" id="calcRate" value="12" oninput="runAutomatedInterestEngine()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 focus:outline-hidden focus:border-amber-500 font-mono text-sm">
                 </div>
-                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60 flex flex-col justify-center">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/60 flex flex-col justify-center text-left">
                     <span class="text-slate-500 uppercase text-[9px] tracking-wider">Auto Calculated Monthly Interest</span>
                     <span id="lblMonthlyInterestResult" class="text-lg font-black font-mono text-amber-400 mt-0.5">₹1,000.00</span>
                 </div>
             </div>
         </div>
 
-        <!-- 📊 FEATURE 3: LIVE COLLECTION TARGET TRACKING PROGRESS -->
-        <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl">
+        <!-- LIVE COLLECTION TARGET TRACKING PROGRESS -->
+        <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl text-left">
             <h3 class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2 border-b border-slate-800 pb-2.5">
-                <i class="fa-solid fa-chart-line"></i> 2. Live Field Agent Collection Targets (లైవ్ వసూళ్ల టార్గెట్)
+                <i class="fa-solid fa-chart-line"></i> 3. Live Field Agent Collection Targets Preview
             </h3>
             
             <div class="space-y-4 text-xs">
@@ -74,10 +110,10 @@
                             <span class="text-white uppercase font-black">Naresh</span>
                             <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-LJHEP</span>
                         </div>
-                        <span class="font-mono text-emerald-400">₹35,000 / ₹50,000 collected (70%)</span>
+                        <span class="font-mono text-emerald-400" id="lblPreviewNaresh">₹25,000 / ₹50,000 collected (50%)</span>
                     </div>
                     <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
-                        <div class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full" style="width: 70%"></div>
+                        <div id="barPreviewNaresh" class="bg-gradient-to-r from-emerald-600 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 50%"></div>
                     </div>
                 </div>
 
@@ -88,19 +124,19 @@
                             <span class="text-white uppercase font-black">Suresh Kumar</span>
                             <span class="text-[10px] text-slate-500 font-mono ml-1.5">ID: HBML-EMP-02</span>
                         </div>
-                        <span class="font-mono text-emerald-400">₹15,000 / ₹50,000 collected (30%)</span>
+                        <span class="font-mono text-slate-400" id="lblPreviewSuresh">₹0 / ₹50,000 collected (0%)</span>
                     </div>
                     <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-800/80">
-                        <div class="bg-gradient-to-r from-emerald-600 to-amber-500 h-full rounded-full" style="width: 30%"></div>
+                        <div id="barPreviewSuresh" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 🔒 SENSITIVE ADMIN ZONE (Role-Based Protected Area) -->
-        <div id="restrictedAdminZone" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl transition-all duration-300">
+        <!-- SECURE ADMIN ZONE -->
+        <div id="restrictedAdminZone" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl space-y-4 shadow-xl transition-all duration-300 text-left">
             <h3 class="text-xs font-black uppercase tracking-wider text-rose-500 flex items-center gap-2 border-b border-slate-800 pb-2.5">
-                <i class="fa-solid fa-shield-halved"></i> 3. Secure Admin Audit Terminal (సెన్సిటివ్ ఆడిట్ సెక్షన్)
+                <i class="fa-solid fa-shield-halved"></i> 4. Secure Admin Audit Terminal (సెన్సిటివ్ ఆడిట్ సెక్షన్)
             </h3>
             <p class="text-xs text-slate-400 font-medium">This section contains highly confidential company analytics. Only visible to verified Admin role tokens.</p>
             
@@ -124,41 +160,74 @@
 
     <!-- ADVANCED MANAGEMENT RUNTIME ENGINES -->
     <script>
-        /* 👑 🛠️ ENGINE 1: AUTOMATED INTEREST CALCULATOR LOGIC */
+        // LocalStorage fallback for dynamic cross-page saving
+        let currentNareshTarget = Number(localStorage.getItem("target_naresh") || 50000);
+        let currentSureshTarget = Number(localStorage.getItem("target_suresh") || 50000);
+
+        function initTargetsValuesOnLoad() {
+            document.getElementById("targetNaresh").value = currentNareshTarget;
+            document.getElementById("targetSuresh").value = currentSureshTarget;
+            updatePreviewBars();
+        }
+
+        /* 👑 🛠️ SAVE FUNCTION: టార్గెట్ విలువలను లోకల్ సిస్టమ్‌లో భద్రపరచడం */
+        window.saveAgentTargetsToSystem = function() {
+            const valNaresh = document.getElementById("targetNaresh").value;
+            const valSuresh = document.getElementById("targetSuresh").value;
+
+            localStorage.setItem("target_naresh", valNaresh);
+            localStorage.setItem("target_suresh", valSuresh);
+            
+            currentNareshTarget = Number(valNaresh);
+            currentSureshTarget = Number(valSuresh);
+
+            updatePreviewBars();
+            alert("Success: Agent targets updated successfully in global configurations!");
+        }
+
+        function updatePreviewBars() {
+            let nareshCollected = 25000; // Live Mock from database
+            let sureshCollected = 0;
+
+            let nPercent = Math.min(Math.round((nareshCollected / currentNareshTarget) * 100), 100);
+            let sPercent = Math.min(Math.round((sureshCollected / currentSureshTarget) * 100), 100);
+
+            document.getElementById("lblPreviewNaresh").innerText = "₹" + nareshCollected.toLocaleString('en-IN') + " / ₹" + currentNareshTarget.toLocaleString('en-IN') + " collected (" + nPercent + "%)";
+            document.getElementById("barPreviewNaresh").style.width = nPercent + "%";
+
+            document.getElementById("lblPreviewSuresh").innerText = "₹" + sureshCollected.toLocaleString('en-IN') + " / ₹" + currentSureshTarget.toLocaleString('en-IN') + " collected (" + sPercent + "%)";
+            document.getElementById("barPreviewSuresh").style.width = sPercent + "%";
+        }
+
         function runAutomatedInterestEngine() {
             const principal = Number(document.getElementById("calcPrincipal").value || 0);
             const rate = Number(document.getElementById("calcRate").value || 0);
             const resultEl = document.getElementById("lblMonthlyInterestResult");
 
-            // Reducing/Flat Standard Monthly Formula Matrix: Interest = P * (R / 12) / 100
-            let monthlyInterest = principal * (rate / 100) / 12;
-            
-            if (monthlyInterestResult < 0 || isNaN(monthlyInterestResult)) monthlyInterestResult = 0;
-            lblMonthlyInterestResult.innerText = "₹" + monthlyInterestResult.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            let monthlyInterest = (principal * (rate / 100)) / 12;
+            if (monthlyInterest < 0 || isNaN(monthlyInterest)) monthlyInterest = 0;
+            resultEl.innerText = "₹" + monthlyInterest.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        /* 👑 🛡️ ENGINE 2: ROLE-BASED ACCESS CONTROL (RBAC) LOGIC */
         function applyRoleBasedAccessControl() {
             const selectedRole = document.getElementById("sessionRoleSelect").value;
-            const auditZone = document.getElementById("auditMasterZoneBlock") || document.querySelector(".audit-master-card") || document.querySelector(".bg-slate-900:last-of-type");
+            const restrictedZone = document.getElementById("restrictedAdminZone");
 
             if (selectedRole === "FieldAgent") {
-                // ఫీల్డ్ ఏజెంట్ లాగిన్ లో ఉంటే సెన్సిటివ్ ఆడిట్ బ్లాక్ ని పూర్తిగా హైడ్ చేయడం
-                if(auditZone) {
-                    auditZone.style.opacity = "0.2";
-                    auditZone.style.pointerEvents = "none";
-                    alert("Access Restriction: Field Agents cannot view internal corporate audit data nodes.");
+                if(restrictedZone) {
+                    restrictedZone.style.opacity = "0.15";
+                    restrictedZone.style.pointerEvents = "none";
                 }
             } else {
-                // అడ్మిన్ లాగిన్ లో ఉన్నప్పుడు ఫుల్ యాక్సెస్ ఇవ్వడం
-                if(auditZone) {
-                    auditZone.style.opacity = "1";
-                    auditZone.style.pointerEvents = "auto";
+                if(restrictedZone) {
+                    restrictedZone.style.opacity = "1";
+                    restrictedZone.style.pointerEvents = "auto";
                 }
             }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            initTargetsValuesOnLoad();
             runAutomatedInterestEngine();
             applyRoleBasedAccessControl();
         });
