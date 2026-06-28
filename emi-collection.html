@@ -15,8 +15,8 @@
             <a href="admin.html" class="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800 px-3 py-2 rounded-xl transition">
                 <i class="fa-solid fa-arrow-left"></i> Dashboard
             </a>
-            <span class="text-[10px] font-black uppercase bg-amber-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
-                <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> Anti-Duplicate Filter Active
+            <span class="text-[10px] font-black uppercase bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20 shadow-xs tracking-wider">
+                <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> Strict Filter Engine Active
             </span>
         </div>
 
@@ -47,7 +47,7 @@
                     <tbody id="tblCollectionBody" class="divide-y divide-slate-800 font-medium text-slate-300">
                         <tr>
                             <td colspan="3" class="p-8 text-center text-slate-500 font-bold">
-                                <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> రికార్డులను సేకరిస్తున్నాము...
+                                <i class="fa-solid fa-spinner animate-spin mr-2 text-sky-400"></i> Syncing records...
                             </td>
                         </tr>
                     </tbody>
@@ -85,25 +85,29 @@
                 }
 
                 let records = [];
-                // 👑 🛡️ మ్యాజికల్ యాంటీ-డూప్లికేట్ సెట్ ట్రాకర్ (ఒకే ఐడీని లైఫ్‌లో రెండుసార్లు రానివ్వదు)
+                // 👑 🛡️ Strict Anti-Duplicate Filter Tracker
                 let uniqueDocIdsTracker = new Set();
 
                 snap.forEach(doc => {
                     let data = doc.data();
                     let docId = doc.id;
                     
-                    // కస్టమర్ ఐడీ, కట్టిన అమౌంట్, తేదీల కలయికను ఒక యూనిక్ కీ గా మార్చడం
-                    let uniqueKey = `${data.customerId || ''}_${data.customerName || ''}_${data.emiAmountPaid || 0}_${data.date?.seconds || data.date || ''}`;
+                    // Database nundi double entries vachina, matching metrics batti overlap check cheyatam
+                    let amt = Number(data.emiAmountPaid || 0);
+                    let cName = (data.customerName || '').trim().toUpperCase();
+                    let rawDate = data.date?.seconds ? data.date.seconds : data.date;
+                    
+                    // Strong hashing format key
+                    let uniqueComboKey = `${cName}_${amt}_${rawDate}`;
 
-                    // ఒకవేళ ఈ యూనిక్ కీ లేదా డాక్యుమెంట్ ఐడీ ఆల్రెడీ ఉంటే స్కిప్ చేస్తుంది
-                    if (!uniqueDocIdsTracker.has(docId) && !uniqueDocIdsTracker.has(uniqueKey)) {
+                    if (!uniqueDocIdsTracker.has(docId) && !uniqueDocIdsTracker.has(uniqueComboKey)) {
                         uniqueDocIdsTracker.add(docId);
-                        uniqueDocIdsTracker.add(uniqueKey);
+                        uniqueDocIdsTracker.add(uniqueComboKey);
                         records.push({ id: docId, ...data });
                     }
                 });
 
-                // తేదీల ప్రకారం లేటెస్ట్ ట్రాన్సాక్షన్స్ పైకి వచ్చేలా సార్టింగ్
+                // Sorting based on latest date parameters
                 records.sort((a, b) => {
                     let dateA = a.date?.seconds ? a.date.seconds : new Date(a.date || 0).getTime();
                     let dateB = b.date?.seconds ? b.date.seconds : new Date(b.date || 0).getTime();
@@ -119,7 +123,6 @@
                     if(row.date) {
                         let dateObj = row.date.seconds ? new Date(row.date.seconds * 1000) : new Date(row.date);
                         
-                        // స్క్రీన్‌షాట్‌లో ఉన్నట్లే పక్కాగా "27 Jun 2026" ఫార్మాట్‌లోకి మార్చడం
                         let day = dateObj.getDate();
                         let month = dateObj.toLocaleString('en-US', { month: 'short' });
                         let year = dateObj.getFullYear();
